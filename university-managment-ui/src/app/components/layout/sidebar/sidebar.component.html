@@ -1,0 +1,31 @@
+<div class=" h-full   flex flex-col items-center relative  overflow-hidden">
+  <div [style.height]="logoSize().height+'px'" [style.width]="logoSize().width+'px'"
+       class="  bg-red-500  my-6 rounded-[12px] overflow-hidden">
+    <img [height]="logoSize().height" [width]="logoSize().width" alt="logo"
+         class=" object-cover max-h-full max-w-full"
+         src="/assets/images/university_logo.jpg">
+  </div>
+  <mat-nav-list class="min-w-full pl-6 ">
+    @for (itemMenu of menuItems(); track itemMenu; let i = $index) {
+      <a mat-list-item class=" pl-2 mb-6 h-[48px] rounded-tl-full rounded-bl-full    "
+         [routerLink]="itemMenu.route"
+         routerLinkActive="active_menu"
+         ariaCurrentWhenActive="page"
+         [routerLinkActiveOptions]="{ exact: true }"
+         #link="routerLinkActive"
+      >
+        <mat-icon matListItemIcon
+                  [fontSet]="link.isActive? 'material-icons':'material-icons-outlined'"
+                  class=" text-[#C1BBEB] mr-[10px] text-[18px] translate-y-[3px] "> {{ itemMenu.icon }}
+        </mat-icon>
+          <span [ngClass]="{
+         'w-0':sidebarCollapsed(),
+         'opacity-0':sidebarCollapsed(),
+         'hidden':sidebarCollapsed()
+         }" matListItemTitle class=" des font-[400] text-[#C1BBEB] text-[14px] ">{{ itemMenu.label }}</span>
+      </a>
+
+    }
+  </mat-nav-list>
+
+</div>

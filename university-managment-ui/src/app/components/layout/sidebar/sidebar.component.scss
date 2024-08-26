@@ -1,0 +1,33 @@
+:host * {
+  transition: all 500ms ease-in-out;
+}
+.active_menu {
+  background-color: #F3F4FF !important;
+
+  &::before {
+    display: none !important;
+  }
+
+  mat-icon {
+    color: #4D44B5 !important;
+  }
+
+  span {
+    color: #4D44B5 !important
+  }
+
+}
+@keyframes slideaway {
+  from { display: none;width: 0;opacity: 0;
+
+  }
+  to { display: block;
+  width: fit-content;
+    opacity: 1;
+  }
+}
+
+.des{
+  animation:slideaway 0.6s ease-in-out ;
+}
+
