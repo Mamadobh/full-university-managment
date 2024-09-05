@@ -1,0 +1,92 @@
+.field_select {
+  --mdc-outlined-text-field-focus-outline-color: #4D44B5 !important;
+  --mdc-outlined-text-field-outline-color: #4D44B5 !important;
+  --mdc-outlined-text-field-hover-outline-color: #5f57c2;
+  --mdc-outlined-text-field-focus-outline-width: 2.3px;
+  --mdc-outlined-text-field-outline-width: 1.8px;
+  /* Style for padding inside the text field */
+  .mdc-text-field--outlined .mat-mdc-form-field-infix,
+  .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    --mat-form-field-container-vertical-padding: 10px !important;
+  }
+
+  .mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label {
+    top: 18px !important;
+    position: relative !important;
+    color: #4D44B5 !important;
+    font-size: 15px;
+  }
+
+  /* Style for   border on focused or non-disabled outlined text fields */
+
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch {
+    border-inline: none !important;
+  }
+
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading {
+    width: 20px !important
+  }
+
+  /* Remove inline border on notched outline notch */
+  .mdc-text-field--focused {
+    border-top: none !important;
+  }
+
+  /* Rounded corners on leading and trailing edges of the notched outline */
+  .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading {
+    border-top-left-radius: var(--mdc-shape-small, 20px) !important;
+    border-bottom-left-radius: var(--mdc-shape-small, 20px) !important;
+  }
+
+  .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__trailing {
+    border-top-right-radius: var(--mdc-shape-small, 20px) !important;
+    border-bottom-right-radius: var(--mdc-shape-small, 20px) !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    height: 40px !important;
+  }
+
+  .mat-mdc-input-element {
+    top: -2px !important;
+    position: relative !important;
+    width: 160px !important;
+    color: #4D44B5 !important;
+    font-size: 16px !important;
+  }
+}
+
+.auto_complete {
+  --mat-option-selected-state-layer-color: #eae6f5;
+
+  .mdc-list-item__primary-text {
+    font-size: 15px;
+    color: #4D44B5 !important;
+  }
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar-track {
+  border-radius: 999px;
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #4D44B5;
+  min-height: 10px !important;
+  min-width: 10px !important;
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 10px;
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+  margin-top: 10px;
+}

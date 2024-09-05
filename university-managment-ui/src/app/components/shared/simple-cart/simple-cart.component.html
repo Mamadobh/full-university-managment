@@ -1,0 +1,19 @@
+<div class="bg-white  gap-12 px-10 py-[25px] flex items-center border-l-4 border-l-purple_main mb-4">
+
+  <div class=" capitalize text-text_color font-semibold">
+    {{ level }}
+  </div>
+  <div class="text-purple_main capitalize">
+    {{ track_speciality }}
+
+  </div>
+  <div class=" capitalize text-text_color text-[12px] ">{{ department }}</div>
+
+  <button [routerLink]="link"
+          class="text-white bg-purple_main rounded-full
+                 text-[14px] font-light px-4 ml-auto"
+          mat-flat-button
+  >
+    Consult
+  </button>
+</div>

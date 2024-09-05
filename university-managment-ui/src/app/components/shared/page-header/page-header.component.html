@@ -1,0 +1,15 @@
+<h2 class="text-text_color capitalize font-bold text-[24px] mb-1">
+  {{title}}</h2>
+<ul class="flex  items-center mb-1">
+  <mat-icon class="text-grey_3 text-[17px]  mx-1" inline>{{icon}}</mat-icon>
+  @for (link of linkHistory; track link; let last = $last) {
+    <li class="flex  items-center  text-grey_3 text-[13px]">
+      <a class="cursor-pointer" [class.text-purple_main]="last" [routerLink]="link.navLink">{{ link.label }} </a>
+      @if (!last) {
+        <mat-icon class="font-light text-[20px] translate-y-[2px]">
+          chevron_right
+        </mat-icon>
+      }
+    </li>
+  }
+</ul>

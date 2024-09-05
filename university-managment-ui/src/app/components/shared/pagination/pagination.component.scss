@@ -1,0 +1,25 @@
+.pagination_select {
+  --mdc-outlined-text-field-focus-outline-color: #A098AE !important;
+  --mdc-outlined-text-field-outline-color: #A098AE !important;
+  --mdc-outlined-text-field-hover-outline-color: #5f57c2;
+
+  .mdc-text-field--outlined .mat-mdc-form-field-infix,
+  .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    --mat-form-field-container-vertical-padding: 5px !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    height: 40px !important;
+    padding-inline: 10px !important;
+  }
+
+  .mat-mdc-select-min-line {
+    color: #4D44B5 !important;
+    font-size: 14px !important;
+  }
+}
+
+.pag .mdc-list-item__primary-text {
+  color: #4D44B5 !important;
+  font-size: 14px !important;
+}

@@ -1,0 +1,61 @@
+<div class="flex justify-between items-center">
+  <div class="flex items-center gap-8 pl-1">
+    <mat-form-field appearance="outline" class=" pagination_select w-24
+    translate-y-[10px]">
+      <mat-select (selectionChange)="changePageSize($event.value)"
+                  [(value)]="pageSize" class="translate-y-1">
+        <mat-option [value]="1" class="pag">1</mat-option>
+        <mat-option [value]="2" class="pag">2</mat-option>
+        <mat-option [value]="3" class="pag">3</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p class="text-[11px] text-grey_3 m-0">Showing <span
+      class="text-text_color">1-{{ pageSize }}</span> from <span
+      class="text-text_color">&nbsp;{{ totalElment }}&nbsp; </span>data </p>
+
+  </div>
+
+  <div class="flex gap-[11px]">
+    <mat-icon (click)="goToPreviousPage()"
+              [class.cursor-not-allowed]="isFirst"
+              [class.cursor-pointer]="!isFirst"
+              [class.opacity-40]="isFirst"
+              class="relative cursor-pointer rounded-full text-center
+                     text-[37px] leading-[37px] w-[37px] h-[37px]  text-grey_3
+                     before:content-[''] before:absolute before:h-full before:w-full
+                     before:rounded-full before:left-0 before:opacity-5 hover:before:bg-black
+                     before:z-10"
+    >
+      arrow_left
+    </mat-icon>
+    @for (el of [].constructor(3); track i; let i = $index) {
+
+      <div
+        (click)="goToTargetPage(pageInterval.start + i )"
+        class="h-[35px] w-[35px] text-center leading-[35px] rounded-full
+               border-[1.5px] border-grey_3 text-grey_3 relative before:content-['']
+               before:absolute before:h-full before:w-full before:rounded-full
+               before:left-0 before:opacity-5 hover:before:bg-black before:z-10"
+        [class.bg-purple_main]="pageInterval.start + i-1==currentPage"
+        [class.border-0]="pageInterval.start + i-1==currentPage"
+        [class.text-white]="pageInterval.start + i-1==currentPage"
+        [class.cursor-not-allowed]="pageInterval.start + i>totalPage"
+        [class.cursor-pointer]="pageInterval.start + i<=totalPage"
+        [class.opacity-40]="pageInterval.start + i>totalPage"
+      >
+        {{ pageInterval.start + i }}
+      </div>
+    }
+    <mat-icon (click)="goToNextPage()"
+              [class.cursor-not-allowed]="isLast"
+              [class.cursor-pointer]="!isLast"
+              [class.opacity-40]="isLast"
+              class="relative  rounded-full text-center  text-[37px]
+                     leading-[37px] w-[37px] h-[37px]  text-grey_3
+                     before:content-[''] before:absolute before:h-full
+                     before:w-full before:rounded-full before:left-0
+                     before:opacity-5 hover:before:bg-black before:z-10"
+    > arrow_right
+    </mat-icon>
+  </div>
+</div>
