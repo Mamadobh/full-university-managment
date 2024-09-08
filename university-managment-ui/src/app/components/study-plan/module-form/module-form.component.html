@@ -1,0 +1,95 @@
+<div [formGroup]="_formModule" class=" rounded-xl bg-white mt-1 border-gray_color border">
+  <div class="h-[57px] bg-purple_main rounded-t-xl flex items-center px-6 ">
+    <h2 class="text-white m-0 text-[18px]">
+      Module details ({{ moduleIndex + 1 }})
+    </h2>
+  </div>
+  <div class="px-4 py-4">
+    <!--        first row start module -->
+    <div class="row-1 flex justify-between gap-16">
+      <div class="basis-0 grow">
+        <div class="mb-[12px] text-text_color font-semibold capitalize pl-1">Module name *</div>
+        <mat-form-field appearance="outline" class="form_element w-full">
+          <input formControlName="moduleName" matInput placeholder="module name">
+        </mat-form-field>
+      </div>
+      <div class="basis-0 grow">
+        <div class="mb-[12px] text-text_color font-semibold capitalize pl-1">Module type *</div>
+        <!--        <mat-form-field appearance="outline" class="form_element w-full">-->
+        <!--          <input [matAutocomplete]="auto" formControlName="moduleType" matInput placeholder="module type" type="text">-->
+        <!--          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="auto_complete_form">-->
+        <!--            @for (option of filteredOptions | async; track option) {-->
+        <!--              <mat-option [value]="option">{{ option.name }}</mat-option>-->
+        <!--            } @empty {-->
+        <!--              <mat-option [value]="myControl" class="bg-[#393e732e]">-->
+        <!--                <div class="absolute top-0 left-0 h-full px-4 flex items-center"-->
+        <!--                     (click)="prevent($event)">-->
+        <!--                  add-->
+        <!--                  <span class="ml-2 font-semibold text-text_color">-->
+        <!--                    {{-->
+        <!--                      getDisplayValue()-->
+        <!--                    }}-->
+        <!--                  </span>-->
+        <!--                </div>-->
+        <!--              </mat-option>-->
+        <!--              <mat-option disabled="true " class="min-h-[30px] " (click)="prevent($event)"-->
+        <!--                          (mousedown)="prevent($event)">No results found-->
+        <!--              </mat-option>-->
+        <!--            }-->
+        <!--          </mat-autocomplete>-->
+        <!--        </mat-form-field>-->
+
+        <app-auto-complete-form class="w-full"
+                                [displayFn]="displayFn"
+                                [fieldControl]="getfield('moduleType')"
+                                [formCtName]="'moduleType'"
+                                [optionsList]="dataOptions"
+                                [name]="'name'"
+        >
+
+        </app-auto-complete-form>
+      </div>
+    </div>
+    <!--        first row  end module-->
+
+    <!--        start second row module -->
+    <div>
+      <div class="mb-[12px] text-text_color font-semibold capitalize pl-1 ">Description *</div>
+      <mat-form-field appearance="outline" class="form_element w-full text_aria ">
+        <textarea class="resize-none" formControlName="moduleDescription" matInput placeholder="Module descritions"
+                  rows="3"></textarea>
+      </mat-form-field>
+    </div>
+    <!--        end second row module  -->
+    <!--      start subject -->
+    @if (studyPlanService.getAllSubject(moduleIndex).controls) {
+      <div formArrayName="subjects" class="flex flex-col gap-4">
+        @for (subject of studyPlanService.getAllSubject(moduleIndex).controls; track subject; let index = $index) {
+          <app-subject-form [formSubject]="subject" [subjectIndex]="index"
+                            [moduleIndex]="moduleIndex"></app-subject-form>
+        }
+      </div>
+
+    }
+    <!--      End Subject -->
+    <!--        module footer-->
+    <div class="  mt-6 mb-1">
+      <button (click)="studyPlanService.addSubject(moduleIndex)"
+              class=" h-[35px] rounded-full text-white bg-yellow_color font-light text-[13px] px-2 py-1 mr-4"
+              mat-flat-button>
+        Add subject
+      </button>
+      <button (click)="removeModule()"
+
+              class=" h-[35px] rounded-full text-white bg-orange_color font-light text-[13px] px-2 py-1"
+              mat-flat-button>
+        Remove module
+      </button>
+
+    </div>
+    <!--        module footer-->
+
+  </div>
+
+</div>
+

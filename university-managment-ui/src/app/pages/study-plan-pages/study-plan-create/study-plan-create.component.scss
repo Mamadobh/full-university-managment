@@ -1,0 +1,87 @@
+.form_element {
+  --mdc-outlined-text-field-focus-outline-color: rgba(77, 68, 181, 0.59) !important;
+  --mdc-outlined-text-field-outline-color: #C1BBEB !important;
+  --mdc-outlined-text-field-hover-outline-color: rgba(95, 87, 194, 0.63);
+  --mat-datepicker-toggle-icon-color: #A098AE;
+  --mdc-icon-button-state-layer-size:40px;
+
+  /* Style for padding inside the text field */
+  .mdc-text-field--outlined .mat-mdc-form-field-infix,
+  .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    --mat-form-field-container-vertical-padding: 10px !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    height: 40px !important;
+    background-color: white !important;
+  }
+
+
+  .mat-mdc-input-element {
+    top: -2px !important;
+    position: relative !important;
+    color: #303972 !important;
+    font-size: 14px !important;
+  }
+
+  ::placeholder {
+    color: #A098AE !important;
+    font-size: 12px;
+  }
+
+  .mat-datepicker-toggle button {
+    transform: translateY(-7px);
+  }
+  .mat-mdc-icon-button.mat-mdc-button-base,.mat-mdc-icon-button .mat-mdc-button-touch-target {
+    height: 40px !important;
+    width: 40px !important;
+    text-align: center!important;
+    display: flex !important;
+    align-items: center;
+  }
+  .mat-mdc-form-field-infix{
+    width: 150px !important;
+  }
+
+
+
+}
+.text_aria{
+  .mat-mdc-text-field-wrapper {
+    height: 80px !important;
+  }
+}
+.auto_complete_form {
+  --mat-option-selected-state-layer-color: #eae6f5;
+
+  .mdc-list-item__primary-text {
+    font-size: 15px;
+    color: #4D44B5 !important;
+  }
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar-track {
+  border-radius: 999px;
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #4D44B5;
+  min-height: 10px !important;
+  min-width: 10px !important;
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 10px;
+}
+
+.mat-mdc-autocomplete-panel::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+  margin-top: 10px;
+}

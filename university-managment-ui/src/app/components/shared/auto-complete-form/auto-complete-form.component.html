@@ -1,0 +1,35 @@
+<mat-form-field appearance="outline"
+                class="form_element w-full">
+  <input [formControl]="fieldControl"
+         [matAutocomplete]="auto"
+         matInput
+         placeholder="Subject coef"
+         type="text">
+  <mat-autocomplete #auto="matAutocomplete"
+                    [displayWith]="displayFn"
+                    class="auto_complete_form">
+    @for (option of filteredOptions(); track option) {
+      <mat-option [value]="option">
+        {{ displayFn(option) }}
+      </mat-option>
+    } @empty {
+      <mat-option [value]="fieldControl.getRawValue()"
+                  class="bg-[#393e732e]">
+        <div class="absolute top-0 left-0 h-full
+                    px-4 flex items-center"
+             (click)="prevent($event)"
+        >
+          add
+          <span class="ml-2 font-semibold text-text_color">
+      {{ getDisplayValue() }}
+          </span>
+        </div>
+      </mat-option>
+      <mat-option disabled="true "
+                  class="min-h-[30px]"
+                  (click)="prevent($event)"
+                  (mousedown)="prevent($event)">No results found
+      </mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>

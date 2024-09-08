@@ -1,0 +1,78 @@
+<form [formGroup]="studyPlanService.studyPlanFrom">
+  <div class="rounded-xl bg-white mt-8">
+    <div class="h-[70px] bg-purple_main rounded-t-xl flex items-center px-6 ">
+      <h2 class="text-white m-0 text-[19px]">
+        Semester details
+      </h2>
+    </div>
+    <div class="px-6 py-4">
+      <!--   start semester content -->
+      <div class="row-1 flex justify-between gap-16">
+        <!--    first row -->
+
+        <div class="basis-0 grow">
+          <div class="mb-[12px] text-text_color font-semibold capitalize pl-1">Semester name *</div>
+          <mat-form-field appearance="outline" class="form_element w-full">
+            <input formControlName="smesterName" matInput placeholder="semester name">
+          </mat-form-field>
+        </div>
+
+        <div class="basis-0 grow">
+          <div class="mb-[12px] text-text_color font-semibold capitalize">Start & End *</div>
+          <div class="flex gap-4 justify-between">
+            <mat-form-field appearance="outline" class="form_element basis-0 grow">
+              <input [matDatepicker]="picker1" formControlName="startDate" matInput>
+              <mat-datepicker-toggle [disableRipple]="true" [for]="picker1" matIconSuffix></mat-datepicker-toggle>
+              <mat-datepicker #picker1 [calendarHeaderComponent]="myHeader"
+                              panelClass="w-[250px]"
+              ></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form_element basis-0 grow">
+              <input [matDatepicker]="picker2" formControlName="endDate" matInput>
+              <mat-datepicker-toggle [disableRipple]="true" [for]="picker2" matIconSuffix></mat-datepicker-toggle>
+              <mat-datepicker #picker2 [calendarHeaderComponent]="myHeader"
+                              panelClass="w-[250px]"
+              ></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+      </div>
+      <!--   end  first row -->
+      <!--  start second row -->
+      <div>
+        <div class="mb-[12px] text-text_color font-semibold capitalize pl-1 ">Description *</div>
+        <mat-form-field appearance="outline" class="form_element w-full text_aria ">
+          <textarea class="resize-none" formControlName="semesterDescription" matInput placeholder="Descritions"
+                    rows="3"></textarea>
+        </mat-form-field>
+      </div>
+      <!--   end  second row -->
+      <!--    start module content-->
+      @if (studyPlanService.getAllModules().controls) {
+        <div formArrayName="modules" class="flex flex-col gap-4">
+          @for (module of studyPlanService.getAllModules().controls; track module; let index = $index) {
+            <app-module-form [formModule]="module" [moduleIndex]="index"></app-module-form>
+
+          }
+        </div>
+
+      }
+      <!--    end  module content-->
+      <!--start semester footer-->
+      <div class="  mt-6 mb-1">
+        <button (click)="studyPlanService.addModule()"
+                class=" h-[35px] rounded-full text-white bg-yellow_color font-light text-[13px] px-2 py-1 mr-4"
+                mat-flat-button>
+          Add module
+        </button>
+      </div>
+      <!--start semester footer-->
+
+      <!--   end semester content  -->
+    </div>
+  </div>
+
+</form>
