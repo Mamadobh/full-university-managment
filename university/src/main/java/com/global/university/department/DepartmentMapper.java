@@ -8,8 +8,12 @@ public class DepartmentMapper implements Mapper<Department, Integer, DepartmentR
 
 
     @Override
-    public Department toEntity(DepartmentRequest request) {
+    public Department toEntity(DepartmentRequest request, boolean isUpdate) {
+
+        Integer id = isUpdate ? request.id() : null;
+
         return Department.builder()
+                .id(id)
                 .name(request.name())
                 .description(request.description())
                 .build();
@@ -23,5 +27,6 @@ public class DepartmentMapper implements Mapper<Department, Integer, DepartmentR
                 .description(entity.getDescription())
                 .build();
     }
+
 
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class CoeffcientService extends BaseService<Coefficient, Integer, CoefficientRequest, CoefficientResponse> {
+public class CoefficientService extends BaseService<Coefficient, Integer, CoefficientRequest, CoefficientResponse> {
 
 
 }

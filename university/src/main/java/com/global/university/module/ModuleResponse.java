@@ -1,4 +1,4 @@
-package com.global.university.level;
+package com.global.university.module;
 
 import lombok.*;
 
@@ -7,10 +7,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LevelResponse {
+public class ModuleResponse {
     private Integer id;
     private String name;
     private String description;
-    private Integer specialityId;
+    private Integer semesterId;
+    private Integer moduleTypeId;
 
 }

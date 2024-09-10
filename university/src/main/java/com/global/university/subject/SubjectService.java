@@ -1,39 +1,38 @@
-package com.global.university.module;
+package com.global.university.subject;
 
 import com.global.university.base.BaseService;
-import com.global.university.exception.OperationNotPermittedException;
-import com.global.university.level.Level;
-import com.global.university.level.LevelRepo;
-import com.global.university.level.LevelService;
-import com.global.university.module.*;
-import com.global.university.moduleType.ModuleTypeService;
-import com.global.university.semester.SemesterService;
-import com.global.university.test.TestRepo;
-import jakarta.persistence.EntityNotFoundException;
+import com.global.university.coefficient.CoefficientService;
+import com.global.university.module.ModuleService;
+import com.global.university.test.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
 @Slf4j
-public class ModuleService extends BaseService<Module, Integer, ModuleRequest, ModuleResponse> {
-    @Autowired
-    private SemesterService semesterService;
-    @Autowired
-    ModuleRepo moduleRepo;
-    @Autowired
-    private ModuleMapper mapper;
-    @Autowired
-    private ModuleTypeService moduleTypeService;
+public class SubjectService extends BaseService<Subject, Integer, SubjectRequest, SubjectResponse> {
 
+    @Autowired
+    SubjectRepo subjectRepo;
+    @Autowired
+    private SubjectMapper mapper;
+    @Autowired
+    private TestService testService;
+    @Autowired
+    private ModuleService moduleService;
+    @Autowired
+    private CoefficientService coefficientService;
 
 
     @Override
-    public Integer update(ModuleRequest request, Integer id) {
+    public Integer update(SubjectRequest request, Integer id) {
         exist(id);
-        semesterService.exist(request.semesterId());
-        moduleTypeService.exist(request.moduleTypeId());
-        return moduleRepo.save(mapper.toEntity(request, true)).getId();
+        moduleService.exist(request.moduleId());
+        coefficientService.exist(request.coefficientId());
+        Arrays.asList(request.tests()).forEach(testService::exist);
+        return subjectRepo.save(mapper.toEntity(request, true)).getId();
     }
 
 

@@ -1,26 +1,26 @@
-package com.global.university.coefficient;
+package com.global.university.testType;
 
 import com.global.university.common.Mapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CoefficientMapper implements Mapper<Coefficient, Integer, CoefficientRequest, CoefficientResponse> {
+public class TestTypeMapper implements Mapper<TestType, Integer, TestTypeRequest, TestTypeResponse> {
 
     @Override
-    public Coefficient toEntity(CoefficientRequest request, boolean isUpdate) {
+    public TestType toEntity(TestTypeRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return Coefficient.builder()
+        return TestType.builder()
                 .id(id)
-                .coefficient(request.coefficient())
+                .testType(request.testType())
                 .build();
     }
 
 
     @Override
-    public CoefficientResponse toResponse(Coefficient entity) {
-        return CoefficientResponse.builder()
+    public TestTypeResponse toResponse(TestType entity) {
+        return TestTypeResponse.builder()
                 .id(entity.getId())
-                .coefficient(entity.getCoefficient())
+                .testType(entity.getTestType())
                 .build();
     }
 

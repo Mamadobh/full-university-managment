@@ -1,10 +1,10 @@
-package com.global.university.testType;
+package com.global.university.testDuration;
 
 import com.global.university.base.BaseRepo;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TestTypeRepo extends BaseRepo<TestType, Integer> {
+public interface TestDurationRepo extends BaseRepo<TestDuration, Integer> {
 
 
 }

@@ -1,5 +1,7 @@
-package com.global.university.testType;
+package com.global.university.subject_type;
 
+import com.global.university.sessionNumber.SessionNumberResponse;
+import com.global.university.typeSbj.TypeResponse;
 import lombok.*;
 
 @Getter
@@ -7,9 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TestTypeResponse {
+public class SubjectTypeResponse {
     private Integer id;
-    private String testType;
-
-
+    private TypeResponse type;
+    private SessionNumberResponse numberOfSession;
+;
 }

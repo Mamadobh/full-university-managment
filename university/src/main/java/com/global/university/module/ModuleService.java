@@ -1,12 +1,14 @@
-package com.global.university.semester;
+package com.global.university.module;
 
 import com.global.university.base.BaseService;
 import com.global.university.exception.OperationNotPermittedException;
 import com.global.university.level.Level;
 import com.global.university.level.LevelRepo;
-import com.global.university.level.LevelResponse;
 import com.global.university.level.LevelService;
-import com.global.university.track.TrackService;
+import com.global.university.module.*;
+import com.global.university.moduleType.ModuleTypeService;
+import com.global.university.semester.SemesterService;
+import com.global.university.test.TestRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,30 +16,24 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class SemesterService extends BaseService<Semester, Integer, SemesterRequest, SemesterResponse> {
+public class ModuleService extends BaseService<Module, Integer, ModuleRequest, ModuleResponse> {
     @Autowired
-    private LevelService levelService;
+    private SemesterService semesterService;
     @Autowired
-    SemesterRepo semesterRepo;
+    ModuleRepo moduleRepo;
     @Autowired
-    private SemesterMapper mapper;
+    private ModuleMapper mapper;
     @Autowired
-    private LevelRepo levelRepo;
+    private ModuleTypeService moduleTypeService;
+
+
 
     @Override
-    public Integer save(SemesterRequest request) {
-        Level level = levelRepo.findById(request.levelId()).orElseThrow(() -> new EntityNotFoundException(" Data not Found with id " + request.levelId() + " Please verify !!"));
-        if (level.getSemesters().size() >= 2) {
-            throw new OperationNotPermittedException("Each Level can not have more than 2 semester");
-        }
-        return super.save(request);
-    }
-
-    @Override
-    public Integer update(SemesterRequest request, Integer id) {
+    public Integer update(ModuleRequest request, Integer id) {
         exist(id);
-        levelService.exist(request.levelId());
-        return semesterRepo.save(mapper.toEntity(request, true)).getId();
+        semesterService.exist(request.semesterId());
+        moduleTypeService.exist(request.moduleTypeId());
+        return moduleRepo.save(mapper.toEntity(request, true)).getId();
     }
 
 

@@ -1,8 +1,5 @@
-package com.global.university.moduleType;
+package com.global.university.coefficient;
 
-import com.global.university.moduleType.ModuleTypeRequest;
-import com.global.university.moduleType.ModuleTypeResponse;
-import com.global.university.moduleType.ModuleTypeService;
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
 import com.global.university.validationGroup.Default;
@@ -15,66 +12,66 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("module-types")
+@RequestMapping("coefficients")
 @RequiredArgsConstructor
-public class ModuleTypeController {
+public class CoefficientController {
 
-    private final ModuleTypeService moduleTypeService;
+    private final CoefficientService coefficientService;
 
     @GetMapping("")
-    public ResponseEntity<Response<PageResponse<ModuleTypeResponse>>> findAll(
+    public ResponseEntity<Response<PageResponse<CoefficientResponse>>> findAll(
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
+            @RequestParam(name = "size", defaultValue = "99999") int size) {
         return ResponseEntity.status(OK).body(
-                Response.<PageResponse<ModuleTypeResponse>>builder()
+                Response.<PageResponse<CoefficientResponse>>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(moduleTypeService.findAll(page, size))
+                        .data(coefficientService.findAll(page, size))
                         .build()
         );
 
     }
 
     @PostMapping("")
-    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody ModuleTypeRequest request) {
+    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody CoefficientRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(moduleTypeService.save(request))
+                        .data(coefficientService.save(request))
                         .build()
         );
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody ModuleTypeRequest request) {
+    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody CoefficientRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(moduleTypeService.update(request, request.id()))
+                        .data(coefficientService.update(request, request.id()))
                         .build()
         );
     }
 
-    @GetMapping("/{moduleType-id}")
-    public ResponseEntity<Response<ModuleTypeResponse>> findById(@PathVariable("moduleType-id") Integer moduleTypeId) {
+    @GetMapping("/{coefficient-id}")
+    public ResponseEntity<Response<CoefficientResponse>> findById(@PathVariable("coefficient-id") Integer coefficientId) {
         return ResponseEntity.status(OK).body(
-                Response.<ModuleTypeResponse>builder()
+                Response.<CoefficientResponse>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(moduleTypeService.findById(moduleTypeId))
+                        .data(coefficientService.findById(coefficientId))
                         .build()
         );
     }
-    @DeleteMapping("/{moduleType-id}")
-    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("moduleType-id") Integer moduleTypeId) {
-        Integer deletedModuleTypeId = moduleTypeService.deleteById(moduleTypeId);
+    @DeleteMapping("/{coefficient-id}")
+    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("coefficient-id") Integer coefficientId) {
+        Integer deletedCoefficientId = coefficientService.deleteById(coefficientId);
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(deletedModuleTypeId)
+                        .data(deletedCoefficientId)
                         .build()
         );
     }

@@ -1,47 +1,54 @@
-package com.global.university.subject_type;
+package com.global.university.subject;
 
+import com.global.university.coefficient.Coefficient;
 import com.global.university.common.Mapper;
-import com.global.university.sessionNumber.SessionNumber;
-import com.global.university.subject.Subject;
-import com.global.university.typeSbj.Type;
+import com.global.university.module.Module;
+import com.global.university.test.Test;
+import com.global.university.test.TestMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+
 @Service
-public class SubjectTypeMapper implements Mapper<SubjectType, Integer, SubjectTypeRequest, SubjectTypeResponse> {
+@AllArgsConstructor
+public class SubjectMapper implements Mapper<Subject, Integer, SubjectRequest, SubjectResponse> {
+    private TestMapper mapper;
 
     @Override
-    public SubjectType toEntity(SubjectTypeRequest request, boolean isUpdate) {
+    public Subject toEntity(SubjectRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return SubjectType.builder()
+        return Subject.builder()
                 .id(id)
-                .type(Type.builder()
-                        .id(request.typeId())
-                        .build())
-                .sessionNumber(SessionNumber.builder()
-                        .id(request.numberSessionId())
-                        .build())
-                .subject(Subject.builder()
-                        .id(request.subjectId())
-                        .build())
+                .name(request.name())
+                .coefficient(Coefficient.builder()
+                        .id(request.coefficientId())
+                        .build()
+                )
+                .module(Module.builder()
+                        .id(request.moduleId())
+                        .build()
+                )
+                .tests(new HashSet<Test>(
+                        Arrays.stream(request.tests()).map(testId -> {
+                            return Test.builder().id(testId).build();
+                        }).toList()
+                ))
                 .build();
     }
 
 
     @Override
-    public SubjectTypeResponse toResponse(SubjectType entity) {
-        return SubjectTypeResponse.builder()
+    public SubjectResponse toResponse(Subject entity) {
+        return SubjectResponse.builder()
                 .id(entity.getId())
-                .numberOfSessionId(
-                        entity.getSessionNumber().getId()
-                )
-                .numberOfSession(
-                        entity.getSessionNumber().getSessionNumber()
-                )
-                .typeId(
-                        entity.getType().getId()
-                )
-                .type(
-                        entity.getType().getSubjectType()
+                .ModuleId(entity.getModule().getId())
+                .coefficient(entity.getCoefficient().getCoefficient())
+                .name(entity.getName())
+                .tests(
+                        entity.getTests().stream().map(mapper::toResponse).collect(Collectors.toList())
                 )
                 .build();
     }

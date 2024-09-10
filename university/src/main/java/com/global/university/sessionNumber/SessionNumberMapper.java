@@ -1,26 +1,26 @@
-package com.global.university.testType;
+package com.global.university.sessionNumber;
 
 import com.global.university.common.Mapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestTypeMapper implements Mapper<TestType, Integer, TestTypeRequest, TestTypeResponse> {
+public class SessionNumberMapper implements Mapper<SessionNumber, Integer, SessionNumberRequest, SessionNumberResponse> {
 
     @Override
-    public TestType toEntity(TestTypeRequest request, boolean isUpdate) {
+    public SessionNumber toEntity(SessionNumberRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return TestType.builder()
+        return SessionNumber.builder()
                 .id(id)
-                .testType(request.testType())
+                .sessionNumber(request.numberOfSession())
                 .build();
     }
 
 
     @Override
-    public TestTypeResponse toResponse(TestType entity) {
-        return TestTypeResponse.builder()
+    public SessionNumberResponse toResponse(SessionNumber entity) {
+        return SessionNumberResponse.builder()
                 .id(entity.getId())
-                .testType(entity.getTestType())
+                .numberOfSession(entity.getSessionNumber())
                 .build();
     }
 

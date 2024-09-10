@@ -1,8 +1,8 @@
 import {ExceptionResponseModel} from "./ExceptionResponse.model";
 
-export interface Response<T> {
+export interface ResponseModel<T> {
   success: boolean;
   status: string
-  data?: T
+  data: T
   error?: ExceptionResponseModel;
 }

@@ -1,26 +1,26 @@
-package com.global.university.testType;
+package com.global.university.typeSbj;
 
 import com.global.university.common.Mapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestTypeMapper implements Mapper<TestType, Integer, TestTypeRequest, TestTypeResponse> {
+public class TypeMapper implements Mapper<Type, Integer, TypeRequest, TypeResponse> {
 
     @Override
-    public TestType toEntity(TestTypeRequest request, boolean isUpdate) {
+    public Type toEntity(TypeRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return TestType.builder()
+        return Type.builder()
                 .id(id)
-                .testType(request.testType())
+                .subjectType(request.subjectType())
                 .build();
     }
 
 
     @Override
-    public TestTypeResponse toResponse(TestType entity) {
-        return TestTypeResponse.builder()
+    public TypeResponse toResponse(Type entity) {
+        return TypeResponse.builder()
                 .id(entity.getId())
-                .testType(entity.getTestType())
+                .subjectType(entity.getSubjectType())
                 .build();
     }
 

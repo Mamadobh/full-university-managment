@@ -1,6 +1,26 @@
 <mat-toolbar class="shadow-[0_0_15px_1px_#0003] bg-[rgba(77,68,181,0.09)] relative z-10">
-  <button (click)="toggle()" mat-icon-button>
-    <mat-icon>menu</mat-icon>
+  <div class="flex justify-between items-center w-full ">
+    <button (click)="toggle()" mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
 
-  </button>
+    <div class=" flex gap-6 items-center pr-3">
+      <div class="bg-white   h-[45px] w-[45px] rounded-full grid place-items-center cursor-pointer   ">
+        <mat-icon class="font-light text-[25px] text-grey_3 mb-1 mr-1"
+                  fontSet="material-icons-outlined"
+                  matBadge="&#8288;"
+                  matBadgePosition="after"
+                  aria-hidden="false">notifications
+        </mat-icon>
+      </div>
+   <div class="text-text_color text-[16px]   font-medium flex flex-col">
+     <span class=" overflow-hidden text-ellipsis whitespace-nowrap w-20">iheb ben taher</span>
+     <span class="text-grey_3 text-[15px] font-normal leading-[14px]">etudiant</span>
+   </div>
+      <div class="bg-gray_color cursor-pointer  h-[45px] w-[45px] rounded-full    ">
+
+      </div>
+
+    </div>
+  </div>
 </mat-toolbar>
