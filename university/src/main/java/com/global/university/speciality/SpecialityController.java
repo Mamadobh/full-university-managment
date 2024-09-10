@@ -1,9 +1,10 @@
 package com.global.university.speciality;
 
-import com.global.university.common.OnUpdate;
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
 
+import com.global.university.validationGroup.Default;
+import com.global.university.validationGroup.OnUpdate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class SpecialityController {
     @GetMapping("")
     public ResponseEntity<Response<PageResponse<SpecialityResponse>>> findAll(
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
+            @RequestParam(name = "size", defaultValue = "99999") int size) {
         return ResponseEntity.status(OK).body(
                 Response.<PageResponse<SpecialityResponse>>builder()
                         .success(true)
@@ -34,7 +35,7 @@ public class SpecialityController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Response<Integer>> save(@RequestBody @Valid SpecialityRequest request) {
+    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody SpecialityRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
@@ -45,7 +46,7 @@ public class SpecialityController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response<Integer>> update(@Valid @Validated(OnUpdate.class) @RequestBody SpecialityRequest request) {
+    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody SpecialityRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
@@ -65,6 +66,7 @@ public class SpecialityController {
                         .build()
         );
     }
+
     @DeleteMapping("/{speciality-id}")
     public ResponseEntity<Response<Integer>> deleteById(@PathVariable("speciality-id") Integer specialityId) {
         Integer deletedSpecialityId = specialityService.deleteById(specialityId);

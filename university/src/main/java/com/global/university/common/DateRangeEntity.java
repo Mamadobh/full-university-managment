@@ -1,2 +1,8 @@
-package com.global.university.common;public class DateRangeEntity {
+package com.global.university.common;
+
+import java.time.LocalDate;
+
+public interface DateRangeEntity {
+    LocalDate getStartDate();
+    LocalDate getEndDate();
 }

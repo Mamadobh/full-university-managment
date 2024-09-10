@@ -1,22 +1,22 @@
-package com.global.university.speciality;
+package com.global.university.level;
 
 import com.global.university.common.Mapper;
-import com.global.university.track.Track;
+import com.global.university.speciality.Speciality;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SpecialityMapper implements Mapper<Speciality, Integer, SpecialityRequest, SpecialityResponse> {
+public class LevelMapper implements Mapper<Level, Integer, LevelRequest, LevelResponse> {
 
     @Override
-    public Speciality toEntity(SpecialityRequest request, boolean isUpdate) {
+    public Level toEntity(LevelRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return Speciality.builder()
+        return Level.builder()
                 .id(id)
                 .name(request.name())
                 .description(request.description())
-                .track(
-                        Track.builder()
-                                .id(request.trackId())
+                .speciality(
+                        Speciality.builder()
+                                .id(request.specialityId())
                                 .build()
                 )
                 .build();
@@ -24,14 +24,22 @@ public class SpecialityMapper implements Mapper<Speciality, Integer, SpecialityR
 
 
     @Override
-    public SpecialityResponse toResponse(Speciality entity) {
-        return SpecialityResponse.builder()
+    public LevelResponse toResponse(Level entity) {
+        return LevelResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
-                .trackId(entity.getTrack().getId())
+                .specialityId(entity.getSpeciality().getId())
                 .build();
     }
 
-
+    public LevelDetailsReponse toResponseDetails(Level entity) {
+        return LevelDetailsReponse.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .department(entity.getSpeciality().getTrack().getDepartment().getName())
+                .specialityWithTrack(entity.getLevelSpecialityWithTrack())
+                .build();
+    }
 }

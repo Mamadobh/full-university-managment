@@ -1,30 +1,26 @@
-package com.global.university.moduleType;
+package com.global.university.coefficient;
 
 import com.global.university.common.Mapper;
-import com.global.university.module.Module;
-import com.global.university.module.ModuleRequest;
-import com.global.university.module.ModuleResponse;
-import com.global.university.semester.Semester;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ModuleTypeMapper implements Mapper<ModuleType, Integer, ModuleTypeRequest, ModuleTypeResponse> {
+public class CoefficientMapper implements Mapper<Coefficient, Integer, CoefficientRequest, CoefficientResponse> {
 
     @Override
-    public ModuleType toEntity(ModuleTypeRequest request, boolean isUpdate) {
+    public Coefficient toEntity(CoefficientRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return ModuleType.builder()
+        return Coefficient.builder()
                 .id(id)
-                .type(request.type())
+                .coefficient(request.coefficient())
                 .build();
     }
 
 
     @Override
-    public ModuleTypeResponse toResponse(ModuleType entity) {
-        return ModuleTypeResponse.builder()
+    public CoefficientResponse toResponse(Coefficient entity) {
+        return CoefficientResponse.builder()
                 .id(entity.getId())
-                .type(entity.getType())
+                .coefficient(entity.getCoefficient())
                 .build();
     }
 

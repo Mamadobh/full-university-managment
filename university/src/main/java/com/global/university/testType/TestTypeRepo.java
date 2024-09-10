@@ -1,11 +1,10 @@
-package com.global.university.coefficient;
+package com.global.university.testType;
 
 import com.global.university.base.BaseRepo;
-import com.global.university.moduleType.ModuleType;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CoeffcientRepo extends BaseRepo<Coefficient, Integer> {
+public interface TestTypeRepo extends BaseRepo<TestType, Integer> {
 
 
 }

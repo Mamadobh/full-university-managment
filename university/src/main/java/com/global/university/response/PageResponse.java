@@ -25,7 +25,7 @@ public class PageResponse<T> {
 
 
     public void record(int number, int size) {
-        if (totalElments == 0) {
+        if (content.isEmpty()) {
             recordFrom = 0;
             recordTo = 0;
         } else {

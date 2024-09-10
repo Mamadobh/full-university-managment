@@ -18,12 +18,13 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
+@NamedEntityGraph(name = "loadTrack",attributeNodes = @NamedAttributeNode("track"))
 public class Speciality extends BaseEntity<Integer> {
     @Column(unique = true)
     private String name;
     private String description;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "track_id")
     private Track track;
 

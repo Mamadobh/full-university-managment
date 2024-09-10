@@ -1,8 +1,5 @@
-package com.global.university.testType;
+package com.global.university.testDuration;
 
-import com.global.university.testType.TestTypeService;
-import com.global.university.testType.TestTypeRequest;
-import com.global.university.testType.TestTypeResponse;
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
 import com.global.university.validationGroup.Default;
@@ -15,66 +12,66 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("test-types")
+@RequestMapping("test-durations")
 @RequiredArgsConstructor
-public class TestTypeController {
+public class TestDurationController {
 
-    private final TestTypeService testTypeService;
+    private final TestDurationService testDurationService;
 
     @GetMapping("")
-    public ResponseEntity<Response<PageResponse<TestTypeResponse>>> findAll(
+    public ResponseEntity<Response<PageResponse<TestDurationResponse>>> findAll(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "99999") int size) {
         return ResponseEntity.status(OK).body(
-                Response.<PageResponse<TestTypeResponse>>builder()
+                Response.<PageResponse<TestDurationResponse>>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(testTypeService.findAll(page, size))
+                        .data(testDurationService.findAll(page, size))
                         .build()
         );
 
     }
 
     @PostMapping("")
-    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody TestTypeRequest request) {
+    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody TestDurationRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(testTypeService.save(request))
+                        .data(testDurationService.save(request))
                         .build()
         );
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody TestTypeRequest request) {
+    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody TestDurationRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(testTypeService.update(request, request.id()))
+                        .data(testDurationService.update(request, request.id()))
                         .build()
         );
     }
 
-    @GetMapping("/{test-type-id}")
-    public ResponseEntity<Response<TestTypeResponse>> findById(@PathVariable("test-type-id") Integer testTypeId) {
+    @GetMapping("/{test-duration-id}")
+    public ResponseEntity<Response<TestDurationResponse>> findById(@PathVariable("test-duration-id") Integer testDurationId) {
         return ResponseEntity.status(OK).body(
-                Response.<TestTypeResponse>builder()
+                Response.<TestDurationResponse>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(testTypeService.findById(testTypeId))
+                        .data(testDurationService.findById(testDurationId))
                         .build()
         );
     }
-    @DeleteMapping("/{testType-id}")
-    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("testType-id") Integer testTypeId) {
-        Integer deletedTestTypeId = testTypeService.deleteById(testTypeId);
+    @DeleteMapping("/{test-duration-id}")
+    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("test-duration-id") Integer testDurationId) {
+        Integer deletedTestDurationId = testDurationService.deleteById(testDurationId);
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(deletedTestTypeId)
+                        .data(deletedTestDurationId)
                         .build()
         );
     }

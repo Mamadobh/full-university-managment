@@ -1,4 +1,44 @@
+<app-page-header
+  [linkHistory]="linkHistory"
+  icon="receipt"
+  title="Study plan"
+></app-page-header>
 
-<h2 class="text-text_color capitalize font-bold text-[28px] ">
-  study plan
-</h2>
+<app-study-plan-header [searchField]="searchfieldControl">
+</app-study-plan-header>
+@if (filtredData().length) {
+  <div class="pt-[25px] ">
+    @for (lev of filtredData(); track lev) {
+      <app-simple-cart
+        [department]="'department:&nbsp;'+lev.department"
+        [level]="''+lev.name"
+        [link]="'/study-plan/'+lev.id"
+        [track_speciality]="'track&speciality:&nbsp;&nbsp;'+lev.specialityWithTrack"
+      ></app-simple-cart>
+    }
+    <app-pagination
+      (nextPage)="onNextPage($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+      (previousPage)="onPreviousPage($event)"
+      (targetPage)="onTargetPage($event)"
+      [currentPage]="currentPage"
+      [isFirst]="allLevelResponse().first"
+      [isLast]="allLevelResponse().last"
+      [pageInterval]="pageInterval"
+      [pageSize]="currentSize"
+      [totalPage]="allLevelResponse().totalPages"
+      [totalElment]="allLevelResponse().totalElments"
+    >
+
+    </app-pagination>
+  </div>
+} @else {
+  <div class=" h-[250px] flex justify-end items-center flex-col">
+    <mat-icon class="text-[80px] w-[80px] h-[80px] leading-[80px] text-grey_3
+                      text-center  opacity-60l"
+              fontSet="material-icons-outlined"
+    >outlet
+    </mat-icon>
+    <p class="text-[25px] mt-2 pt-1 font-light  text-grey_3 opacity-70"> No Data </p>
+  </div>
+}

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface Mapper<T extends BaseEntity<ID>, ID, DtoRequest, DtoResponse> {
-    T toEntity(DtoRequest request);
+    T toEntity(DtoRequest request,boolean isUpdate);
 
     DtoResponse toResponse(T entity);
 }

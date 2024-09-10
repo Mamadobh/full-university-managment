@@ -1,11 +1,11 @@
-package com.global.university.matiere;
+package com.global.university.subject;
 
 import com.global.university.base.BaseEntity;
+import com.global.university.coefficient.Coefficient;
 import com.global.university.module.Module;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import com.global.university.subject_type.SubjectType;
+import com.global.university.test.Test;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,12 +20,27 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
-public class Matiere extends BaseEntity<Integer> {
+public class Subject extends BaseEntity<Integer> {
+
     private String name;
-    private Double coefficient;
+    private String averageFormula;
     @ManyToOne
     @JoinColumn(name = "module_id", nullable = false)
     private Module module;
+
+    @ManyToOne
+    @JoinColumn(name = "coefficient_id", nullable = false)
+    private Coefficient coefficient;
+
+    @ManyToMany
+    @JoinTable(
+            name = "subject_test",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "test_id"))
+    private Set<Test> tests;
+
+    @OneToMany(mappedBy = "subject")
+    private Set<SubjectType> subjectTypes;
 
 
 }

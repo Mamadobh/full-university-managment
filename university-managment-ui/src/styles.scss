@@ -1,4 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single CSS file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+
+
+// Include the theme styles
+
+/* Import Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global styles */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+html, body {
+  height: 100%;
+  margin: 0;
+
+}
+h1,h2,h3,h4,span,p,a,div,li,label,input{
+  font-family: "Poppins", sans-serif !important;
+}
+
+
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  padding-inline: 5px;
+}
+
+body::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background-color: #fcfcfc;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background-color: rgba(140, 136, 136, 0.94);
+  min-height: 10px !important;
+  min-width: 10px !important;
+}
+body::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 10px;
+}
+
+body::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+  margin-top: 10px;
+}
+

@@ -1,4 +1,4 @@
-package com.global.university.testType;
+package com.global.university.testDuration;
 
 import lombok.*;
 
@@ -7,9 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TestTypeResponse {
+public class TestDurationResponse {
     private Integer id;
-    private String testType;
+    private Double testDuration;
 
 
 }

@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output, signal} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {MatToolbar} from "@angular/material/toolbar";
+import {MatBadge} from "@angular/material/badge";
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,8 @@ import {MatToolbar} from "@angular/material/toolbar";
   imports: [
     MatIcon,
     MatIconButton,
-    MatToolbar
+    MatToolbar,
+    MatBadge
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'

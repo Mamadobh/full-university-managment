@@ -1,4 +1,4 @@
-package com.global.university.common;
+package com.global.university.validationGroup;
 
 public interface OnUpdate {
 }

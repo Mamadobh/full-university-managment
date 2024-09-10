@@ -1,10 +1,12 @@
-package com.global.university.testType;
+package com.global.university.sessionNumber;
 
 import com.global.university.base.BaseRepo;
+import com.global.university.testType.TestType;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TestTypeRepo extends BaseRepo<TestType, Integer> {
+public interface SessionNumberRepo extends BaseRepo<SessionNumber, Integer> {
+
 
 
 }

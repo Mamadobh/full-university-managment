@@ -1,4 +1,4 @@
-package com.global.university.module;
+package com.global.university.moduleType;
 
 import lombok.*;
 
@@ -7,10 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ModuleResponse {
+public class ModuleTypeResponse {
     private Integer id;
-    private String name;
-    private String description;
-    private Integer semesterId;
+    private String type;
+
 
 }
