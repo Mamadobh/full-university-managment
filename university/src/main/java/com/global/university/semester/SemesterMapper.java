@@ -1,22 +1,25 @@
-package com.global.university.speciality;
+package com.global.university.semester;
 
 import com.global.university.common.Mapper;
-import com.global.university.track.Track;
+import com.global.university.level.Level;
+
 import org.springframework.stereotype.Service;
 
 @Service
-public class SpecialityMapper implements Mapper<Speciality, Integer, SpecialityRequest, SpecialityResponse> {
+public class SemesterMapper implements Mapper<Semester, Integer, SemesterRequest, SemesterResponse> {
 
     @Override
-    public Speciality toEntity(SpecialityRequest request, boolean isUpdate) {
+    public Semester toEntity(SemesterRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return Speciality.builder()
+        return Semester.builder()
                 .id(id)
                 .name(request.name())
                 .description(request.description())
-                .track(
-                        Track.builder()
-                                .id(request.trackId())
+                .startDate(request.startDate())
+                .endDate(request.endDate())
+                .level(
+                        Level.builder()
+                                .id(request.levelId())
                                 .build()
                 )
                 .build();
@@ -24,12 +27,14 @@ public class SpecialityMapper implements Mapper<Speciality, Integer, SpecialityR
 
 
     @Override
-    public SpecialityResponse toResponse(Speciality entity) {
-        return SpecialityResponse.builder()
+    public SemesterResponse toResponse(Semester entity) {
+        return SemesterResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
-                .trackId(entity.getTrack().getId())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
+                .levelId(entity.getLevel().getId())
                 .build();
     }
 

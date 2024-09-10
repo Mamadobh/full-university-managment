@@ -1,7 +1,8 @@
-package com.global.university.subject_type;
+package com.global.university.subject;
 
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
+
 import com.global.university.validationGroup.Default;
 import com.global.university.validationGroup.OnUpdate;
 import lombok.RequiredArgsConstructor;
@@ -12,66 +13,66 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("subject-types")
+@RequestMapping("subjects")
 @RequiredArgsConstructor
-public class SubjectTypeController {
+public class SubjectController {
 
-    private final SubjectTypeService subjectTypeService;
+    private final SubjectService  subjectService;
 
     @GetMapping("")
-    public ResponseEntity<Response<PageResponse<SubjectTypeResponse>>> findAll(
+    public ResponseEntity<Response<PageResponse<SubjectResponse>>> findAll(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "99999") int size) {
         return ResponseEntity.status(OK).body(
-                Response.<PageResponse<SubjectTypeResponse>>builder()
+                Response.<PageResponse<SubjectResponse>>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(subjectTypeService.findAll(page, size))
+                        .data(subjectService.findAll(page, size))
                         .build()
         );
 
     }
 
     @PostMapping("")
-    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody SubjectTypeRequest request) {
+    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody SubjectRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(subjectTypeService.save(request))
+                        .data(subjectService.save(request))
                         .build()
         );
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody SubjectTypeRequest request) {
+    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody SubjectRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(subjectTypeService.update(request, request.id()))
+                        .data(subjectService.update(request, request.id()))
                         .build()
         );
     }
 
-    @GetMapping("/{subject-type-id}")
-    public ResponseEntity<Response<SubjectTypeResponse>> findById(@PathVariable("subject-type-id") Integer subjectTypeId) {
+    @GetMapping("/{subject-id}")
+    public ResponseEntity<Response<SubjectResponse>> findById(@PathVariable("subject-id") Integer subjectId) {
         return ResponseEntity.status(OK).body(
-                Response.<SubjectTypeResponse>builder()
+                Response.<SubjectResponse>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(subjectTypeService.findById(subjectTypeId))
+                        .data(subjectService.findById(subjectId))
                         .build()
         );
     }
-    @DeleteMapping("/{subject-type-id}")
-    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("subject-type-id") Integer subjectTypeId) {
-        Integer deletedSubjectTypeId = subjectTypeService.deleteById(subjectTypeId);
+    @DeleteMapping("/{subject-id}")
+    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("subject-id") Integer subjectId) {
+        Integer deletedSubjectId = subjectService.deleteById(subjectId);
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(deletedSubjectTypeId)
+                        .data(deletedSubjectId)
                         .build()
         );
     }

@@ -1,26 +1,29 @@
-package com.global.university.testType;
+package com.global.university.testDuration;
 
 import com.global.university.common.Mapper;
+import com.global.university.testDuration.TestDuration;
+import com.global.university.testDuration.TestDurationRequest;
+import com.global.university.testDuration.TestDurationResponse;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestTypeMapper implements Mapper<TestType, Integer, TestTypeRequest, TestTypeResponse> {
+public class TestDurationMapper implements Mapper<TestDuration, Integer, TestDurationRequest, TestDurationResponse> {
 
     @Override
-    public TestType toEntity(TestTypeRequest request, boolean isUpdate) {
+    public TestDuration toEntity(TestDurationRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return TestType.builder()
+        return TestDuration.builder()
                 .id(id)
-                .testType(request.testType())
+                .testDuration(request.testDuration())
                 .build();
     }
 
 
     @Override
-    public TestTypeResponse toResponse(TestType entity) {
-        return TestTypeResponse.builder()
+    public TestDurationResponse toResponse(TestDuration entity) {
+        return TestDurationResponse.builder()
                 .id(entity.getId())
-                .testType(entity.getTestType())
+                .testDuration(entity.getTestDuration())
                 .build();
     }
 

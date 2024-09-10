@@ -1,22 +1,29 @@
-package com.global.university.level;
+package com.global.university.module;
 
 import com.global.university.common.Mapper;
+import com.global.university.moduleType.ModuleType;
+import com.global.university.semester.Semester;
 import com.global.university.speciality.Speciality;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LevelMapper implements Mapper<Level, Integer, LevelRequest, LevelResponse> {
+public class ModuleMapper implements Mapper<Module, Integer, ModuleRequest, ModuleResponse> {
 
     @Override
-    public Level toEntity(LevelRequest request, boolean isUpdate) {
+    public Module toEntity(ModuleRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return Level.builder()
+        return Module.builder()
                 .id(id)
                 .name(request.name())
                 .description(request.description())
-                .speciality(
-                        Speciality.builder()
-                                .id(request.specialityId())
+                .semester(
+                        Semester.builder()
+                                .id(request.semesterId())
+                                .build()
+                )
+                .moduleType(
+                        ModuleType.builder()
+                                .id(request.moduleTypeId())
                                 .build()
                 )
                 .build();
@@ -24,12 +31,13 @@ public class LevelMapper implements Mapper<Level, Integer, LevelRequest, LevelRe
 
 
     @Override
-    public LevelResponse toResponse(Level entity) {
-        return LevelResponse.builder()
+    public ModuleResponse toResponse(Module entity) {
+        return ModuleResponse.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
-                .specialityId(entity.getSpeciality().getId())
+                .semesterId(entity.getSemester().getId())
+                .moduleTypeId(entity.getModuleType() != null ? entity.getModuleType().getId() : null)
                 .build();
     }
 

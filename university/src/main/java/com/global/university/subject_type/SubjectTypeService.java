@@ -1,38 +1,33 @@
-package com.global.university.module;
+package com.global.university.subject_type;
 
 import com.global.university.base.BaseService;
-import com.global.university.exception.OperationNotPermittedException;
-import com.global.university.level.Level;
-import com.global.university.level.LevelRepo;
-import com.global.university.level.LevelService;
-import com.global.university.module.*;
-import com.global.university.moduleType.ModuleTypeService;
-import com.global.university.semester.SemesterService;
-import jakarta.persistence.EntityNotFoundException;
+import com.global.university.sessionNumber.SessionNumberService;
+import com.global.university.typeSbj.TypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class ModuleService extends BaseService<Module, Integer, ModuleRequest, ModuleResponse> {
+public class SubjectTypeService extends BaseService<SubjectType, Integer, SubjectTypeRequest, SubjectTypeResponse> {
     @Autowired
-    private SemesterService semesterService;
+    private SessionNumberService sessionNumberService;
     @Autowired
-    ModuleRepo moduleRepo;
+    private TypeService typeService;
     @Autowired
-    private ModuleMapper mapper;
+    SubjectTypeRepo subjectTypeRepo;
     @Autowired
-    private ModuleTypeService moduleTypeService;
+    private SubjectTypeMapper mapper;
+
 
 
 
     @Override
-    public Integer update(ModuleRequest request, Integer id) {
+    public Integer update(SubjectTypeRequest request, Integer id) {
         exist(id);
-        semesterService.exist(request.semesterId());
-        moduleTypeService.exist(request.moduleTypeId());
-        return moduleRepo.save(mapper.toEntity(request, true)).getId();
+        typeService.exist(request.typeId());
+        sessionNumberService.exist(request.numberSessionId());
+        return subjectTypeRepo.save(mapper.toEntity(request, true)).getId();
     }
 
 

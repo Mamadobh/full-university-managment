@@ -1,23 +1,24 @@
 package com.global.university.track;
 
-import com.global.university.department.DepartmentRequest;
 import com.global.university.department.DepartmentService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @Aspect
 @RequiredArgsConstructor
-public class DepartmentAspect{
-    private final TrackService trackService;
-    @Around("execution(* com.global.university.base.BaseService.update(..)) && args(request, id)")
-    public Object aroundUpdate(ProceedingJoinPoint joinPoint, TrackRequest request, Integer id) throws Throwable {
-        Object result = joinPoint.proceed();
+@Slf4j
+public class TrackAspect {
+    private final DepartmentService departmentService;
 
-       
-        return  result;
+    @Before("execution(* com.global.university.base.BaseService.save(..)) && args(request)")
+    public void beforeSave(TrackRequest request) {
+        departmentService.exist(request.departmentId());
     }
-    }
+
+
+}

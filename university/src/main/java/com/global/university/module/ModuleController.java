@@ -1,10 +1,9 @@
-package com.global.university.level;
+package com.global.university.module;
 
-import com.global.university.validationGroup.Default;
-import com.global.university.validationGroup.OnUpdate;
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
-import jakarta.validation.Valid;
+import com.global.university.validationGroup.Default;
+import com.global.university.validationGroup.OnUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,66 +12,66 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("levels")
+@RequestMapping("modules")
 @RequiredArgsConstructor
-public class LevelController {
+public class ModuleController {
 
-    private final LevelService levelService;
+    private final ModuleService moduleService;
 
     @GetMapping("")
-    public ResponseEntity<Response<PageResponse<LevelResponse>>> findAll(
+    public ResponseEntity<Response<PageResponse<ModuleResponse>>> findAll(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size) {
         return ResponseEntity.status(OK).body(
-                Response.<PageResponse<LevelResponse>>builder()
+                Response.<PageResponse<ModuleResponse>>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(levelService.findAll(page, size))
+                        .data(moduleService.findAll(page, size))
                         .build()
         );
 
     }
 
     @PostMapping("")
-    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody LevelRequest request) {
+    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody ModuleRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(levelService.save(request))
+                        .data(moduleService.save(request))
                         .build()
         );
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody LevelRequest request) {
+    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody ModuleRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(levelService.update(request, request.id()))
+                        .data(moduleService.update(request, request.id()))
                         .build()
         );
     }
 
-    @GetMapping("/{level-id}")
-    public ResponseEntity<Response<LevelResponse>> findById(@PathVariable("level-id") Integer levelId) {
+    @GetMapping("/{module-id}")
+    public ResponseEntity<Response<ModuleResponse>> findById(@PathVariable("module-id") Integer moduleId) {
         return ResponseEntity.status(OK).body(
-                Response.<LevelResponse>builder()
+                Response.<ModuleResponse>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(levelService.findById(levelId))
+                        .data(moduleService.findById(moduleId))
                         .build()
         );
     }
-    @DeleteMapping("/{level-id}")
-    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("level-id") Integer levelId) {
-        Integer deletedLevelId = levelService.deleteById(levelId);
+    @DeleteMapping("/{module-id}")
+    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("module-id") Integer moduleId) {
+        Integer deletedModuleId = moduleService.deleteById(moduleId);
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(deletedLevelId)
+                        .data(deletedModuleId)
                         .build()
         );
     }

@@ -1,13 +1,12 @@
 <app-header (collapsedChange)="onCollapsedChange($event)"></app-header>
 
-<mat-sidenav-container autosize class="h-[calc(100vh-64px)]">
+<mat-sidenav-container autosize class="min-h-[calc(100vh-64px)]">
   <mat-sidenav [class.w-28]="collapsed()" [class.w-64]="!collapsed()" class=" border-0 bg-purple_main " mode="side"
                opened>
     <app-sidebar [collapsed]="collapsed()" [sidebarMenu]="menuItems()"></app-sidebar>
   </mat-sidenav>
 
-  <mat-sidenav-content [style.margin-left]="sideBarWidth()" class="p-6 bg-purple_bg">
-    hello
+  <mat-sidenav-content [style.margin-left]="sideBarWidth()" class="p-6 bg-purple_bg min-h-[calc(100vh-64px)]">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 

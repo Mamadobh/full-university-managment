@@ -1,4 +1,4 @@
-package com.global.university.testType;
+package com.global.university.test;
 
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
@@ -12,66 +12,66 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("test-types")
+@RequestMapping("tests")
 @RequiredArgsConstructor
-public class TestTypeController {
+public class TestController {
 
-    private final TestTypeService testTypeService;
+    private final TestService testService;
 
     @GetMapping("")
-    public ResponseEntity<Response<PageResponse<TestTypeResponse>>> findAll(
+    public ResponseEntity<Response<PageResponse<TestResponse>>> findAll(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "99999") int size) {
         return ResponseEntity.status(OK).body(
-                Response.<PageResponse<TestTypeResponse>>builder()
+                Response.<PageResponse<TestResponse>>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(testTypeService.findAll(page, size))
+                        .data(testService.findAll(page, size))
                         .build()
         );
 
     }
 
     @PostMapping("")
-    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody TestTypeRequest request) {
+    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody TestRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(testTypeService.save(request))
+                        .data(testService.save(request))
                         .build()
         );
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody TestTypeRequest request) {
+    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody TestRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(testTypeService.update(request, request.id()))
+                        .data(testService.update(request, request.id()))
                         .build()
         );
     }
 
-    @GetMapping("/{test-type-id}")
-    public ResponseEntity<Response<TestTypeResponse>> findById(@PathVariable("test-type-id") Integer testTypeId) {
+    @GetMapping("/{test-id}")
+    public ResponseEntity<Response<TestResponse>> findById(@PathVariable("test-id") Integer testId) {
         return ResponseEntity.status(OK).body(
-                Response.<TestTypeResponse>builder()
+                Response.<TestResponse>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(testTypeService.findById(testTypeId))
+                        .data(testService.findById(testId))
                         .build()
         );
     }
-    @DeleteMapping("/{testType-id}")
-    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("testType-id") Integer testTypeId) {
-        Integer deletedTestTypeId = testTypeService.deleteById(testTypeId);
+    @DeleteMapping("/{test-id}")
+    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("test-id") Integer testId) {
+        Integer deletedTestId = testService.deleteById(testId);
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(deletedTestTypeId)
+                        .data(deletedTestId)
                         .build()
         );
     }

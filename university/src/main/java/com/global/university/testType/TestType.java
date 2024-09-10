@@ -1,8 +1,9 @@
-package com.global.university.typeTest;
+package com.global.university.testType;
 
 
 import com.global.university.base.BaseEntity;
 import com.global.university.test.Test;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -19,8 +20,9 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
-public class TypeTest  extends BaseEntity<Integer> {
-    private String typeTest;
+public class TestType extends BaseEntity<Integer> {
+    @Column(unique = true)
+    private String testType;
 
     @OneToMany(mappedBy = "typeTest")
     private Set<Test> tests;

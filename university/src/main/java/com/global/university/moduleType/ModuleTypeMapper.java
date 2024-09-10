@@ -1,36 +1,30 @@
-package com.global.university.module;
+package com.global.university.moduleType;
 
 import com.global.university.common.Mapper;
+import com.global.university.module.Module;
+import com.global.university.module.ModuleRequest;
+import com.global.university.module.ModuleResponse;
 import com.global.university.semester.Semester;
-import com.global.university.speciality.Speciality;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ModuleMapper implements Mapper<Module, Integer, ModuleRequest, ModuleResponse> {
+public class ModuleTypeMapper implements Mapper<ModuleType, Integer, ModuleTypeRequest, ModuleTypeResponse> {
 
     @Override
-    public Module toEntity(ModuleRequest request, boolean isUpdate) {
+    public ModuleType toEntity(ModuleTypeRequest request, boolean isUpdate) {
         Integer id = isUpdate ? request.id() : null;
-        return Module.builder()
+        return ModuleType.builder()
                 .id(id)
-                .name(request.name())
-                .description(request.description())
-                .semester(
-                        Semester.builder()
-                                .id(request.semesterId())
-                                .build()
-                )
+                .type(request.type())
                 .build();
     }
 
 
     @Override
-    public ModuleResponse toResponse(Module entity) {
-        return ModuleResponse.builder()
+    public ModuleTypeResponse toResponse(ModuleType entity) {
+        return ModuleTypeResponse.builder()
                 .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .semesterId(entity.getSemester().getId())
+                .type(entity.getType())
                 .build();
     }
 

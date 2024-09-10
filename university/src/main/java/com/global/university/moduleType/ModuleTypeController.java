@@ -1,5 +1,8 @@
-package com.global.university.module;
+package com.global.university.moduleType;
 
+import com.global.university.moduleType.ModuleTypeRequest;
+import com.global.university.moduleType.ModuleTypeResponse;
+import com.global.university.moduleType.ModuleTypeService;
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
 import com.global.university.validationGroup.Default;
@@ -12,66 +15,66 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("modules")
+@RequestMapping("module-types")
 @RequiredArgsConstructor
-public class ModuleController {
+public class ModuleTypeController {
 
-    private final ModuleService moduleService;
+    private final ModuleTypeService moduleTypeService;
 
     @GetMapping("")
-    public ResponseEntity<Response<PageResponse<ModuleResponse>>> findAll(
+    public ResponseEntity<Response<PageResponse<ModuleTypeResponse>>> findAll(
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
+            @RequestParam(name = "size", defaultValue = "999999") int size) {
         return ResponseEntity.status(OK).body(
-                Response.<PageResponse<ModuleResponse>>builder()
+                Response.<PageResponse<ModuleTypeResponse>>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(moduleService.findAll(page, size))
+                        .data(moduleTypeService.findAll(page, size))
                         .build()
         );
 
     }
 
     @PostMapping("")
-    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody ModuleRequest request) {
+    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody ModuleTypeRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(moduleService.save(request))
+                        .data(moduleTypeService.save(request))
                         .build()
         );
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody ModuleRequest request) {
+    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody ModuleTypeRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(moduleService.update(request, request.id()))
+                        .data(moduleTypeService.update(request, request.id()))
                         .build()
         );
     }
 
-    @GetMapping("/{module-id}")
-    public ResponseEntity<Response<ModuleResponse>> findById(@PathVariable("module-id") Integer moduleId) {
+    @GetMapping("/{moduleType-id}")
+    public ResponseEntity<Response<ModuleTypeResponse>> findById(@PathVariable("moduleType-id") Integer moduleTypeId) {
         return ResponseEntity.status(OK).body(
-                Response.<ModuleResponse>builder()
+                Response.<ModuleTypeResponse>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(moduleService.findById(moduleId))
+                        .data(moduleTypeService.findById(moduleTypeId))
                         .build()
         );
     }
-    @DeleteMapping("/{module-id}")
-    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("module-id") Integer moduleId) {
-        Integer deletedModuleId = moduleService.deleteById(moduleId);
+    @DeleteMapping("/{moduleType-id}")
+    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("moduleType-id") Integer moduleTypeId) {
+        Integer deletedModuleTypeId = moduleTypeService.deleteById(moduleTypeId);
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(deletedModuleId)
+                        .data(deletedModuleTypeId)
                         .build()
         );
     }

@@ -1,10 +1,12 @@
-package com.global.university.level;
+package com.global.university.semester;
 
-import com.global.university.validationGroup.Default;
-import com.global.university.validationGroup.OnUpdate;
+import com.global.university.semester.SemesterRequest;
+import com.global.university.semester.SemesterResponse;
+import com.global.university.semester.SemesterService;
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
-import jakarta.validation.Valid;
+import com.global.university.validationGroup.Default;
+import com.global.university.validationGroup.OnUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,66 +15,66 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("levels")
+@RequestMapping("semesters")
 @RequiredArgsConstructor
-public class LevelController {
+public class SemesterController {
 
-    private final LevelService levelService;
+    private final SemesterService semesterService;
 
     @GetMapping("")
-    public ResponseEntity<Response<PageResponse<LevelResponse>>> findAll(
+    public ResponseEntity<Response<PageResponse<SemesterResponse>>> findAll(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size) {
         return ResponseEntity.status(OK).body(
-                Response.<PageResponse<LevelResponse>>builder()
+                Response.<PageResponse<SemesterResponse>>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(levelService.findAll(page, size))
+                        .data(semesterService.findAll(page, size))
                         .build()
         );
 
     }
 
     @PostMapping("")
-    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody LevelRequest request) {
+    public ResponseEntity<Response<Integer>> save(@Validated({Default.class}) @RequestBody SemesterRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(levelService.save(request))
+                        .data(semesterService.save(request))
                         .build()
         );
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody LevelRequest request) {
+    public ResponseEntity<Response<Integer>> update(@Validated({OnUpdate.class, Default.class}) @RequestBody SemesterRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(levelService.update(request, request.id()))
+                        .data(semesterService.update(request, request.id()))
                         .build()
         );
     }
 
-    @GetMapping("/{level-id}")
-    public ResponseEntity<Response<LevelResponse>> findById(@PathVariable("level-id") Integer levelId) {
+    @GetMapping("/{semester-id}")
+    public ResponseEntity<Response<SemesterResponse>> findById(@PathVariable("semester-id") Integer semesterId) {
         return ResponseEntity.status(OK).body(
-                Response.<LevelResponse>builder()
+                Response.<SemesterResponse>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(levelService.findById(levelId))
+                        .data(semesterService.findById(semesterId))
                         .build()
         );
     }
-    @DeleteMapping("/{level-id}")
-    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("level-id") Integer levelId) {
-        Integer deletedLevelId = levelService.deleteById(levelId);
+    @DeleteMapping("/{semester-id}")
+    public ResponseEntity<Response<Integer>> deleteById(@PathVariable("semester-id") Integer semesterId) {
+        Integer deletedSemesterId = semesterService.deleteById(semesterId);
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(deletedLevelId)
+                        .data(deletedSemesterId)
                         .build()
         );
     }

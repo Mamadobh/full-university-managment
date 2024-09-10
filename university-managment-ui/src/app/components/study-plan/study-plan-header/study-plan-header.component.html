@@ -1,1 +1,33 @@
-<p>study-plan-header works!</p>
+<div class="flex gap-4 justify-between items-center">
+  <div class=" bg-white h-10 rounded-full px-4 flex items-center gap-2">
+    <mat-icon class="text-[22px] translate-y-[3px] text-purple_main">search</mat-icon>
+    <input [formControl]="searchField"
+           class="border-0 before:hidden after:hidden
+           text-text_color focus:outline-0"
+           placeholder="search"
+           type="text">
+  </div>
+
+  <div class="flex pt-4 gap-4 justify-between">
+
+    <app-autocomplete [displayFn]="displayDepartment"
+                      [fieldControl]="departmentField"
+                      [label]="'Department'"
+                      [optionsList]="allDepartmentResponse()">
+    </app-autocomplete>
+
+    <app-autocomplete [displayFn]="displayTrack"
+                      [fieldControl]="trackField"
+                      [label]="'Track'"
+                      [optionsList]="allTrackResponse()">
+    </app-autocomplete>
+
+    <app-autocomplete [displayFn]="displaySpeciality"
+                      [fieldControl]="specialityField"
+                      [label]="'Speciality'"
+                      [optionsList]="allSpecialityResponse()">
+    </app-autocomplete>
+  </div>
+
+</div>
+<router-outlet></router-outlet>

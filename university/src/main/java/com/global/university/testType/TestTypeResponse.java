@@ -1,4 +1,4 @@
-package com.global.university.coefficient;
+package com.global.university.testType;
 
 import lombok.*;
 
@@ -7,9 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CoefficientResponse {
+public class TestTypeResponse {
     private Integer id;
-    private Double coefficient;
+    private String testType;
 
 
 }

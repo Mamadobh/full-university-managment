@@ -1,4 +1,4 @@
-package com.global.university.testType;
+package com.global.university.typeSbj;
 
 import lombok.*;
 
@@ -7,9 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TestTypeResponse {
+public class TypeResponse {
     private Integer id;
-    private String testType;
+    private String subjectType;
 
 
 }

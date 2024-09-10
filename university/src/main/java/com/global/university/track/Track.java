@@ -24,7 +24,7 @@ public class Track extends BaseEntity<Integer> {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_id",nullable = false)
     private Department department;
 
 
