@@ -1,10 +1,11 @@
-
 <app-page-header
   [linkHistory]="linkHistory()"
   icon="receipt"
   title="Study Plan Overview"
 ></app-page-header>
-<button class="bg-purple_main text-[15px] font-light h-[40px] px-[22px]  flex ml-auto" extended mat-fab>
+<button   [routerLink]="'/study-plan/'+levelId+'/create'"
+        class="bg-purple_main text-[15px] font-light h-[40px] px-[22px]  flex ml-auto"
+        extended mat-fab>
   <mat-icon class=" font-semibold text-[22px] leading-[22px] mr-2 ">add</mat-icon>
   Add study Plan
 
