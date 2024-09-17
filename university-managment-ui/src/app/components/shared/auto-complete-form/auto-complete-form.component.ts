@@ -1,44 +1,72 @@
-import {Component, Input, signal} from '@angular/core';
-import {AbstractControl, FormControl, ReactiveFormsModule} from "@angular/forms";
-import {map, startWith} from "rxjs";
-import {MatFormField} from "@angular/material/form-field";
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, signal, ViewChild} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from "@angular/forms";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatOption} from "@angular/material/autocomplete";
 import {MatInput} from "@angular/material/input";
-import {AsyncPipe} from "@angular/common";
+import {MatSelect} from "@angular/material/select";
+import {MatIcon} from "@angular/material/icon";
+import {map, startWith} from "rxjs";
 
 @Component({
-  selector: 'app-auto-complete-form',
+  selector: ' app-auto-complete-form',
   standalone: true,
   imports: [
     MatFormField,
-    MatAutocompleteTrigger,
     ReactiveFormsModule,
     MatInput,
-    MatAutocomplete,
-    AsyncPipe,
-    MatOption
+    MatOption,
+    MatSelect,
+    MatLabel,
+    MatIcon
   ],
   templateUrl: './auto-complete-form.component.html',
-  styleUrl: './auto-complete-form.component.scss'
+  styleUrls: ['./auto-complete-form.component.scss']
 })
-export class AutoCompleteFormComponent<T> {
+export class AutoCompleteFormComponent<T> implements OnInit {
+
   options = signal<T[]>([])
   filteredOptions = signal<T[]>(this.options())
-  @Input() formCtName!: string;
-  @Input() fieldControl!: FormControl ;
+  @Input() fieldControl!: FormControl;
   @Input() displayFn!: (option: any) => string;
+  @Output() createItem = new EventEmitter();
+  @Input() label!: string
+  @Input() showSearchLength: number = 1;
+  @Input() hideSearch: boolean = false;
+  @Input() numberType: boolean = false
+
 
   @Input()
   set optionsList(val: T[]) {
     this.options.set(val)
-    this.filteredOptions.set(val)
+    const value = this.searchControl.getRawValue()
+    this.filteredOptions.set(value ? this._filter(value) : this.options().slice())
   }
 
+  searchControl = new FormControl<string>("")
+  @ViewChild('searchInput', {static: false}) searchInput!: ElementRef<HTMLInputElement>;
+
+  onSelectOpened(isOpen: boolean): void {
+    this.searchControl.setValue("")
+
+    if (isOpen && this.searchInput) {
+      this.searchInput.nativeElement.focus();
+    }
+  }
+
+
   ngOnInit() {
-    this.fieldControl?.valueChanges.pipe(
+    this.searchControl?.valueChanges.pipe(
       startWith(''),
       map(value => {
-        const name = typeof value === 'string' ? value : this.displayFn(value);
+
+        let name = typeof value === 'string' ? value : this.displayFn(value);
+
+        if (isNaN(+name) && this.numberType) {
+          name = value?.replace(/[^0-9]/g, '') as string;
+          this.searchControl.setValue(name, {emitEvent: false});
+        }
+
+
         return name ? this._filter(name) : this.options().slice();
       })
     ).subscribe((dataFiltred) => {
@@ -46,41 +74,23 @@ export class AutoCompleteFormComponent<T> {
     })
   }
 
+  getId(option: any): string {
+    if (option && "id" in option) {
+      return option["id"] as string
+    }
+    return new Date().getMilliseconds().toString()
+  }
+
   private _filter(name: string): T[] {
     const filterValue = name.toLowerCase();
-    return this.options().filter(option => this.displayFn(option).toLowerCase().includes(filterValue));
+    return this.options().filter(option => this.displayFn(option).toLowerCase().startsWith(filterValue));
   }
 
-  @Input() name!: string
-
-  getDisplayValue(): string {
-    const rawValue = this.fieldControl?.getRawValue();
-
-    if (rawValue && typeof rawValue === 'object' && this.name in
-      rawValue
-    ) {
-      return (rawValue)
-
-        ?.
-        [this.name];
-    }
-
-    return rawValue as string;
-  }
+  compareItem = (o1: any, o2: any) => o1 && o2 && o1.id === o2.id;
 
 
-// private _filter(name: string): User[] {
-//   const filterValue = name.toLowerCase();
-//
-//   return this.options.filter(option => option.name.toLowerCase().includes(filterValue));
-// }
-
-  /* end start autocoomlute module type*/
-
-  prevent($event: Event) {
-
-    $event.preventDefault()
-    $event.stopPropagation()
+  addItem() {
+    this.createItem.emit(this.searchControl.getRawValue())
   }
 
 

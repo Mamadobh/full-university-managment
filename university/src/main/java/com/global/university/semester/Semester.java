@@ -2,10 +2,8 @@ package com.global.university.semester;
 
 
 import com.global.university.base.BaseEntity;
-import com.global.university.department.Department;
 import com.global.university.level.Level;
 import com.global.university.module.Module;
-import com.global.university.speciality.Speciality;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +12,8 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,7 +25,6 @@ import java.util.Set;
 @NamedEntityGraph(name = "loadLevel",attributeNodes = @NamedAttributeNode("level"))
 public class Semester extends BaseEntity<Integer> {
 
-    @Column(unique = true)
     private String name;
     private String description;
     private LocalDate startDate;
@@ -37,6 +35,16 @@ public class Semester extends BaseEntity<Integer> {
     private Level level;
 
 
-    @OneToMany(mappedBy = "semester")
+    @OneToMany(mappedBy = "semester" , cascade = CascadeType.ALL)
     private Set<Module> modules;
+    public static boolean checkDuplicationSemester(List<SemesterStudyPlanRequest> semesters) {
+        Set<String> semestersName = new HashSet<>();
+        for (SemesterStudyPlanRequest semester : semesters) {
+            if (!semestersName.add(semester.name())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

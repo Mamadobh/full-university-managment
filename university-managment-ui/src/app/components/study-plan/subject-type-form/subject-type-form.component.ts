@@ -1,44 +1,66 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output, signal} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {User} from "../../../pages/study-plan-pages/study-plan-create/study-plan-create.component";
-import {map, Observable, startWith} from "rxjs";
-import {MatFormField} from "@angular/material/form-field";
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
-import {AsyncPipe} from "@angular/common";
+import {TypeOfSubjectService} from "../../../core/services/typeOfSubject/type-of-subject.service";
+import {
+  TypeOfSubjectRequest,
+  TypeOfSubjectResponse
+} from "../../../core/services/typeOfSubject/model/type-of-subject.model";
+import {NumberOfSessionService} from "../../../core/services/numberOfSession/number-of-session.service";
+import {
+  NumberOfSessionRequest,
+  NumberOfSessionResponse
+} from "../../../core/services/numberOfSession/model/number-of-session.model";
 import {MatIcon} from "@angular/material/icon";
-import {MatInput} from "@angular/material/input";
+import {AutoCompleteFormComponent} from "../../shared/auto-complete-form/auto-complete-form.component";
+import {MatError} from "@angular/material/form-field";
+import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-subject-type-form',
   standalone: true,
   imports: [
-    AsyncPipe,
-    MatAutocomplete,
-    MatAutocompleteTrigger,
-    MatFormField,
+    ReactiveFormsModule,
     MatIcon,
-    MatInput,
-    MatOption,
-    ReactiveFormsModule
+    AutoCompleteFormComponent,
+    MatError,
+    JsonPipe
   ],
   templateUrl: './subject-type-form.component.html',
   styleUrl: './subject-type-form.component.scss'
 })
 export class SubjectTypeFormComponent {
-  myControl = new FormControl<string | User>('');
-  options: User[] = [{name: 'Mary'}, {name: 'Shelley'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}];
-  filteredOptions!: Observable<User[]>;
   _formSubjectType!: FormGroup;
+  typeOfSubjectService = inject(TypeOfSubjectService)
+  dataOptionsTypeOfSubject = signal<TypeOfSubjectResponse[]>([])
+
+  numberOfSessionService = inject(NumberOfSessionService)
+  dataOptionsNumberOfSession = signal<NumberOfSessionResponse[]>([])
+  errorMsg: string = "field is required !!"
+  duplicationError="Type of subject is duplicated"
   @Input()
   set formSubjectType(value: AbstractControl) {
     this._formSubjectType = value as FormGroup;
   }
+
   @Input() subjectTypeIndex!: number;
 
   @Output()
   removeSubjectType = new EventEmitter<number>()
   @Output()
   addSubjectType = new EventEmitter<number>()
+
+  ngOnInit() {
+
+    this.typeOfSubjectService.alltTypeOfSubjectReponse.subscribe((data) => {
+      this.dataOptionsTypeOfSubject.set(data.content)
+    })
+    this.typeOfSubjectService.findAllTestOfSubject()
+
+    this.numberOfSessionService.allNumberOfSessionReponse.subscribe((data) => {
+      this.dataOptionsNumberOfSession.set(data.content)
+    })
+    this.numberOfSessionService.findAllNumberOfSession()
+  }
 
   removeSubjectTypeEmit(index: number) {
     this.removeSubjectType.emit(index)
@@ -48,44 +70,36 @@ export class SubjectTypeFormComponent {
     this.addSubjectType.emit(index)
   }
 
-
-
-
-
-
-  ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.name;
-        return name ? this._filter(name as string) : this.options.slice();
-      }),
-    );
+  createTypeOfSubjectItem(item: string) {
+    this.typeOfSubjectService.create(
+      {subjectType: item}
+    ).subscribe({
+      next: (res) => {
+        this.typeOfSubjectService.findAllTestOfSubject()
+      }
+    })
   }
 
-  getDisplayValue(): string {
-    const rawValue = this.myControl.getRawValue();
-    if (rawValue && typeof rawValue === 'object' && 'name' in rawValue) {
-      return (rawValue as User).name;
-    }
-    return rawValue as string;
+  createNumberOfSessionItem(item: string) {
+    this.numberOfSessionService.create(
+      {numberOfSession: +item}
+    ).subscribe({
+      next: (res) => {
+        this.numberOfSessionService.findAllNumberOfSession()
+      }
+    })
   }
 
-  displayFn(user: User): string {
-    return user && user.name ? user.name : '';
+  displayFnTypeOfSubject(typeOfSubject: TypeOfSubjectRequest): string {
+    return typeOfSubject && typeOfSubject.subjectType ? typeOfSubject.subjectType : '';
   }
 
-  private _filter(name: string): User[] {
-    const filterValue = name.toLowerCase();
-
-    return this.options.filter(option => option.name.toLowerCase().includes(filterValue));
+  displayFnNumberOfSession(numberOfSession: NumberOfSessionResponse): string {
+    return numberOfSession && numberOfSession.numberOfSession ? numberOfSession.numberOfSession.toString() : '';
   }
 
-  /* end start autocoomlute module type*/
-
-  prevent($event: Event) {
-
-    $event.preventDefault()
-    $event.stopPropagation()
+  getfield(name: string): FormControl {
+    return this._formSubjectType.get(name) as FormControl
   }
+
 }

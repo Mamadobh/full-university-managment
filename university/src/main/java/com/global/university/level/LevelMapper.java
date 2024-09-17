@@ -1,6 +1,8 @@
 package com.global.university.level;
 
 import com.global.university.common.Mapper;
+import com.global.university.semester.SemesterRequest;
+import com.global.university.semester.SemesterStudyPlanRequest;
 import com.global.university.speciality.Speciality;
 import org.springframework.stereotype.Service;
 
@@ -42,4 +44,6 @@ public class LevelMapper implements Mapper<Level, Integer, LevelRequest, LevelRe
                 .specialityWithTrack(entity.getLevelSpecialityWithTrack())
                 .build();
     }
+
+
 }

@@ -2,11 +2,15 @@ package com.global.university.semester;
 
 import com.global.university.common.Mapper;
 import com.global.university.level.Level;
-
+import com.global.university.level.LevelRepo;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SemesterMapper implements Mapper<Semester, Integer, SemesterRequest, SemesterResponse> {
+    private final LevelRepo levelRepo;
 
     @Override
     public Semester toEntity(SemesterRequest request, boolean isUpdate) {
@@ -38,5 +42,19 @@ public class SemesterMapper implements Mapper<Semester, Integer, SemesterRequest
                 .build();
     }
 
+    public Semester toEntity(SemesterStudyPlanRequest request) {
 
+        return Semester.builder()
+                .name(request.name())
+                .endDate(request.endDate())
+                .startDate(request.startDate())
+                .level(
+                        levelRepo.findById(request.levelId()).orElseThrow(() ->
+                                new EntityNotFoundException(
+                                        "Data not Found with id " +
+                                                request.levelId() +
+                                                " Please verify !!"))
+                )
+                .build();
+    }
 }

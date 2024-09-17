@@ -1,12 +1,17 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnInit, Output, signal} from '@angular/core';
 import {AsyncPipe} from "@angular/common";
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
-import {MatFormField} from "@angular/material/form-field";
+import {MatError, MatFormField} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {map, Observable, startWith} from "rxjs";
-import {User} from "../../../pages/study-plan-pages/study-plan-create/study-plan-create.component";
+import {TestTypeService} from "../../../core/services/test-type/test-type.service";
+import {TestTypeResponse} from "../../../core/services/test-type/model/test-type.model";
+import {CoefficientService} from "../../../core/services/coefficient/coefficient.service";
+import {CoefficientResponse} from "../../../core/services/coefficient/model/coefficient.model";
+import {TestDurationService} from "../../../core/services/test-duration/test-duration.service";
+import {TestDurationResponse} from "../../../core/services/test-duration/model/test-duration.model";
+import {AutoCompleteFormComponent} from "../../shared/auto-complete-form/auto-complete-form.component";
 
 @Component({
   selector: 'app-test-form',
@@ -19,69 +24,109 @@ import {User} from "../../../pages/study-plan-pages/study-plan-create/study-plan
     MatIcon,
     MatInput,
     MatOption,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AutoCompleteFormComponent,
+    MatError
   ],
   templateUrl: './test-form.component.html',
   styleUrl: './test-form.component.scss'
 })
-export class TestFormComponent {
-  myControl = new FormControl<string | User>('');
-  options: User[] = [{name: 'Mary'}, {name: 'Shelley'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}, {name: 'Igor'}];
-  filteredOptions!: Observable<User[]>;
+export class TestFormComponent implements OnInit {
   _formTest!: FormGroup;
+  testTypeService = inject(TestTypeService)
+  dataOptionsTestType = signal<TestTypeResponse[]>([])
+  coefficientService = inject(CoefficientService)
+  dataOptionsCoefficient = signal<CoefficientResponse[]>([])
+
+  testDurationService = inject(TestDurationService)
+  dataOptionsTestDuration = signal<TestDurationResponse[]>([])
+  errorMsg: string = "field is required !!"
+
   @Input()
   set formTest(value: AbstractControl) {
     this._formTest = value as FormGroup;
   }
 
   @Input() testIndex!: number;
-  @Output()
-  removeTest = new EventEmitter<number>()
-  @Output()
-  addTest = new EventEmitter<number>()
+  @Output() removeTest = new EventEmitter<number>()
+  @Output() addTest = new EventEmitter<number>()
+
+  ngOnInit() {
+
+    this.testTypeService.allTestTypeReponse.subscribe((data) => {
+      this.dataOptionsTestType.set(data.content)
+    })
+    this.testTypeService.findAllTestType()
+
+    this.coefficientService.allCoefficientReponse.subscribe((data) => {
+      this.dataOptionsCoefficient.set(data.content)
+    })
+    this.coefficientService.findAllCoefficient()
+
+    this.testDurationService.allTestDurationReponse.subscribe((data) => {
+      this.dataOptionsTestDuration.set(data.content)
+    })
+    this.testDurationService.findAllTestDuration()
+  }
 
   removeTestEmit(index: number) {
     this.removeTest.emit(index)
   }
 
-addTestEmit(index: number) {
+  addTestEmit(index: number) {
     this.addTest.emit(index)
   }
 
-
-  ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.name;
-        return name ? this._filter(name as string) : this.options.slice();
-      }),
-    );
+  getfield(name: string): FormControl {
+    return this._formTest.get(name) as FormControl
   }
 
-  getDisplayValue(): string {
-    const rawValue = this.myControl.getRawValue();
-    if (rawValue && typeof rawValue === 'object' && 'name' in rawValue) {
-      return (rawValue as User).name;
-    }
-    return rawValue as string;
+
+  createTestTypeItem(item: string) {
+    this.testTypeService.create(
+      {testType: item}
+    ).subscribe({
+      next: (res) => {
+        this.testTypeService.findAllTestType()
+      }
+    })
   }
 
-  displayFn(user: User): string {
-    return user && user.name ? user.name : '';
+  createCoefficientItem(item: string) {
+    this.coefficientService.create(
+      {coefficient: +item}
+    ).subscribe({
+      next: (res) => {
+        this.coefficientService.findAllCoefficient()
+      }
+    })
   }
 
-  private _filter(name: string): User[] {
-    const filterValue = name.toLowerCase();
-
-    return this.options.filter(option => option.name.toLowerCase().includes(filterValue));
+  createTestDurationsItem(item: string) {
+    this.testDurationService.create(
+      {testDuration: +item}
+    ).subscribe({
+      next: (res) => {
+        this.testDurationService.findAllTestDuration()
+      }
+    })
   }
 
-  /* end start autocoomlute module type*/
-
-  prevent($event: Event) {
-
-    $event.preventDefault()
-    $event.stopPropagation()
+  displayFnTestType(testType: TestTypeResponse): string {
+    return testType && testType.testType ? testType.testType : '';
   }
+
+  displayFnCoefficient(coefficient: CoefficientResponse): string {
+    return coefficient && coefficient.coefficient ? coefficient.coefficient.toString() : '';
+  }
+
+  displayFnTestDuration(testDuration: TestDurationResponse): string {
+    return testDuration && testDuration.testDuration ? testDuration.testDuration.toString() : '';
+  }
+
+
+
+
+
+
 }

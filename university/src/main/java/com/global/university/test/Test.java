@@ -33,7 +33,7 @@ public class Test extends BaseEntity<Integer> {
     @JoinColumn(name = "type_test_id")
     private TestType typeTest;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Subject> subjects;
 
     @ManyToOne

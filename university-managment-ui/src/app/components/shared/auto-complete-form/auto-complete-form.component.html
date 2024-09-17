@@ -1,35 +1,74 @@
-<mat-form-field appearance="outline"
-                class="form_element w-full">
-  <input [formControl]="fieldControl"
-         [matAutocomplete]="auto"
-         matInput
-         placeholder="Subject coef"
-         type="text">
-  <mat-autocomplete #auto="matAutocomplete"
-                    [displayWith]="displayFn"
-                    class="auto_complete_form">
-    @for (option of filteredOptions(); track option) {
-      <mat-option [value]="option">
-        {{ displayFn(option) }}
-      </mat-option>
-    } @empty {
-      <mat-option [value]="fieldControl.getRawValue()"
-                  class="bg-[#393e732e]">
-        <div class="absolute top-0 left-0 h-full
-                    px-4 flex items-center"
-             (click)="prevent($event)"
-        >
-          add
-          <span class="ml-2 font-semibold text-text_color">
-      {{ getDisplayValue() }}
+<mat-form-field
+  appearance="outline"
+  class="form_element w-full"
+>
+
+  @if (!fieldControl.getRawValue()) {
+    <span class="placeholer absolute">
+      {{ label }}</span>
+
+  }
+  <mat-select (openedChange)="onSelectOpened($event)"
+              [compareWith]="compareItem"
+              [formControl]="fieldControl"
+
+  >
+    <div class="auto_complete_form">
+      @if (options().length >= showSearchLength) {
+        <mat-option class=" ">
+          <div (click)="$event.stopPropagation()"
+               class=" bg-white absolute left-0 top-0
+             px-2 py-[6px] h-full w-full border-y">
+            <div class="h-full bg-white w-full">
+              <mat-icon class="text-[22px] translate-y-[8px]
+                             text-purple_main  translate-x-1
+                             text-center absolute">
+                search
+              </mat-icon>
+              <input
+                #searchInput
+                [formControl]="searchControl"
+                class=" before:hidden after:hidden w-full h-full
+                      border pl-8  rounded-md text-[14px] border-[#C1BBEB]
+                      text-text_color focus:outline-0"
+                placeholder="search"
+                type="text"
+
+              >
+            </div>
+          </div>
+
+
+        </mat-option>
+
+      }
+      <div class="options overflow-auto max-h-[190px]">
+        @for (option of filteredOptions(); track getId(option)) {
+
+          <mat-option [value]="option" class="">
+            {{ displayFn(option) }}
+          </mat-option>
+        } @empty {
+          <mat-option [value]="searchControl.getRawValue()"
+                      class="bg-[#393e732e]">
+            <div class="absolute top-0 left-0 h-full
+                       px-4 flex items-center w-full "
+                 (click)="$event.stopPropagation();addItem()"
+            >
+              add
+              <span class="ml-2 font-semibold text-text_color">
+      {{ searchControl.getRawValue() }}
           </span>
-        </div>
-      </mat-option>
-      <mat-option disabled="true "
-                  class="min-h-[30px]"
-                  (click)="prevent($event)"
-                  (mousedown)="prevent($event)">No results found
-      </mat-option>
-    }
-  </mat-autocomplete>
+            </div>
+          </mat-option>
+          <mat-option disabled="true "
+                      class="min-h-[30px]"
+                      (click)="$event.stopPropagation()"
+                      (mousedown)="$event.stopPropagation()">No results found
+          </mat-option>
+        }
+      </div>
+    </div>
+
+  </mat-select>
 </mat-form-field>

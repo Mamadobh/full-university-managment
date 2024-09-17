@@ -29,7 +29,7 @@ public class SubjectAspect {
     public void beforeSave(SubjectRequest request) {
         moduleService.exist(request.moduleId());
         coefficientService.exist(request.coefficientId());
-        Arrays.asList(request.tests()).forEach(testService::exist);
+       request.tests().forEach(testService::exist);
 
     }
 

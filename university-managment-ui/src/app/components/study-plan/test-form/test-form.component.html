@@ -1,136 +1,94 @@
 <!--         test-->
-<div class="bg-[#4e45b51a] px-4 pt-4 pb-1
-            rounded-md flex items-center  gap-8"
-     [formGroup]="_formTest"
+<div [formGroup]="_formTest"
+     class="bg-[#4e45b51a] px-4 pt-4 pb-1
+            rounded-md flex items-center gap-8"
 >
   <div class="flex gap-4 justify-between
               items-center basis-0 grow"
   >
     <div class="basis-0 grow">
-      <div class="mb-[12px] text-text_color
+      <div class="flex gap-4">
+        <div class="mb-[12px] text-text_color
                   font-semibold capitalize
                   pl-1"
-      >
-        Test type *
+        >
+          Test type *
+        </div>
+        @if (getfield("testType").invalid && !getfield("testType").untouched) {
+          <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
+        }
+
       </div>
-      <mat-form-field appearance="outline"
-                      class="form_element w-full">
-        <input [matAutocomplete]="auto"
-               formControlName="testType"
-               matInput placeholder="Test type"
-               type="text">
-        <mat-autocomplete #auto="matAutocomplete"
-                          [displayWith]="displayFn"
-                          class="auto_complete_form">
-          @for (option of filteredOptions | async; track option) {
-            <mat-option [value]="option">
-              {{ option.name }}
-            </mat-option>
-          } @empty {
-            <mat-option [value]="myControl"
-                        class="bg-[#393e732e]">
-              <div class="absolute top-0 left-0 h-full
-                          px-4 flex items-center"
-                   (click)="prevent($event)">
-                add
-                <span class="ml-2 font-semibold text-text_color">
-                    {{
-                    getDisplayValue()
-                  }}
-                  </span>
-              </div>
-            </mat-option>
-            <mat-option disabled="true"
-                        class="min-h-[30px]"
-                        (click)="prevent($event)"
-                        (mousedown)="prevent($event)">No results found
-            </mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
+
+      <app-auto-complete-form (createItem)="createTestTypeItem($event)"
+                              [displayFn]="displayFnTestType"
+                              [fieldControl]="getfield('testType')"
+                              [label]="'Test type'"
+                              [optionsList]="dataOptionsTestType()"
+                              class="'form_element w-full '"
+      ></app-auto-complete-form>
+
     </div>
     <div class="basis-0 grow">
-      <div class="mb-[12px] text-text_color
+      <div class="flex gap-4">
+        <div class="mb-[12px] text-text_color
                   font-semibold capitalize pl-1"
-      >
-        Test Coef *
+        >
+          Test Coef *
+        </div>
+        @if (getfield("testCoef").invalid && !getfield("testCoef").untouched) {
+          <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
+        }
+
       </div>
-      <mat-form-field appearance="outline"
-                      class="form_element w-full">
-        <input [matAutocomplete]="auto"
-               formControlName="testCoef"
-               matInput placeholder="Test Coef"
-               type="text">
-        <mat-autocomplete #auto="matAutocomplete"
-                          [displayWith]="displayFn"
-                          class="auto_complete_form">
-          @for (option of filteredOptions | async; track option) {
-            <mat-option [value]="option">
-              {{ option.name }}
-            </mat-option>
-          } @empty {
-            <mat-option [value]="myControl"
-                        class="bg-[#393e732e]">
-              <div class="absolute top-0 left-0 h-full
-                          px-4 flex items-center"
-                   (click)="prevent($event)">
-                add
-                <span class="ml-2 font-semibold text-text_color">
-                    {{
-                    getDisplayValue()
-                  }}
-                  </span>
-              </div>
-            </mat-option>
-            <mat-option disabled="true"
-                        class="min-h-[30px]"
-                        (click)="prevent($event)"
-                        (mousedown)="prevent($event)">No results found
-            </mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
+
+      <app-auto-complete-form (createItem)="createCoefficientItem($event)"
+                              [displayFn]="displayFnCoefficient"
+                              [fieldControl]="getfield('testCoef')"
+                              [label]="'Test coefficient'"
+                              [numberType]="true"
+                              [optionsList]="dataOptionsCoefficient()"
+                              class="'form_element w-full '"
+      ></app-auto-complete-form>
+
 
     </div>
     <div class="basis-0 grow">
-      <div class="mb-[12px] text-text_color
+      <div class="flex gap-4">
+        <div class="mb-[12px] text-text_color
                  font-semibold capitalize pl-1">
-        NBH *
-      </div>
-      <mat-form-field appearance="outline" class="form_element w-full ">
-        <input formControlName="testNbh" [matAutocomplete]="auto" matInput placeholder="Test NBH"
-               type="text">
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="auto_complete_form">
-          @for (option of filteredOptions | async; track option) {
-            <mat-option [value]="option">{{ option.name }}</mat-option>
-          } @empty {
-            <mat-option [value]="myControl" class="bg-[#393e732e]">
-              <div class="absolute top-0 left-0 h-full px-4 flex items-center"
-                   (click)="prevent($event)">
-                add
-                <span class="ml-2 font-semibold text-text_color">
-                    {{
-                    getDisplayValue()
-                  }}
-                  </span>
-              </div>
-            </mat-option>
-            <mat-option disabled="true " class="min-h-[30px] " (click)="prevent($event)"
-                        (mousedown)="prevent($event)">No results found
-            </mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
+          NBH *
+        </div>
+        @if (getfield("testNbh").invalid && !getfield("testNbh").untouched) {
+          <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
+        }
 
+      </div>
+
+      <app-auto-complete-form (createItem)="createTestDurationsItem($event)"
+                              [displayFn]="displayFnTestDuration"
+                              [fieldControl]="getfield('testNbh')"
+                              [label]="'Test duration'"
+                              [numberType]="true"
+                              [optionsList]="dataOptionsTestDuration()"
+                              class="'form_element w-full '"
+      ></app-auto-complete-form>
     </div>
   </div>
   <!--          start test action-->
   <div class=" flex gap-2  mt-1">
-    <div (click)="addTestEmit(0)" class="h-6 w-6 rounded-full bg-yellow_color cursor-pointer">
-      <mat-icon class="text-white font-light scale-[0.8]"> add</mat-icon>
+    <div (click)="addTestEmit(0)"
+         class="h-6 w-6 rounded-full bg-yellow_color
+          cursor-pointer">
+      <mat-icon class="text-white font-light scale-[0.8]">
+        add
+      </mat-icon>
     </div>
-    <div (click)="removeTestEmit(testIndex)" class="h-6 w-6 rounded-full bg-orange_color cursor-pointer">
-      <mat-icon class="text-white font-light scale-[0.8]">remove</mat-icon>
+    <div (click)="removeTestEmit(testIndex)"
+         class="h-6 w-6 rounded-full bg-orange_color cursor-pointer">
+      <mat-icon class="text-white font-light scale-[0.8]">
+        remove
+      </mat-icon>
     </div>
   </div>
   <!--          end  test action-->

@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class TestService extends BaseService<Test, Integer, TestRequest, TestResponse> {
@@ -40,5 +42,13 @@ public class TestService extends BaseService<Test, Integer, TestRequest, TestRes
         } else {
             return testRepo.save(mapper.toEntity(request, true)).getId();
         }
+    }
+
+    public Optional<Test> findTestByDuraionAndCOefficientAndType(TestRequest request) {
+        return testRepo.findByDurationAndCoficientAndType(
+                request.testDuraionId(),
+                request.coefficientId(),
+                request.testTypeId()
+        );
     }
 }
