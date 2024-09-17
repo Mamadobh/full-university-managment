@@ -4,9 +4,7 @@ import com.global.university.response.BusinessErrorCodes;
 import com.global.university.response.ExceptionResponse;
 import com.global.university.response.Response;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +15,8 @@ import java.util.Map;
 
 import static com.global.university.response.BusinessErrorCodes.DATA_NOT_FOUND;
 import static com.global.university.response.BusinessErrorCodes.INVALID_INPUT_DATA;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @RestControllerAdvice
 @Slf4j

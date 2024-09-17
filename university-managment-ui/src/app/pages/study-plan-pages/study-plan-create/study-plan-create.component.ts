@@ -1,7 +1,12 @@
-import {Component, inject, OnInit, signal, ViewEncapsulation} from '@angular/core';
+import {Component, computed, inject, OnInit, signal, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SemesterFormComponent} from "../../../components/study-plan/semester-form/semester-form.component";
 import {PageHeaderComponent} from "../../../components/shared/page-header/page-header.component";
+import {MatFabButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
+import {ReactiveFormsModule} from "@angular/forms";
+import {StudyPlanService} from "../../../core/services/study-plan/study-plan.service";
+import {SubjectFormComponent} from "../../../components/study-plan/subject-form/subject-form.component";
 
 export interface User {
   name: string;
@@ -15,7 +20,11 @@ export interface User {
   imports: [
 
     SemesterFormComponent,
-    PageHeaderComponent
+    PageHeaderComponent,
+    MatFabButton,
+    MatIcon,
+    ReactiveFormsModule,
+    SubjectFormComponent
   ],
   encapsulation: ViewEncapsulation.None
 
@@ -25,7 +34,14 @@ export class StudyPlanCreateComponent implements OnInit {
   private activeRoute = inject(ActivatedRoute)
   private router = inject(Router)
   levelId = ""
+  studyPlanService = inject(StudyPlanService)
 
+  constructor() {
+    this.studyPlanService.studyPlanFrom = this.studyPlanService.createForm("init")
+    this.studyPlanService.studyPlanFrom?.valueChanges.subscribe((data) => {
+      console.log(data)
+    })
+  }
 
   ngOnInit() {
 
@@ -43,4 +59,10 @@ export class StudyPlanCreateComponent implements OnInit {
   }
 
 
+  onSubmit() {
+    this.studyPlanService.isFormSubmited.set(true)
+    this.studyPlanService.studyPlanFrom.markAllAsTouched()
+
+    console.log("the form is submited !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+  }
 }

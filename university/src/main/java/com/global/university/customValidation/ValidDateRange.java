@@ -1,6 +1,5 @@
 package com.global.university.customValidation;
 
-import com.global.university.validationGroup.Default;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

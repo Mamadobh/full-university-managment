@@ -1,10 +1,9 @@
 package com.global.university.level;
 
-import com.global.university.validationGroup.Default;
-import com.global.university.validationGroup.OnUpdate;
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
-import jakarta.validation.Valid;
+import com.global.university.validationGroup.Default;
+import com.global.university.validationGroup.OnUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +17,18 @@ import static org.springframework.http.HttpStatus.OK;
 public class LevelController {
 
     private final LevelService levelService;
+    private final StudyPlanService studyPlanService;
+
+    @PostMapping("/study-plan")
+    public ResponseEntity<Response<?>> test(@Validated({Default.class}) @RequestBody StudyPlanRequest request) {
+        return ResponseEntity.status(OK).body(
+                Response.<Integer>builder()
+                        .success(true)
+                        .status(OK.toString())
+                        .data(studyPlanService.AddFullStudyPlan(request))
+                        .build()
+        );
+    }
 
     @GetMapping("")
     public ResponseEntity<Response<PageResponse<LevelResponse>>> findAll(
@@ -33,11 +44,7 @@ public class LevelController {
 
 
     }
-/*
-* @RequestParam(required = false) String nameLike,
-                                     @RequestParam(required = false) String doctorSpeciality,
-                                     @RequestParam(required = false) List<String> cities)
-* */
+
 
     @GetMapping("/details")
     public ResponseEntity<Response<PageResponse<LevelDetailsReponse>>> findAllLevelWithDetails(
@@ -45,7 +52,7 @@ public class LevelController {
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(required = false) String specialityLike,
             @RequestParam(required = false) String trackLike,
-                @RequestParam(required = false) String departmentLike
+            @RequestParam(required = false) String departmentLike
     ) {
         return ResponseEntity.status(OK).body(
                 Response.<PageResponse<LevelDetailsReponse>>builder()

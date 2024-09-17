@@ -6,10 +6,12 @@ import com.global.university.validationGroup.Default;
 import com.global.university.validationGroup.OnUpdate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
 import java.time.LocalDate;
 
 @ValidDateRange(groups = Default.class)
+@Builder
 public record SemesterRequest(
         @NotNull(groups = OnUpdate.class, message = "L id required for the update operation")
         Integer id,

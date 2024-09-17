@@ -3,7 +3,7 @@
   <div class="h-[45px] bg-purple_main
               rounded-t-xl flex items-center px-6 ">
     <h2 class="text-white m-0 text-[16px]">
-      Subject details ({{ subjectIndex + 1 }})
+      Subject details
     </h2>
   </div>
   <div class="px-4 py-4">
@@ -11,62 +11,52 @@
     <div class="row-1 flex justify-between gap-16">
 
       <div class="basis-0 grow">
-        <div class="mb-[12px] text-text_color font-semibold capitalize pl-1">Subject name *</div>
+        <div class="flex gap-4">
+          <div class="mb-[12px] text-text_color font-semibold capitalize pl-1">Subject name *</div>
+          @if (getfield("subjectName").invalid && !getfield("subjectName").untouched) {
+            @if (getfield("subjectName").hasError("required")) {
+              <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
+            } @else if (getfield("subjectName").hasError("duplicate")) {
+              <mat-error class="translate-y-[-2px]">{{ duplicationError }}</mat-error>
+            }
+          }
+
+        </div>
         <mat-form-field appearance="outline" class="form_element w-full">
           <input formControlName="subjectName" matInput placeholder="Subject name">
         </mat-form-field>
       </div>
 
       <div class="basis-0 grow">
-        <div class="mb-[12px] text-text_color
+        <div class="flex justify-between">
+          <div class="mb-[12px] text-text_color
                    font-semibold capitalize"
-        >
-          Avg & Coef *
+          >
+            Avg & Coef *
+          </div>
+
+          @if (getfield("subjectCoef").invalid && !getfield("subjectCoef").untouched) {
+            <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
+          }
+
         </div>
+
         <div class="flex gap-4 justify-between">
           <mat-form-field appearance="outline"
-                          class="form_element basis-0 grow">
+                          class="form_element basis-0 grow-[1]">
             <input formControlName="subjectAvg"
                    matInput placeholder="Avg ">
 
           </mat-form-field>
-          <mat-form-field appearance="outline"
-                          class="form_element basis-0 grow ">
-            <input
-              [matAutocomplete]="auto"
-              formControlName="subjectCoef" matInput
-              placeholder="Subject coef"
-              type="text">
-            <mat-autocomplete #auto="matAutocomplete"
-                              [displayWith]="displayFn"
-                              class="auto_complete_form">
-              @for (option of filteredOptions | async; track option) {
-                <mat-option [value]="option">
-                  {{ option.name }}
-                </mat-option>
-              } @empty {
-                <mat-option [value]="myControl"
-                            class="bg-[#393e732e]">
-                  <div class="absolute top-0 left-0 h-full
-                              px-4 flex items-center"
-                       (click)="prevent($event)"
-                  >
-                    add
-                    <span class="ml-2 font-semibold text-text_color">
-                    {{
-                        getDisplayValue()
-                      }}
-                  </span>
-                  </div>
-                </mat-option>
-                <mat-option disabled="true "
-                            class="min-h-[30px]"
-                            (click)="prevent($event)"
-                            (mousedown)="prevent($event)">No results found
-                </mat-option>
-              }
-            </mat-autocomplete>
-          </mat-form-field>
+          <app-auto-complete-form (createItem)="createItem($event)"
+                                  [displayFn]="displayFn"
+                                  [fieldControl]="getfield('subjectCoef')"
+                                  [label]="'Subject coefficient'"
+                                  [numberType]="true"
+                                  [optionsList]="dataOptionsCoefficient()"
+                                  class="'form_element basis-0 grow '"
+          ></app-auto-complete-form>
+
 
 
         </div>
@@ -76,8 +66,8 @@
     <!--            Start tests-->
     <!--    <app-test-form></app-test-form>-->
     @if (tests.controls) {
-      <div class=" w-full  mt-4 flex flex-col gap-4" formArrayName="tests">
-        <h3 class="text-grey_3 font-semibold text-[19px] ">Tests </h3>
+      <div class=" w-full   flex flex-col gap-4" formArrayName="tests">
+        <h3 class="text-grey_3 font-semibold text-[19px]  mb-0">Tests </h3>
         @for (test of tests.controls; track test; let index = $index) {
           <app-test-form [formTest]="test"
                          [testIndex]="index"
@@ -92,7 +82,7 @@
 
     @if (subjectTypes.controls) {
       <div class=" w-full  mt-4 flex flex-col gap-4" formArrayName="subjectTypes">
-        <h3 class="text-grey_3 font-semibold text-[19px] ">Subjects Type </h3>
+        <h3 class="text-grey_3 font-semibold text-[19px] mb-0">Subjects Type </h3>
         @for (subjectType of subjectTypes.controls; track subjectType; let index = $index) {
           <app-subject-type-form
             [formSubjectType]="subjectType"

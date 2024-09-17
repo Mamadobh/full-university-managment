@@ -31,7 +31,7 @@ public class SubjectService extends BaseService<Subject, Integer, SubjectRequest
         exist(id);
         moduleService.exist(request.moduleId());
         coefficientService.exist(request.coefficientId());
-        Arrays.asList(request.tests()).forEach(testService::exist);
+        request.tests().forEach(testService::exist);
         return subjectRepo.save(mapper.toEntity(request, true)).getId();
     }
 

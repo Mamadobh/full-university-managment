@@ -2,6 +2,8 @@ package com.global.university.level;
 
 import com.global.university.base.BaseService;
 import com.global.university.response.PageResponse;
+import com.global.university.semester.SemesterMapper;
+import com.global.university.semester.SemesterService;
 import com.global.university.speciality.SpecialityService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +28,9 @@ public class LevelService extends BaseService<Level, Integer, LevelRequest, Leve
     LevelRepo levelRepo;
     @Autowired
     private LevelMapper mapper;
+
+
+
 
 
     @Override

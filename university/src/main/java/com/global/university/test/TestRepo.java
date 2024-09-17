@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TestRepo extends BaseRepo<Test, Integer> {
 
@@ -20,5 +22,17 @@ public interface TestRepo extends BaseRepo<Test, Integer> {
                                                            @Param("coefficientIdId") Integer coefficientIdId,
                                                            @Param("testId") Integer testId
 
+    );
+
+    @Query("""
+            SELECT test FROM Test  test
+            WHERE test.testDuration.id=:testDurationId
+            AND test.coefficient.id =:coefficientID
+            And test.typeTest.id = :testTypeId
+            """)
+    Optional<Test> findByDurationAndCoficientAndType(
+            @Param("testDurationId") Integer testDurationId,
+            @Param("coefficientID") Integer coefficientID,
+            @Param("testTypeId") Integer testTypeId
     );
 }
