@@ -52,8 +52,21 @@
   .mat-mdc-text-field-wrapper {
     height: 65px !important;
   }
+
+
 }
 
+.avg_field {
+  opacity: 0.8!important;
+
+
+  .mat-mdc-input-element {
+    font-size: 12px !important;
+  }
+  .mat-mdc-text-field-wrapper {
+    background-color: rgba(197, 194, 194, 0.09) !important;
+  }
+}
 .auto_complete_form {
   --mat-option-selected-state-layer-color: #eae6f5;
 
@@ -62,36 +75,37 @@
     color: #4D44B5 !important;
   }
 }
-.auto_complete_form{
 
-div.mat-mdc-select-panel {
-  max-height: 9999px !important;
-}
+.auto_complete_form {
 
-.options::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
+  div.mat-mdc-select-panel {
+    max-height: 9999px !important;
+  }
 
-.options::-webkit-scrollbar-track {
-  border-radius: 999px;
-}
+  .options::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
 
-.options::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: #4D44B5;
-  min-height: 10px !important;
-  min-width: 10px !important;
-}
+  .options::-webkit-scrollbar-track {
+    border-radius: 999px;
+  }
 
-.options::-webkit-scrollbar-track-piece:end {
-  background: transparent;
-  margin-bottom: 10px;
-}
+  .options::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #4D44B5;
+    min-height: 10px !important;
+    min-width: 10px !important;
+  }
 
-.options::-webkit-scrollbar-track-piece:start {
-  background: transparent;
-  margin-top: 10px;
-}
+  .options::-webkit-scrollbar-track-piece:end {
+    background: transparent;
+    margin-bottom: 10px;
+  }
+
+  .options::-webkit-scrollbar-track-piece:start {
+    background: transparent;
+    margin-top: 10px;
+  }
 }
 

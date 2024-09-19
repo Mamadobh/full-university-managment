@@ -4,6 +4,7 @@ import com.global.university.coefficient.CoeffcientRepo;
 import com.global.university.coefficient.Coefficient;
 import com.global.university.common.Mapper;
 import com.global.university.module.Module;
+import com.global.university.subject_type.SubjectTypeMapper;
 import com.global.university.test.Test;
 import com.global.university.test.TestMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class SubjectMapper implements Mapper<Subject, Integer, SubjectRequest, SubjectResponse> {
     private final TestMapper mapper;
     private final CoeffcientRepo coeffcientRepo;
+    private final SubjectTypeMapper subjectTypeMapper;
 
     @Override
     public Subject toEntity(SubjectRequest request, boolean isUpdate) {
@@ -46,11 +48,13 @@ public class SubjectMapper implements Mapper<Subject, Integer, SubjectRequest, S
     public SubjectResponse toResponse(Subject entity) {
         return SubjectResponse.builder()
                 .id(entity.getId())
-                .ModuleId(entity.getModule().getId())
                 .coefficient(entity.getCoefficient().getCoefficient())
                 .name(entity.getName())
                 .tests(
                         entity.getTests().stream().map(mapper::toResponse).collect(Collectors.toList())
+                )
+                .subjectTypes(
+                        entity.getSubjectTypes().stream().map(subjectTypeMapper::toResponse).collect(Collectors.toList())
                 )
                 .build();
     }

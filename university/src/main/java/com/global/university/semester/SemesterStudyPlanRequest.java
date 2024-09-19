@@ -18,6 +18,8 @@ public record SemesterStudyPlanRequest(
         @NotBlank(message = "name is required", groups = Default.class)
         @NotNull(message = "name is required", groups = Default.class)
         String name,
+        @NotBlank(message = "description is required", groups = Default.class)
+        @NotNull(message = "description is required", groups = Default.class)
         String description,
         @NotNull(message = "levelId is required", groups = Default.class)
         Integer levelId,

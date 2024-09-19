@@ -15,16 +15,16 @@
           <div class="mb-[12px] text-text_color font-semibold capitalize pl-1">Semester name
             *
           </div>
-          @if (getfield("semesterName").invalid && !getfield("semesterName").untouched) {
-            @if (getfield("semesterName").hasError("required")) {
+          @if (getfield("name").invalid && !getfield("name").untouched) {
+            @if (getfield("name").hasError("required")) {
               <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
-            } @else if (getfield("semesterName").hasError("duplicate")) {
+            } @else if (getfield("name").hasError("duplicate")) {
               <mat-error class="translate-y-[-2px]">{{ duplicationError }}</mat-error>
             }
           }
         </div>
         <mat-form-field appearance="outline" class="form_element w-full">
-          <input formControlName="semesterName" matInput placeholder="semester name">
+          <input formControlName="name" matInput placeholder="semester name">
 
         </mat-form-field>
 
@@ -32,7 +32,9 @@
 
       <div class="basis-0 grow">
         <div class="flex gap-4">
-          <div class="mb-[12px] text-text_color font-semibold capitalize">Start & End *</div>
+          <div class="mb-[12px] text-text_color font-semibold capitalize">Start & End
+            *
+          </div>
           @if ((getfield("startDate").invalid && !getfield("startDate").untouched)
           || (getfield("endDate").invalid && !getfield("endDate").untouched)) {
             <mat-error class="translate-y-[-2px]">
@@ -49,7 +51,7 @@
           <mat-form-field appearance="outline" class="form_element basis-0 grow">
             <input [matDatepicker]="picker1" formControlName="startDate" matInput>
             <mat-datepicker-toggle [disableRipple]="true" [for]="picker1" matIconSuffix></mat-datepicker-toggle>
-            <mat-datepicker #picker1 [calendarHeaderComponent]="myHeader"
+            <mat-datepicker #picker1
                             panelClass="w-[250px]"
             ></mat-datepicker>
           </mat-form-field>
@@ -57,7 +59,7 @@
           <mat-form-field appearance="outline" class="form_element basis-0 grow">
             <input [matDatepicker]="picker2" formControlName="endDate" matInput>
             <mat-datepicker-toggle [disableRipple]="true" [for]="picker2" matIconSuffix></mat-datepicker-toggle>
-            <mat-datepicker #picker2 [calendarHeaderComponent]="myHeader"
+            <mat-datepicker #picker2
                             panelClass="w-[250px]"
             ></mat-datepicker>
           </mat-form-field>
@@ -71,12 +73,12 @@
     <div>
       <div class="flex gap-4">
         <div class="mb-[12px] text-text_color font-semibold capitalize pl-1 ">Description *</div>
-        @if (getfield("semesterDescription").invalid && !getfield("semesterDescription").untouched) {
+        @if (getfield("description").invalid && !getfield("description").untouched) {
           <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
         }
       </div>
       <mat-form-field appearance="outline" class="form_element w-full text_aria ">
-          <textarea class="resize-none" formControlName="semesterDescription" matInput placeholder="Descritions"
+          <textarea class="resize-none" formControlName="description" matInput placeholder="Descritions"
                     rows="2"></textarea>
       </mat-form-field>
     </div>

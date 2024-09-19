@@ -7,10 +7,10 @@
           *
         </div>
 
-        @if (getfield("subjectType").invalid && !getfield("subjectType").untouched) {
-          @if (getfield("subjectType").hasError("required")) {
+        @if (getfield("typeId").invalid && !getfield("typeId").untouched) {
+          @if (getfield("typeId").hasError("required")) {
             <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
-          } @else if (getfield("subjectType").hasError("duplicate")) {
+          } @else if (getfield("typeId").hasError("duplicate")) {
             <mat-error class="translate-y-[-2px]">{{ duplicationError }}</mat-error>
           }
         }
@@ -18,7 +18,7 @@
       </div>
       <app-auto-complete-form (createItem)="createTypeOfSubjectItem($event)"
                               [displayFn]="displayFnTypeOfSubject"
-                              [fieldControl]="getfield('subjectType')"
+                              [fieldControl]="getfield('typeId')"
                               [label]="'type of subject '"
                               [optionsList]="dataOptionsTypeOfSubject()"
                               class="'form_element w-full '"
@@ -31,14 +31,14 @@
       <div class="flex gap-4">
         <div class="mb-[12px] text-text_color font-semibold capitalize pl-1">NBH *</div>
 
-        @if (getfield("subjectTypeNbh").invalid && !getfield("subjectTypeNbh").untouched) {
+        @if (getfield("numberSessionId").invalid && !getfield("numberSessionId").untouched) {
           <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
         }
 
       </div>
       <app-auto-complete-form (createItem)="createNumberOfSessionItem($event)"
                               [displayFn]="displayFnNumberOfSession"
-                              [fieldControl]="getfield('subjectTypeNbh')"
+                              [fieldControl]="getfield('numberSessionId')"
                               [label]="'Number of sessiont '"
                               [numberType]="true"
                               [optionsList]="dataOptionsNumberOfSession()"

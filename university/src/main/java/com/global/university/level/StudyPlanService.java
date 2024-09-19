@@ -4,9 +4,9 @@ import com.global.university.exception.DataDuplicationException;
 import com.global.university.module.Module;
 import com.global.university.module.ModuleMapper;
 import com.global.university.module.ModuleRequest;
-import com.global.university.semester.Semester;
-import com.global.university.semester.SemesterMapper;
-import com.global.university.semester.SemesterRepo;
+import com.global.university.module.ModuleStudyPlanResponse;
+import com.global.university.response.Response;
+import com.global.university.semester.*;
 import com.global.university.subject.Subject;
 import com.global.university.subject.SubjectMapper;
 import com.global.university.subject.SubjectStudyPlanRequest;
@@ -17,6 +17,7 @@ import com.global.university.test.Test;
 import com.global.university.test.TestMapper;
 import com.global.university.test.TestRequest;
 import com.global.university.test.TestService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ public class StudyPlanService {
     private final SubjectMapper subjectMapper;
     private final SubjectTypeMapper subjectTypeMapper;
     private final SemesterRepo semesterRepo;
+    private final LevelRepo levelRepo;
 
 
     @Transactional
@@ -49,6 +51,22 @@ public class StudyPlanService {
             semesterRepo.save(semester);
         });
         return 1;
+    }
+
+    public  StudyPlanResponse findStudyPlan(Integer levelId) {
+        Level level = levelRepo.findById(levelId)
+                .orElseThrow(() ->
+                new EntityNotFoundException(" Data not Found with id " + levelId + " Please verify !!"));
+
+       return StudyPlanResponse.builder()
+                .semesters(
+                        level
+                                .getSemesters()
+                                .stream()
+                                .map(semesterMapper::toResponseStudyPlan)
+                                .collect(Collectors.toList())
+                )
+                .build();
     }
 
     private List<Module> getModule(List<ModuleRequest> modulesRequest, Semester semester) {
@@ -84,7 +102,7 @@ public class StudyPlanService {
         return testsRequest.stream().map((testReq) -> {
                     Test test = testService.findTestByDuraionAndCOefficientAndType(testReq)
                             .orElseGet(() -> testMapper.toEntity(testReq));
-                    test.getSubjects().add(subject);
+//                    test.getSubjects().add(subject);
                     return test;
                 })
                 .collect(Collectors.toList());

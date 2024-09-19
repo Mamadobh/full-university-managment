@@ -20,7 +20,7 @@ public class LevelController {
     private final StudyPlanService studyPlanService;
 
     @PostMapping("/study-plan")
-    public ResponseEntity<Response<?>> test(@Validated({Default.class}) @RequestBody StudyPlanRequest request) {
+    public ResponseEntity<Response<?>> addStudyPlan(@Validated({Default.class}) @RequestBody StudyPlanRequest request) {
         return ResponseEntity.status(OK).body(
                 Response.<Integer>builder()
                         .success(true)
@@ -28,6 +28,18 @@ public class LevelController {
                         .data(studyPlanService.AddFullStudyPlan(request))
                         .build()
         );
+    }
+
+    @GetMapping("/study-plan/{level-id}")
+    public ResponseEntity<Response<StudyPlanResponse>> findStudyPlan(
+            @PathVariable("level-id") Integer levelId
+    ) {
+        return ResponseEntity.status(OK).body(
+                Response.<StudyPlanResponse>builder()
+                        .success(true)
+                        .status(OK.toString())
+                        .data(studyPlanService.findStudyPlan(levelId))
+                        .build());
     }
 
     @GetMapping("")

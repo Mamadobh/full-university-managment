@@ -3,6 +3,9 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
 import {ValidateDate, validateDuplication} from "../../../valildators/validators";
+import {StudyPlanRequest} from "./model/study-plan.model";
+import {HttpClient} from "@angular/common/http";
+import {BASE_PATH} from "../../Constants";
 
 const moment = _rollupMoment || _moment;
 
@@ -13,9 +16,9 @@ export class StudyPlanService {
 
   studyPlanFrom!: FormGroup;
   isFormSubmited = signal(false)
+  _path: string = BASE_PATH + "levels" + "/study-plan"
 
-  constructor(private fb: FormBuilder) {
-
+  constructor(private fb: FormBuilder, private _http: HttpClient) {
 
   }
 
@@ -27,138 +30,138 @@ export class StudyPlanService {
           {
             semesters: this.fb.array([
               this.fb.group({
-                  semesterName: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                  startDate: moment(),
-                  endDate: moment(),
-                  semesterDescription: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                  name: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                  startDate: new Date(),
+                  endDate: new Date(),
+                  description: ["", {validators: [Validators.required], updateOn: 'blur'}],
                   modules: this.fb.array([
                     this.fb.group({
-                      moduleName: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                      moduleType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                      moduleDescription: "",
+                      name: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                      moduleTypeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                      description: "",
                       subjects: this.fb.array([
                         this.fb.group({
-                          subjectName: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                          name: ["", {validators: [Validators.required], updateOn: 'blur'}],
                           subjectAvg: ["", {updateOn: 'blur'}],
-                          subjectCoef: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                          coefficientId: ["", {validators: [Validators.required], updateOn: 'blur'}],
                           tests: this.fb.array([
                             this.fb.group({
-                              testType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                              testCoef: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                              testNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                              testTypeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                              coefficientId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                              testDuraionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
                             })
                           ]),
                           subjectTypes: this.fb.array([
                             this.fb.group({
-                              subjectType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                              subjectTypeNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                              typeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                              numberSessionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
                             })
-                          ], {validators: validateDuplication("subjectType")})
+                          ], {validators: validateDuplication("typeId")})
                         })
-                      ], {validators: validateDuplication("subjectName")})
+                      ], {validators: validateDuplication("name")})
                     })
-                  ], {validators: validateDuplication("moduleName")})
+                  ], {validators: validateDuplication("name")})
                 },
                 {validators: ValidateDate})
-            ], {validators: validateDuplication("semesterName")})
+            ], {validators: validateDuplication("name")})
           }
         );
         break;
       case "semester":
         formItem = this.fb.group({
-            semesterName: ["", {validators: [Validators.required], updateOn: 'blur'}],
-            startDate: moment(),
-            endDate: moment(),
-            semesterDescription: ["", {validators: [Validators.required], updateOn: 'blur'}],
+            name: ["", {validators: [Validators.required], updateOn: 'blur'}],
+            startDate: new Date(),
+            endDate: new Date(),
+            description: ["", {validators: [Validators.required], updateOn: 'blur'}],
             modules: this.fb.array([
               this.fb.group({
-                moduleName: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                moduleType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                moduleDescription: "",
+                name: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                moduleTypeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                description: "",
                 subjects: this.fb.array([
                   this.fb.group({
-                    subjectName: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                    name: ["", {validators: [Validators.required], updateOn: 'blur'}],
                     subjectAvg: ["", {updateOn: 'blur'}],
-                    subjectCoef: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                    coefficientId: ["", {validators: [Validators.required], updateOn: 'blur'}],
                     tests: this.fb.array([
                       this.fb.group({
-                        testType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                        testCoef: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                        testNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                        testTypeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                        coefficientId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                        testDuraionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
                       })
                     ]),
                     subjectTypes: this.fb.array([
                       this.fb.group({
-                        subjectType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                        subjectTypeNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                        typeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                        numberSessionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
                       })
-                    ], {validators: validateDuplication("subjectType")})
+                    ], {validators: validateDuplication("typeId")})
                   })
-                ], {validators: validateDuplication("subjectName")})
+                ], {validators: validateDuplication("name")})
               })
-            ], {validators: validateDuplication("moduleName")})
+            ], {validators: validateDuplication("name")})
           },
           {validators: ValidateDate})
         break;
       case "module":
         formItem = this.fb.group({
-            moduleName: ["", {validators: [Validators.required], updateOn: 'blur'}],
-            moduleType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-            moduleDescription: "",
-            subjects: this.fb.array([
-              this.fb.group({
-                subjectName: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                subjectAvg: ["", {updateOn: 'blur'}],
-                subjectCoef: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                tests: this.fb.array([
-                  this.fb.group({
-                    testType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                    testCoef: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                    testNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                  })
-                ]),
-                subjectTypes: this.fb.array([
-                  this.fb.group({
-                    subjectType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                    subjectTypeNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
-                  })
-                ], {validators: validateDuplication("subjectType")})
-              })
-            ], {validators: validateDuplication("subjectName")})
-          })
+          name: ["", {validators: [Validators.required], updateOn: 'blur'}],
+          moduleTypeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+          description: "",
+          subjects: this.fb.array([
+            this.fb.group({
+              name: ["", {validators: [Validators.required], updateOn: 'blur'}],
+              subjectAvg: ["", {updateOn: 'blur'}],
+              coefficientId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+              tests: this.fb.array([
+                this.fb.group({
+                  testTypeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                  coefficientId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                  testDuraionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                })
+              ]),
+              subjectTypes: this.fb.array([
+                this.fb.group({
+                  typeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                  numberSessionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+                })
+              ], {validators: validateDuplication("typeId")})
+            })
+          ], {validators: validateDuplication("name")})
+        })
 
         break;
       case "subject":
         formItem = this.fb.group({
-          subjectName: ["", {validators: [Validators.required], updateOn: 'blur'}],
+          name: ["", {validators: [Validators.required], updateOn: 'blur'}],
           subjectAvg: ["", {updateOn: 'blur'}],
-          subjectCoef: ["", {validators: [Validators.required], updateOn: 'blur'}],
+          coefficientId: ["", {validators: [Validators.required], updateOn: 'blur'}],
           tests: this.fb.array([
             this.fb.group({
-              testType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-              testCoef: ["", {validators: [Validators.required], updateOn: 'blur'}],
-              testNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
+              testTypeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+              coefficientId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+              testDuraionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
             })
           ]),
           subjectTypes: this.fb.array([
             this.fb.group({
-              subjectType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-              subjectTypeNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
+              typeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+              numberSessionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
             })
-          ], {validators: validateDuplication("subjectType")})
+          ], {validators: validateDuplication("typeId")})
         })
         break;
       case "test":
         formItem = this.fb.group({
-          testType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-          testCoef: ["", {validators: [Validators.required], updateOn: 'blur'}],
-          testNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
+          testTypeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+          coefficientId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+          testDuraionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
         })
         break;
       case "subjectType":
         formItem = this.fb.group({
-          subjectType: ["", {validators: [Validators.required], updateOn: 'blur'}],
-          subjectTypeNbh: ["", {validators: [Validators.required], updateOn: 'blur'}],
+          typeId: ["", {validators: [Validators.required], updateOn: 'blur'}],
+          numberSessionId: ["", {validators: [Validators.required], updateOn: 'blur'}],
         })
         break;
     }
@@ -170,7 +173,9 @@ export class StudyPlanService {
   }
 
   addSemester() {
-    this.getAllSemesters().push(this.createForm("semester"))
+    if (this.getAllSemesters().length < 2) {
+      this.getAllSemesters().push(this.createForm("semester"))
+    }
   }
 
   removeSemester(semesterIndex: number) {
@@ -235,4 +240,9 @@ export class StudyPlanService {
       this.getAllTypeSubjects(semesterIndex, moduleIndex, subjectIndex).removeAt(subjectTypeIndex)
     }
   }
+
+  saveStudyPlan = (studyPlanRequest: StudyPlanRequest) => {
+    return this._http.post<number>(this._path, studyPlanRequest)
+  }
+
 }

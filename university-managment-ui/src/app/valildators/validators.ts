@@ -1,16 +1,16 @@
-import {AbstractControl, FormArray, FormGroup, ValidatorFn} from "@angular/forms";
+import {AbstractControl, FormArray, ValidatorFn} from "@angular/forms";
 import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
-import {type} from "node:os";
 
 const moment = _rollupMoment || _moment;
 
 export function ValidateDate(group: AbstractControl) {
   const startDate = moment(group.get("startDate")?.value)
   const endDate = moment(group.get("endDate")?.value)
-  startDate.year(2000);
-  endDate.year(2000)
+
   if (endDate.isAfter(startDate)) {
+    group.get("startDate")?.setErrors(null)
+    group.get("endDate")?.setErrors(null)
     return null
   }
   group.get("startDate")?.setErrors({invalidDate: true})
@@ -37,18 +37,17 @@ export function validateDuplication(controlName: string): ValidatorFn {
       .map((el: AbstractControl) => {
         return typeof el.get(controlName)?.value === "string" ?
           el.get(controlName)?.value?.toLowerCase() :
-          el.get(controlName)?.value?.[controlName]?.toLowerCase();
+          el.get(controlName)?.value;
       })
       .filter(Boolean);
-
-
     const duplicates = values
       .map((value: any, index: any, self: any) => self.indexOf(value) !== index ? value : null)
       .filter(Boolean);
+
     if (duplicates.length > 0) {
       control.controls.forEach((group: AbstractControl) => {
         const field = group.get(controlName);
-        const value = typeof field?.value === "string" ? field?.value?.toLowerCase() : field?.value?.[controlName]?.toLowerCase()
+        const value = typeof field?.value === "string" ? field?.value?.toLowerCase() : field?.value
 
         if (duplicates.includes(value)) {
           field?.setErrors({duplicate: true})

@@ -14,17 +14,17 @@
             Module name *
           </div>
 
-          @if (getfield("moduleName").invalid && !getfield("moduleName").untouched) {
-            @if (getfield("moduleName").hasError("required")) {
+          @if (getfield("name").invalid && !getfield("name").untouched) {
+            @if (getfield("name").hasError("required")) {
               <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
-            } @else if (getfield("moduleName").hasError("duplicate")) {
+            } @else if (getfield("name").hasError("duplicate")) {
               <mat-error class="translate-y-[-2px]">{{ duplicationError }}</mat-error>
             }
           }
         </div>
         <mat-form-field appearance="outline"
                         class="form_element w-full">
-          <input formControlName="moduleName"
+          <input formControlName="name"
                  matInput
                  placeholder="module name">
         </mat-form-field>
@@ -35,14 +35,14 @@
                     font-semibold capitalize pl-1">
             Module type *
           </div>
-          @if (getfield("moduleType").invalid && !getfield("moduleType").untouched) {
+          @if (getfield("moduleTypeId").invalid && !getfield("moduleTypeId").untouched) {
             <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
           }
         </div>
 
         <app-auto-complete-form (createItem)="createItem($event)"
                                 [displayFn]="displayFn"
-                                [fieldControl]="getfield('moduleType')"
+                                [fieldControl]="getfield('moduleTypeId')"
                                 [label]="'module type'"
                                 [optionsList]="dataOptionsModuleType()"
         >
@@ -61,7 +61,7 @@
                       class="form_element w-full text_aria">
 
         <textarea class="resize-none"
-                  formControlName="moduleDescription"
+                  formControlName="description"
                   matInput
                   placeholder="Module descritions"
                   rows="2">
