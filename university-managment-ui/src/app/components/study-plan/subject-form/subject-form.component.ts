@@ -10,6 +10,8 @@ import {CoefficientService} from "../../../core/services/coefficient/coefficient
 import {CoefficientResponse} from "../../../core/services/coefficient/model/coefficient.model";
 import {AutoCompleteFormComponent} from "../../shared/auto-complete-form/auto-complete-form.component";
 import {JsonPipe} from "@angular/common";
+import {TestTypeService} from "../../../core/services/test-type/test-type.service";
+import {TestTypeResponse} from "../../../core/services/test-type/model/test-type.model";
 
 @Component({
   selector: 'app-subject-form',
@@ -34,10 +36,13 @@ export class SubjectFormComponent implements OnInit {
   coefficientService = inject(CoefficientService)
   dataOptionsCoefficient = signal<CoefficientResponse[]>([])
   errorMsg: string = "field is required !!"
-  duplicationError="subject is duplicated !!"
+  duplicationError = "subject is duplicated !!"
   @Input() subjectIndex!: number;
   @Input() moduleIndex!: number;
   @Input() semesterIndex!: number;
+  testTypeService = inject(TestTypeService)
+  dataOptionsTestType = signal<TestTypeResponse[]>([])
+
 
   @Input()
   set formSubject(value: AbstractControl) {
@@ -52,6 +57,9 @@ export class SubjectFormComponent implements OnInit {
 
 
   ngOnInit() {
+    this.testTypeService.allTestTypeReponse.subscribe((data) => {
+      this.dataOptionsTestType.set(data.content)
+    })
     this.coefficientService.allCoefficientReponse.subscribe((data) => {
       this.dataOptionsCoefficient.set(data.content)
     })
@@ -107,5 +115,31 @@ export class SubjectFormComponent implements OnInit {
     })
   }
 
+  findCoefficientById(id: number): number {
+    return this.dataOptionsCoefficient().find((el) => el.id === id)?.coefficient as number;
+  }
+
+  findTestTypeById(id: number): string {
+    return this.dataOptionsTestType().find((el) => el.id === id)?.testType as string;
+  }
+
+
+  getSubjectAvg(): string {
+    let avg = "("
+    let total = 0
+    this.getfield("tests").value.forEach((el: any, index: number) => {
+      if (el?.testTypeId && el?.coefficientId) {
+        avg=index>0? avg+"+":avg
+        total++
+        const coef = this.findCoefficientById(el?.coefficientId) > 1 ? this.findCoefficientById(el?.coefficientId).toString()+"*" : ""
+        avg = avg + coef  + this.findTestTypeById(el?.testTypeId)
+      }
+    })
+    avg += ")"
+    if (avg.length == 2) {
+      return ""
+    }
+    return avg + "/" + total
+  }
 
 }

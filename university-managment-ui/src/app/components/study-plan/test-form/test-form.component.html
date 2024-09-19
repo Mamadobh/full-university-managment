@@ -14,7 +14,7 @@
         >
           Test type *
         </div>
-        @if (getfield("testType").invalid && !getfield("testType").untouched) {
+        @if (getfield("testTypeId").invalid && !getfield("testTypeId").untouched) {
           <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
         }
 
@@ -22,7 +22,7 @@
 
       <app-auto-complete-form (createItem)="createTestTypeItem($event)"
                               [displayFn]="displayFnTestType"
-                              [fieldControl]="getfield('testType')"
+                              [fieldControl]="getfield('testTypeId')"
                               [label]="'Test type'"
                               [optionsList]="dataOptionsTestType()"
                               class="'form_element w-full '"
@@ -36,7 +36,7 @@
         >
           Test Coef *
         </div>
-        @if (getfield("testCoef").invalid && !getfield("testCoef").untouched) {
+        @if (getfield("coefficientId").invalid && !getfield("coefficientId").untouched) {
           <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
         }
 
@@ -44,7 +44,7 @@
 
       <app-auto-complete-form (createItem)="createCoefficientItem($event)"
                               [displayFn]="displayFnCoefficient"
-                              [fieldControl]="getfield('testCoef')"
+                              [fieldControl]="getfield('coefficientId')"
                               [label]="'Test coefficient'"
                               [numberType]="true"
                               [optionsList]="dataOptionsCoefficient()"
@@ -59,7 +59,7 @@
                  font-semibold capitalize pl-1">
           NBH *
         </div>
-        @if (getfield("testNbh").invalid && !getfield("testNbh").untouched) {
+        @if (getfield("testDuraionId").invalid && !getfield("testDuraionId").untouched) {
           <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
         }
 
@@ -67,7 +67,7 @@
 
       <app-auto-complete-form (createItem)="createTestDurationsItem($event)"
                               [displayFn]="displayFnTestDuration"
-                              [fieldControl]="getfield('testNbh')"
+                              [fieldControl]="getfield('testDuraionId')"
                               [label]="'Test duration'"
                               [numberType]="true"
                               [optionsList]="dataOptionsTestDuration()"

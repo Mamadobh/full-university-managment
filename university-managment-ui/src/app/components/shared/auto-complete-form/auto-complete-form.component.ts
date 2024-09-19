@@ -53,7 +53,9 @@ export class AutoCompleteFormComponent<T> implements OnInit {
     }
   }
 
-
+displayValue(option:any):any{
+    return option?.id
+}
   ngOnInit() {
     this.searchControl?.valueChanges.pipe(
       startWith(''),

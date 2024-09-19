@@ -45,7 +45,7 @@
       <div class="options overflow-auto max-h-[190px]">
         @for (option of filteredOptions(); track getId(option)) {
 
-          <mat-option [value]="option" class="">
+          <mat-option [value]="displayValue(option)" class="">
             {{ displayFn(option) }}
           </mat-option>
         } @empty {

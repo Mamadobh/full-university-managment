@@ -7,10 +7,8 @@ import {MatIcon} from "@angular/material/icon";
 import {ReactiveFormsModule} from "@angular/forms";
 import {StudyPlanService} from "../../../core/services/study-plan/study-plan.service";
 import {SubjectFormComponent} from "../../../components/study-plan/subject-form/subject-form.component";
+import {StudyPlanRequest} from "../../../core/services/study-plan/model/study-plan.model";
 
-export interface User {
-  name: string;
-}
 
 @Component({
   selector: 'app-study-plan-create',
@@ -35,6 +33,8 @@ export class StudyPlanCreateComponent implements OnInit {
   private router = inject(Router)
   levelId = ""
   studyPlanService = inject(StudyPlanService)
+  form = computed(() => this.studyPlanService.studyPlanFrom)
+  errorsMessage: string[] = []
 
   constructor() {
     this.studyPlanService.studyPlanFrom = this.studyPlanService.createForm("init")
@@ -44,7 +44,6 @@ export class StudyPlanCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-
 
     this.activeRoute.paramMap.subscribe((data) => {
 
@@ -58,11 +57,50 @@ export class StudyPlanCreateComponent implements OnInit {
     })
   }
 
+  saveStudyPlan(request: StudyPlanRequest) {
+
+    this.studyPlanService.saveStudyPlan(request).subscribe(({
+      next: (res) => {
+        console.log("res = ", res)
+        this.errorsMessage = []
+      },
+      error: (err) => {
+        console.log("err = ", Object.values(err.error.error.errors))
+        setTimeout(() => {
+          window.scrollBy(0, 100);
+
+        }, 100)
+        if (err.error.error?.errors) {
+          this.errorsMessage = [...this.errorsMessage, ...Object.values(err.error.error?.errors) as string []]
+        }
+        if (err.error.error?.error) {
+          this.errorsMessage.push(err.error.error?.error)
+        }
+      }
+    }))
+  }
 
   onSubmit() {
+    this.router.navigate(["study-plan",this.levelId,"recap"])
     this.studyPlanService.isFormSubmited.set(true)
     this.studyPlanService.studyPlanFrom.markAllAsTouched()
-
-    console.log("the form is submited !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    let my_form = this.form().value as StudyPlanRequest;
+    my_form.semesters = my_form.semesters?.map((el: any) => {
+      return {
+        startDate: el?.startDate?.toISOString().split('T')[0],
+        endDate: el?.endDate?.toISOString().split('T')[0],
+        levelId: +this.levelId,  // assuming `this.levelId` is properly defined
+        name: el?.name,
+        description: "",
+        modules: el?.modules
+      };
+    }) ?? [];
+    console.log("my f ", my_form)
+    console.log("this form is ", my_form)
+    if (!this.form().invalid) {
+      console.log("this form is ", my_form)
+      this.saveStudyPlan(my_form)
+      this.studyPlanService.studyPlanFrom.reset()
+    }
   }
 }

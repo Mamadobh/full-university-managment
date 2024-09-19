@@ -3,7 +3,7 @@
   <div class="h-[45px] bg-purple_main
               rounded-t-xl flex items-center px-6 ">
     <h2 class="text-white m-0 text-[16px]">
-      Subject details
+      Subject details {{subjectIndex +1 }}
     </h2>
   </div>
   <div class="px-4 py-4">
@@ -13,17 +13,17 @@
       <div class="basis-0 grow">
         <div class="flex gap-4">
           <div class="mb-[12px] text-text_color font-semibold capitalize pl-1">Subject name *</div>
-          @if (getfield("subjectName").invalid && !getfield("subjectName").untouched) {
-            @if (getfield("subjectName").hasError("required")) {
+          @if (getfield("name").invalid && !getfield("name").untouched) {
+            @if (getfield("name").hasError("required")) {
               <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
-            } @else if (getfield("subjectName").hasError("duplicate")) {
+            } @else if (getfield("name").hasError("duplicate")) {
               <mat-error class="translate-y-[-2px]">{{ duplicationError }}</mat-error>
             }
           }
 
         </div>
         <mat-form-field appearance="outline" class="form_element w-full">
-          <input formControlName="subjectName" matInput placeholder="Subject name">
+          <input formControlName="name" matInput placeholder="Subject name">
         </mat-form-field>
       </div>
 
@@ -35,7 +35,7 @@
             Avg & Coef *
           </div>
 
-          @if (getfield("subjectCoef").invalid && !getfield("subjectCoef").untouched) {
+          @if (getfield("coefficientId").invalid && !getfield("coefficientId").untouched) {
             <mat-error class="translate-y-[-2px]"> {{ errorMsg }}</mat-error>
           }
 
@@ -43,20 +43,19 @@
 
         <div class="flex gap-4 justify-between">
           <mat-form-field appearance="outline"
-                          class="form_element basis-0 grow-[1]">
-            <input formControlName="subjectAvg"
+                          class="form_element avg_field basis-0 grow-[1]">
+            <input [value]="getSubjectAvg()"  formControlName="subjectAvg" [disabled]="true" readonly
                    matInput placeholder="Avg ">
 
           </mat-form-field>
           <app-auto-complete-form (createItem)="createItem($event)"
                                   [displayFn]="displayFn"
-                                  [fieldControl]="getfield('subjectCoef')"
+                                  [fieldControl]="getfield('coefficientId')"
                                   [label]="'Subject coefficient'"
                                   [numberType]="true"
                                   [optionsList]="dataOptionsCoefficient()"
                                   class="'form_element basis-0 grow '"
           ></app-auto-complete-form>
-
 
 
         </div>

@@ -4,6 +4,7 @@ import {ActualityComponent} from "./pages/actuality/actuality.component";
 import {StudyPlanComponent} from "./pages/study-plan-pages/study-plan/study-plan.component";
 import {StudyPlanDisplayComponent} from "./pages/study-plan-pages/study-plan-display/study-plan-display.component";
 import {StudyPlanCreateComponent} from "./pages/study-plan-pages/study-plan-create/study-plan-create.component";
+import {RecapStudyPlanComponent} from "./pages/study-plan-pages/recap-study-plan/recap-study-plan.component";
 
 export const routes: Routes = [
 
@@ -31,6 +32,9 @@ export const routes: Routes = [
   }, {
     path: "study-plan/:levelId/create",
     component: StudyPlanCreateComponent
-  },
+  }, {
+    path: "study-plan/:levelId/recap",
+    component: RecapStudyPlanComponent
+  }
 
 ];
