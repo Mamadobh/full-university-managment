@@ -20,8 +20,13 @@ export class TypeOfSubjectService extends CrudServiceService<TypeOfSubjectReques
   findAllTestOfSubject(page?: number | undefined, size?: number | undefined) {
     this.getAll(page, size).subscribe({
       next: (res) => {
+
         this.alltTypeOfSubjectReponse.next(res?.data)
       }
     })
   }
+
+
+
+
 }

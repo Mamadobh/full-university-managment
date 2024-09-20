@@ -19,15 +19,19 @@ import com.global.university.test.TestRequest;
 import com.global.university.test.TestService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StudyPlanService {
     private final SemesterMapper semesterMapper;
     private final ModuleMapper moduleMapper;
@@ -38,27 +42,13 @@ public class StudyPlanService {
     private final SemesterRepo semesterRepo;
     private final LevelRepo levelRepo;
 
+    public StudyPlanResponse findStudyPlan(Integer levelId) {
 
-    @Transactional
-    public Integer AddFullStudyPlan(StudyPlanRequest request) {
-        if (Semester.checkDuplicationSemester(request.semesters())) {
-            throw new DataDuplicationException("Can not have duplication of semester !!");
-        }
-        request.semesters().forEach((semesterReq) -> {
-            Semester semester = semesterMapper.toEntity(semesterReq);
-            List<Module> modules = this.getModule(semesterReq.modules(), semester);
-            semester.setModules(new HashSet<>(modules));
-            semesterRepo.save(semester);
-        });
-        return 1;
-    }
-
-    public  StudyPlanResponse findStudyPlan(Integer levelId) {
         Level level = levelRepo.findById(levelId)
                 .orElseThrow(() ->
-                new EntityNotFoundException(" Data not Found with id " + levelId + " Please verify !!"));
+                        new EntityNotFoundException(" Data not Found with id " + levelId + " Please verify !!"));
 
-       return StudyPlanResponse.builder()
+        return StudyPlanResponse.builder()
                 .semesters(
                         level
                                 .getSemesters()
@@ -69,20 +59,37 @@ public class StudyPlanService {
                 .build();
     }
 
-    private List<Module> getModule(List<ModuleRequest> modulesRequest, Semester semester) {
+    @Transactional
+    public Integer AddFullStudyPlan(StudyPlanRequest request) {
+        Map<String, Test> testCache = new HashMap<>();
+
+        if (Semester.checkDuplicationSemester(request.semesters())) {
+            throw new DataDuplicationException("Can not have duplication of semester !!");
+        }
+        request.semesters().forEach((semesterReq) -> {
+            Semester semester = semesterMapper.toEntity(semesterReq);
+            List<Module> modules = this.getModule(semesterReq.modules(), semester, testCache);
+            semester.setModules(new HashSet<>(modules));
+            semesterRepo.save(semester);
+        });
+        return 1;
+    }
+
+
+    private List<Module> getModule(List<ModuleRequest> modulesRequest, Semester semester, Map<String, Test> testCache) {
         if (Module.checkDuplicationModule(modulesRequest)) {
             throw new DataDuplicationException("Can not have duplication of module !!");
         }
         return modulesRequest.stream().map((moduleReq) -> {
             Module module = moduleMapper.toEntity(moduleReq, semester);
-            List<Subject> subjects = this.getSubjects(moduleReq.subjects(), module);
+            List<Subject> subjects = this.getSubjects(moduleReq.subjects(), module, testCache);
             module.setSubjects(new HashSet<>(subjects));
             return module;
         }).collect(Collectors.toList());
     }
 
     private List<Subject> getSubjects(List<SubjectStudyPlanRequest> subjectsRequest,
-                                      Module module) {
+                                      Module module, Map<String, Test> testCache) {
 
         if (Subject.checkDuplicationSubject(subjectsRequest)) {
             throw new DataDuplicationException("Can not have duplication of subject !!");
@@ -90,7 +97,7 @@ public class StudyPlanService {
         return subjectsRequest.stream().map((subjectReq) -> {
             Subject subject = subjectMapper.toEntity(subjectReq, module);
             List<SubjectType> subjectTypes = this.getSubjectTypes(subjectReq.subjectTypes(), subject);
-            List<Test> tests = this.getTest(subjectReq.tests(), subject);
+            List<Test> tests = this.getTest(subjectReq.tests(), subject, testCache);
             subject.setTests(new HashSet<>(tests));
             subject.setSubjectTypes(new HashSet<>(subjectTypes));
             return subject;
@@ -98,12 +105,18 @@ public class StudyPlanService {
     }
 
     private List<Test> getTest(List<TestRequest> testsRequest,
-                               Subject subject) {
+                               Subject subject,
+                               Map<String, Test> testCache) {
         return testsRequest.stream().map((testReq) -> {
-                    Test test = testService.findTestByDuraionAndCOefficientAndType(testReq)
-                            .orElseGet(() -> testMapper.toEntity(testReq));
-//                    test.getSubjects().add(subject);
-                    return test;
+                    log.error("the find request ", testsRequest);
+                    log.error(" the find result is ", testService.findTestByDuraionAndCOefficientAndType(testReq));
+                    String testKey = testReq.testDuraionId() + "_" + testReq.coefficientId() + "_" + testReq.testTypeId();
+
+                    return testCache.computeIfAbsent(testKey, key ->
+                            testService.findTestByDuraionAndCOefficientAndType(testReq)
+                                    .orElseGet(() -> testMapper.toEntity(testReq))
+                    );
+
                 })
                 .collect(Collectors.toList());
     }
