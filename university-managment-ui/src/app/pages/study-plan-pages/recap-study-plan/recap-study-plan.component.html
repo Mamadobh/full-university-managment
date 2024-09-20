@@ -1,6 +1,6 @@
 <h2 class="text-text_color capitalize font-bold text-[24px] mb-1">
   {{ title }}</h2>
-<div class="p-6 bg-white rounded-md pb-20 mt-6">
+<div class="p-6 bg-white rounded-md  mt-6">
 
   <div class="flex  gap-8 items-start justify-between">
     <div class="text-center    capitalize font-14 text-text_color ">
@@ -26,157 +26,172 @@
   </div>
   <h2 class="text-text_color capitalize text-center font-bold text-[23px] mb-1">
     study Plan</h2>
-  <div class="flex   mt-8 gap-24 ">
+  @for (sem of studyPlanReponse().semesters; track sem.id) {
 
-    <div class=" ">
-      <div>
-        <span class="text-gray-500 text-[12px] font-medium ">Department:</span>
-        <span class="pl-2  text-purple_main text-[15px] font-medium">Computer Science</span>
-      </div>
-      <div class="mt-2">
-        <span class="text-gray-500 text-[12px] font-medium ">Level :</span>
-        <span class="pl-2  text-purple_main text-[15px] font-medium">First year </span>
-      </div>
+    <div class="flex   mt-8 justify-between  ">
 
+      <div class=" ">
+        <div>
+          <span class="text-gray-500 text-[12px] font-medium ">Department:</span>
+          <span class="pl-2  text-purple_main text-[12px] font-medium">
+          {{ level() ? level()?.department : "" }}</span>
+        </div>
+        <div class="mt-2">
+          <span class="text-gray-500 text-[12px] font-medium ">Level :</span>
+          <span class="pl-2  text-purple_main text-[12px] font-medium">
+          {{ level() ? level()?.name : "" }} </span>
+        </div>
+
+      </div>
+      <div class=" ">
+
+        <div class="">
+          <span class="text-gray-500 text-[12px] font-medium ">Track:</span>
+          <span
+            class="pl-2  text-purple_main text-[12px] font-medium">{{ level() ? level()?.specialityWithTrack : "" }}</span>
+        </div>
+        <div class="mt-2">
+          <span class="text-gray-500 text-[12px] font-medium ">Semester:</span>
+          <span class="pl-2  text-purple_main text-[12px] font-medium">First semester</span>
+        </div>
+      </div>
+      <div class=" ">
+
+        <div class="mt-2 ">
+          <span class="text-gray-500 text-[12px] font-medium ">Start date : </span>
+          <span class="pl-2  text-purple_main text-[12px] font-medium"> {{ getPeriod(sem.startDate) }}</span>
+        </div>
+        <div class="mt-2 ">
+          <span class="text-gray-500 text-[12px] font-medium ">End date: </span>
+          <span class="pl-2  text-purple_main text-[12px] font-medium"> {{ getPeriod(sem.endDate) }}</span>
+        </div>
+      </div>
     </div>
-    <div class=" ">
+    @for (semester of data(); track semester.id; let index = $index) {
+      <table [class.mt-24]="index ==1" class=" w-full mt-4 ">
 
-      <div class="">
-        <span class="text-gray-500 text-[12px] font-medium ">Track:</span>
-        <span class="pl-2  text-purple_main text-[15px] font-medium">301-DNI: Informatique: Tronc Commun</span>
-      </div>
-      <div class="mt-2">
-        <span class="text-gray-500 text-[12px] font-medium ">Semester:</span>
-        <span class="pl-2  text-purple_main text-[15px] font-medium">First semester</span>
-      </div>
+        <thead class="max-h-[30px] h-[30px]">
+        <tr>
+          @for (col of columns(); track col; let first = $first, last = $last) {
+            <th [class.px-[2px]]="!first&&!last" [class.pr-[2px]]="$first" [class.pl-[2px]]="$last">
+              <div
+                class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg
+               py-1 border border-purple_main text-[14px] text-gray-600
+               font-medium px-4 text-center ">
+                {{ col.column }}
+              </div>
+            </th>
+          }
+        </tr>
+
+        </thead>
+        <tbody>
+          @for (mod of semester.modules;
+            track mod.module;
+
+            let indexM = $index) {
+            @for (sub of mod.subjects;
+              track sub;
+              let firstS = $first, lastS = $last) {
+
+              <tr [class.border-t]="!firstS"
+                  [class.border-t-gray_color]="lastS"
+                  [class.border-b-2]="lastS"
+                  [class.border-b-text_color]="lastS"
+
+              >
+                @for (col of columns(); track col; let index = $index; let f = $first, l = $last) {
+                  @if (firstS) {
+                    <td [attr.rowspan]="(firstS&& col.rowspan)? mod.subjects.length:1"
+                        [class.align-top]="(firstS&& col.rowspan)"
+                        [class.font-semibold]="(firstS&&index==1)"
+                        [class.text-center]="((index>3 && index<columns().length-1) || index==0)"
+                        class="pl-[4px] text-[10px]  whitespace-nowrap ">
+                      @if (index == 0 && firstS) {
+                        {{ indexM + 1 }}
+                      } @else {
+                        {{ getValue(col, mod, sub) }}
+
+                      }
+                    </td>
+                  } @else if (!firstS && !col.rowspan) {
+                    <td
+                      [class.text-center]="((index>3 && index<columns().length-1) || index==0)"
+                      class="pl-[4px] text-[10px]  text-center whitespace-nowrap ">
+                      {{ sub[col.accessor] }}
+                    </td>
+                  }
+                }
+              </tr>
+            }
+          }
+        <tr>
+          @for (col of columns(); track col; let index = $index; ) {
+            @if (col.withTotal) {
+              <td class="font-semibold text-center">
+                {{ getTotal(0, col.accessor) }}
+              </td>
+            } @else if (col.accessor == "subject") {
+              <td class="font-semibold text-right">Total=</td>
+            } @else {
+              <td></td>
+            }
+          }
+        </tr>
+        <tr>
+          @for (col of columns(); track col; let index = $index; ) {
+            @if (col.accessor == "subject") {
+              <td class="font-semibold text-right">The total hourly time=</td>
+            } @else if (index == 4) {
+              <td class="font-semibold text-center">{{ getTotalHour(0) }}</td>
+            } @else {
+              <td></td>
+            }
+          }
+        </tr>
+
+        </tbody>
+      </table>
+    }
+  }
+
+
+  <div class="flex justify-between text-text_color text-[10px] mt-20">
+    <div>
+      H.* :number of hours of * per week
+    </div>
+    <div>
+      Coef.S:subject coefficient
+    </div>
+    <div>
+      Coef.M:module coefficient
     </div>
   </div>
-  <table class=" w-full mt-4 ">
+</div>
 
-    <thead class="max-h-[30px] h-[30px]">
-    <tr>
+<div class="mt-8 flex ml-auto gap-4 w-fit">
 
-      <th
-        class=" pr-[2px]  ">
-        <div
-          class="  h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          N°
-        </div>
-      </th>
-      <th class=" px-[2px]">
-        <div
-          class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          Module
-        </div>
-      </th>
-      <th class=" px-[2px]">
-        <div
-          class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          Module type
-        </div>
-      </th>
-      <th class=" px-[2px]">
-        <div
-          class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          Subjects
-        </div>
-      </th>
-      <th class=" px-[2px]">
-        <div
-          class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          H.C
-        </div>
-      </th>
-      <th class=" px-[2px]">
-        <div
-          class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          H.TD
-        </div>
-      </th>
-      <th class=" px-[2px]">
-        <div
-          class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          H.TP
-        </div>
-
-      </th>
-      <th class=" px-[2px]">
-        <div
-          class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          Coef.S
-        </div>
-      </th>
-      <th class=" px-[2px]">
-        <div
-          class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          Coef.M
-        </div>
-      </th>
-
-      <th class=" px-[2px]">
-        <div
-          class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg py-1 border border-purple_main text-[14px] text-gray-600 font-medium px-4 text-center ">
-          Average
-        </div>
-      </th>
-    </tr>
-
-    </thead>
-    <tbody>
-    <tr class="">
-      <td [attr.rowspan]="2" class="text-[10px] align-top ">1</td>
-      <td [attr.rowspan]="2" class="text-[10px]  align-top font-medium">Mathématiques Appliquées 2</td>
-      <td [attr.rowspan]="2" class="text-[10px] align-top"> Fondamentale</td>
-      <td class="text-[10px]  whitespace-nowrap">01A-7101-Mathématiques discrètes</td>
-      <td>1.5</td>
-      <td>0.75</td>
-      <td>0.0</td>
-      <td>1.5</td>
-      <td [attr.rowspan]="2" class="text-[10px] align-top">3.5</td>
-      <td>(2Ex+Ds)/3</td>
-
-    </tr>
-
-    <tr class=" border-t border-b-2  border-t-gray_color border-b-text_color ">
-      <td class="text-[10px] whitespace-nowrap">02A-7102-Probabilité et Statistiques</td>
-      <td>1.5</td>
-      <td>1.5</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>(2Ex+Ds)/3</td>
-
-
-    </tr>
-
-
-
-    <tr class="">
-      <td [attr.rowspan]="2" class="text-[10px] align-top ">1</td>
-      <td [attr.rowspan]="2" class="text-[10px]  align-top font-medium">Mathématiques Appliquées 2</td>
-      <td [attr.rowspan]="2" class="text-[10px] align-top"> Fondamentale</td>
-      <td class="text-[10px]  whitespace-nowrap">01A-7101-Mathématiques discrètes</td>
-      <td>1.5</td>
-      <td>0.75</td>
-      <td>0.0</td>
-      <td>1.5</td>
-      <td [attr.rowspan]="2" class="text-[10px] align-top">3.5</td>
-      <td>(2Ex+Ds)/3</td>
-
-    </tr>
-
-    <tr class=" border-t border-b-2  border-t-gray_color border-b-text_color ">
-      <td class="text-[10px] whitespace-nowrap">02A-7102-Probabilité et Statistiques</td>
-      <td>1.5</td>
-      <td>1.5</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>(2Ex+Ds)/3</td>
-
-
-    </tr>
-
-    </tbody>
-
-  </table>
-
+  <button
+    [style.border]="' solid 1.8px  !important'"
+    class="bg-transparent border-2 border-red-500
+           text-purple_main  text-[15px]  shadow-none
+            h-[40px] px-[22px]  flex "
+    extended mat-fab
+    type="button">
+    <mat-icon class=" font-light text-[20px] leading-[20px] mr-1 ">
+      edit
+    </mat-icon>
+    Editer
+  </button>
+  <button
+    class="bg-purple_main text-[15px] font-light h-[40px] px-[22px] "
+    extended
+    mat-fab
+    type="submit"
+  >
+    <mat-icon class=" font-light text-[19px] leading-[23px] mr-2 ">
+      save
+    </mat-icon>
+    Save as PDF
+  </button>
 </div>

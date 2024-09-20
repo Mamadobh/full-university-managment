@@ -3,7 +3,7 @@
   icon="receipt"
   title="Create study plan  "
 ></app-page-header>
-<form (ngSubmit)="onSubmit()" [formGroup]="studyPlanService.studyPlanFrom" id="allform">
+<form (ngSubmit)="onSubmit($event)" [formGroup]="studyPlanService.studyPlanFrom" id="allform">
   @if (studyPlanService.getAllSemesters().controls) {
     <div formArrayName="semesters">
       @for (semester of studyPlanService.getAllSemesters().controls; track semester; let index = $index) {
@@ -30,7 +30,9 @@
     class="bg-purple_main text-[15px] font-light h-[40px] px-[22px] "
     extended
     form="allform"
-    mat-fab type="submit">
+    mat-fab
+    type="submit"
+  >
     Submit
   </button>
 </div>
@@ -67,9 +69,12 @@
             </defs>
          </svg>
       </span>
-        {{msg}} </p>
+        {{ msg }}
+      </p>
     </div>
   }
+
+
 </div>
 
 

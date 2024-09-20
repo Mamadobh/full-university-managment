@@ -4,10 +4,12 @@ import {SemesterFormComponent} from "../../../components/study-plan/semester-for
 import {PageHeaderComponent} from "../../../components/shared/page-header/page-header.component";
 import {MatFabButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {StudyPlanService} from "../../../core/services/study-plan/study-plan.service";
 import {SubjectFormComponent} from "../../../components/study-plan/subject-form/subject-form.component";
 import {StudyPlanRequest} from "../../../core/services/study-plan/model/study-plan.model";
+import {data} from "autoprefixer";
+import {JsonPipe} from "@angular/common";
 
 
 @Component({
@@ -22,7 +24,9 @@ import {StudyPlanRequest} from "../../../core/services/study-plan/model/study-pl
     MatFabButton,
     MatIcon,
     ReactiveFormsModule,
-    SubjectFormComponent
+    FormsModule,
+    SubjectFormComponent,
+    JsonPipe
   ],
   encapsulation: ViewEncapsulation.None
 
@@ -61,11 +65,14 @@ export class StudyPlanCreateComponent implements OnInit {
 
     this.studyPlanService.saveStudyPlan(request).subscribe(({
       next: (res) => {
+        this.router.navigate(["study-plan",this.levelId,"recap"])
+        this.studyPlanService.studyPlanFrom.reset()
+
         console.log("res = ", res)
         this.errorsMessage = []
       },
       error: (err) => {
-        console.log("err = ", Object.values(err.error.error.errors))
+        console.log("err = ",err)
         setTimeout(() => {
           window.scrollBy(0, 100);
 
@@ -80,8 +87,8 @@ export class StudyPlanCreateComponent implements OnInit {
     }))
   }
 
-  onSubmit() {
-    this.router.navigate(["study-plan",this.levelId,"recap"])
+  onSubmit(event:Event) {
+    event.preventDefault()
     this.studyPlanService.isFormSubmited.set(true)
     this.studyPlanService.studyPlanFrom.markAllAsTouched()
     let my_form = this.form().value as StudyPlanRequest;
@@ -89,18 +96,20 @@ export class StudyPlanCreateComponent implements OnInit {
       return {
         startDate: el?.startDate?.toISOString().split('T')[0],
         endDate: el?.endDate?.toISOString().split('T')[0],
-        levelId: +this.levelId,  // assuming `this.levelId` is properly defined
+        levelId: +this.levelId,
         name: el?.name,
-        description: "",
+        description:el?.description,
         modules: el?.modules
       };
     }) ?? [];
     console.log("my f ", my_form)
     console.log("this form is ", my_form)
+
     if (!this.form().invalid) {
       console.log("this form is ", my_form)
       this.saveStudyPlan(my_form)
-      this.studyPlanService.studyPlanFrom.reset()
     }
   }
+
+
 }

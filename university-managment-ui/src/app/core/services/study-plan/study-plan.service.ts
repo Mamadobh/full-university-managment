@@ -3,9 +3,11 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
 import {ValidateDate, validateDuplication} from "../../../valildators/validators";
-import {StudyPlanRequest} from "./model/study-plan.model";
+import {StudyPlanRequest, StudyPlanResponse} from "./model/study-plan.model";
 import {HttpClient} from "@angular/common/http";
 import {BASE_PATH} from "../../Constants";
+import {ResponseModel} from "../../model/Response.model";
+import {Observable} from "rxjs";
 
 const moment = _rollupMoment || _moment;
 
@@ -20,6 +22,14 @@ export class StudyPlanService {
 
   constructor(private fb: FormBuilder, private _http: HttpClient) {
 
+  }
+
+  saveStudyPlan = (studyPlanRequest: StudyPlanRequest) => {
+    return this._http.post<number>(this._path, studyPlanRequest)
+  }
+
+  findStudyPlan(id: number): Observable<ResponseModel<StudyPlanResponse>> {
+    return this._http.get<ResponseModel<StudyPlanResponse>>(this._path+"/"+id);
   }
 
   createForm(itemType: string): FormGroup {
@@ -241,8 +251,5 @@ export class StudyPlanService {
     }
   }
 
-  saveStudyPlan = (studyPlanRequest: StudyPlanRequest) => {
-    return this._http.post<number>(this._path, studyPlanRequest)
-  }
 
 }
