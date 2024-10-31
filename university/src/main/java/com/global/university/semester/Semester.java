@@ -22,7 +22,6 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
-@NamedEntityGraph(name = "loadLevel",attributeNodes = @NamedAttributeNode("level"))
 public class Semester extends BaseEntity<Integer> {
 
     private String name;
@@ -31,12 +30,12 @@ public class Semester extends BaseEntity<Integer> {
     private LocalDate endDate;
 
     @ManyToOne()
-    @JoinColumn(name = "level_id", nullable = false)
+    @JoinColumn(name = "level_id")
     private Level level;
 
+    @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Set<Module> modules = new HashSet<>();
 
-    @OneToMany(mappedBy = "semester" , cascade = CascadeType.ALL)
-    private Set<Module> modules;
     public static boolean checkDuplicationSemester(List<SemesterStudyPlanRequest> semesters) {
         Set<String> semestersName = new HashSet<>();
         for (SemesterStudyPlanRequest semester : semesters) {

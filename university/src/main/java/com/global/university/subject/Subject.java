@@ -28,18 +28,18 @@ public class Subject extends BaseEntity<Integer> {
     private String name;
     private String averageFormula;
     @ManyToOne
-    @JoinColumn(name = "module_id", nullable = false)
+    @JoinColumn(name = "module_id")
     private Module module;
 
     @ManyToOne
     @JoinColumn(name = "coefficient_id", nullable = false)
     private Coefficient coefficient;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "subject_test", joinColumns = @JoinColumn(name = "subject_id"), inverseJoinColumns = @JoinColumn(name = "test_id"))
     private Set<Test> tests;
 
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<SubjectType> subjectTypes;
 
     public static boolean checkDuplicationSubject(List<SubjectStudyPlanRequest> subjects) {

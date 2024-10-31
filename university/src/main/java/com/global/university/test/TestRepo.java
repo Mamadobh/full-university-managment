@@ -35,4 +35,6 @@ public interface TestRepo extends BaseRepo<Test, Integer> {
             @Param("coefficientID") Integer coefficientID,
             @Param("testTypeId") Integer testTypeId
     );
+
+
 }

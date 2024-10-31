@@ -1,13 +1,18 @@
 package com.global.university.level;
 
+import com.global.university.file.FileUtils;
 import com.global.university.response.PageResponse;
 import com.global.university.response.Response;
 import com.global.university.validationGroup.Default;
 import com.global.university.validationGroup.OnUpdate;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -25,7 +30,30 @@ public class LevelController {
                 Response.<Integer>builder()
                         .success(true)
                         .status(OK.toString())
-                        .data(studyPlanService.AddFullStudyPlan(request))
+                        .data(studyPlanService.addFullStudyPlan(request, false))
+                        .build()
+        );
+    }
+
+    @PutMapping("/study-plan")
+    public ResponseEntity<Response<?>> updateStudyPlan(@Validated({Default.class}) @RequestBody StudyPlanRequest request) {
+        return ResponseEntity.status(OK).body(
+                Response.<Integer>builder()
+                        .success(true)
+                        .status(OK.toString())
+                        .data(studyPlanService.updateStudyPlan(request, false))
+                        .build()
+        );
+    }
+
+    @DeleteMapping("/study-plan/{semester-id}")
+    public ResponseEntity<Response<Integer>> deleteSemesterById(@PathVariable("semester-id") Integer semesterId) {
+        Integer deletedStudyPlanId = studyPlanService.deleteStudyPlan(semesterId);
+        return ResponseEntity.status(OK).body(
+                Response.<Integer>builder()
+                        .success(true)
+                        .status(OK.toString())
+                        .data(deletedStudyPlanId)
                         .build()
         );
     }
@@ -57,6 +85,10 @@ public class LevelController {
 
     }
 
+    @GetMapping("/{level-id}/study-plan-pdf")
+    public ResponseEntity<byte[]> getPdfStudyPlan(@PathVariable("level-id") Integer levelId) {
+        return levelService.findStudyPlanPdf(levelId);
+    }
 
     @GetMapping("/details")
     public ResponseEntity<Response<PageResponse<LevelDetailsReponse>>> findAllLevelWithDetails(
@@ -116,6 +148,21 @@ public class LevelController {
                         .success(true)
                         .status(OK.toString())
                         .data(deletedLevelId)
+                        .build()
+        );
+    }
+
+    @PostMapping(value = "/study-plan/upload/{level-id}", consumes = "multipart/form-data")
+    public ResponseEntity<Response<?>> uploadStudyPlan(
+            @PathVariable("level-id") Integer levelId,
+            @Parameter()
+            @RequestPart("file") MultipartFile file) {
+
+        return ResponseEntity.status(OK).body(
+                Response.<Integer>builder()
+                        .success(true)
+                        .status(OK.toString())
+                        .data(studyPlanService.saveStudyPlan(file, levelId))
                         .build()
         );
     }

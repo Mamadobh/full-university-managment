@@ -48,9 +48,10 @@ public class SemesterMapper implements Mapper<Semester, Integer, SemesterRequest
                 .build();
     }
 
-    public Semester toEntity(SemesterStudyPlanRequest request) {
-
+    public Semester toEntity(SemesterStudyPlanRequest request,boolean isUpdate) {
+        Integer id = isUpdate ? request.id() : null;
         return Semester.builder()
+                .id(id)
                 .name(request.name())
                 .endDate(request.endDate())
                 .startDate(request.startDate())

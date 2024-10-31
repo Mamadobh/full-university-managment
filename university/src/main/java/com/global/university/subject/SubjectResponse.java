@@ -1,5 +1,6 @@
 package com.global.university.subject;
 
+import com.global.university.coefficient.CoefficientResponse;
 import com.global.university.subject_type.SubjectTypeResponse;
 import com.global.university.test.Test;
 import com.global.university.test.TestResponse;
@@ -15,7 +16,7 @@ import java.util.List;
 public class SubjectResponse {
     private Integer id;
     private String name;
-    private Double coefficient;
+    private CoefficientResponse coefficient;
     private List<TestResponse> tests;
     private List<SubjectTypeResponse> subjectTypes;
 }

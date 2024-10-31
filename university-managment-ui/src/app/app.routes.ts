@@ -35,6 +35,10 @@ export const routes: Routes = [
   }, {
     path: "study-plan/:levelId/recap",
     component: RecapStudyPlanComponent
+  },
+  {
+    path:"*",
+    redirectTo:"dashboard"
   }
 
 ];

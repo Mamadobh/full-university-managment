@@ -3,10 +3,21 @@
   icon="receipt"
   title="Study Plan Overview"
 ></app-page-header>
-<button   [routerLink]="'/study-plan/'+levelId+'/create'"
+
+<button [queryParams]="{ status: 'create' }"
+        [routerLink]="'/study-plan/'+levelId+'/create'"
         class="bg-purple_main text-[15px] font-light h-[40px] px-[22px]  flex ml-auto"
         extended mat-fab>
   <mat-icon class=" font-semibold text-[22px] leading-[22px] mr-2 ">add</mat-icon>
   Add study Plan
 
 </button>
+<!--plan = {{currentLevel()?.studyPlan}}-->
+
+
+<div class="bg-white p-4 mt-8 rounded-md mx-auto w-[80%]">
+  @if (pdfUrl) {
+    <object [data]="pdfUrl | safeUrl" class=" pdf rounded-md h-[90vh] w-full" type="application/pdf"></object>
+
+  }
+</div>

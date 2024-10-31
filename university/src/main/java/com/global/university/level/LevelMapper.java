@@ -1,12 +1,16 @@
 package com.global.university.level;
 
 import com.global.university.common.Mapper;
+import com.global.university.file.FileUtils;
 import com.global.university.semester.SemesterRequest;
 import com.global.university.semester.SemesterStudyPlanRequest;
 import com.global.university.speciality.Speciality;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class LevelMapper implements Mapper<Level, Integer, LevelRequest, LevelResponse> {
 
     @Override
@@ -31,6 +35,7 @@ public class LevelMapper implements Mapper<Level, Integer, LevelRequest, LevelRe
                 .id(entity.getId())
                 .name(entity.getName())
                 .description(entity.getDescription())
+                .studyPlan(FileUtils.readFileFromLocation(entity.getStudyPlan()))
                 .specialityId(entity.getSpeciality().getId())
                 .build();
     }

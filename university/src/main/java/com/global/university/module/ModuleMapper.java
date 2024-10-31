@@ -53,14 +53,15 @@ public class ModuleMapper implements Mapper<Module, Integer, ModuleRequest, Modu
                 .build();
     }
 
-    public Module toEntity(ModuleRequest request, Semester semester) {
-        Integer id = request.moduleTypeId();
+    public Module toEntity(ModuleRequest request, Semester semester,boolean isUpdate) {
+        Integer id = isUpdate ? request.id() : null;
         ModuleType moduleType = moduleTypeRepo.findById(request.moduleTypeId()).orElseThrow(() ->
                 new EntityNotFoundException(" " +
                         "Data not Found with id " +
                         request.moduleTypeId() +
                         " Please verify !!"));
         return Module.builder()
+                .id(id)
                 .name(request.name())
                 .moduleType(
                         moduleType

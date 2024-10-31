@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID, DtoRequest, DtoR
     private BaseRepo<T, ID> baseRepo;
     @Autowired
     private Mapper<T, ID, DtoRequest, DtoResponse> mapper;
+
     public ID save(DtoRequest request) {
 
         T entity = mapper.toEntity(request, false);
@@ -27,6 +29,7 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID, DtoRequest, DtoR
 
         return baseRepo.save(entity).getId();
     }
+
     public ID update(DtoRequest request, ID id) {
         exist(id);
         return baseRepo.save(mapper.toEntity(request, true)).getId();
@@ -53,14 +56,12 @@ public abstract class BaseService<T extends BaseEntity<ID>, ID, DtoRequest, DtoR
     }
 
 
-
     public DtoResponse findById(ID id) {
         T entity = baseRepo.findById(id).orElseThrow(() -> new EntityNotFoundException(" Data not Found with id " + id + " Please verify !!"));
         return mapper.toResponse(entity);
     }
 
-
-
+    @Transactional
     public ID deleteById(ID id) {
         exist(id);
         baseRepo.deleteById(id);

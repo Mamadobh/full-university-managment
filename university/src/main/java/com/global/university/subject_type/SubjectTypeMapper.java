@@ -58,8 +58,10 @@ public class SubjectTypeMapper implements Mapper<SubjectType, Integer, SubjectTy
                 .build();
     }
 
-    public SubjectType toEntity(SubjectTypeStudyPlanRequest request, Subject subject) {
+    public SubjectType toEntity(SubjectTypeStudyPlanRequest request, Subject subject,boolean isUpdate) {
+        Integer id = isUpdate ? request.id() : null;
         return SubjectType.builder()
+                .id(id)
                 .type(
                         typeRepo.findById(request.typeId()).orElseThrow(() ->
                                 new EntityNotFoundException(

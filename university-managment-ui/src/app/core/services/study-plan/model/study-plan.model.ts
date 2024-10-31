@@ -90,7 +90,7 @@ export class TestResponse {
 export class SubjectResponse {
   constructor(public id: number,
               public name: string,
-              public coefficient: number,
+              public coefficient: CoefficientResponse,
               public tests: TestResponse[],
               public subjectTypes: SubjectTypeResoonse[]
   ) {
@@ -124,5 +124,10 @@ export class SemesterStudyPlanResponse {
 
 export class StudyPlanResponse {
   constructor(public semesters: SemesterStudyPlanResponse[]) {
+  }
+}
+
+export class UploadStudyPlanRequest {
+  constructor(file: Blob) {
   }
 }

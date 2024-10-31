@@ -1,0 +1,15 @@
+.pdf::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.pdf::-webkit-scrollbar-track {
+  border-radius: 999px;
+}
+
+.pdf::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #4D44B5;
+  min-height: 10px !important;
+  min-width: 10px !important;
+}

@@ -2,6 +2,7 @@ package com.global.university.subject;
 
 import com.global.university.coefficient.CoeffcientRepo;
 import com.global.university.coefficient.Coefficient;
+import com.global.university.coefficient.CoefficientResponse;
 import com.global.university.common.Mapper;
 import com.global.university.module.Module;
 import com.global.university.subject_type.SubjectTypeMapper;
@@ -48,7 +49,10 @@ public class SubjectMapper implements Mapper<Subject, Integer, SubjectRequest, S
     public SubjectResponse toResponse(Subject entity) {
         return SubjectResponse.builder()
                 .id(entity.getId())
-                .coefficient(entity.getCoefficient().getCoefficient())
+                .coefficient(CoefficientResponse.builder()
+                        .id(entity.getCoefficient().getId())
+                        .coefficient(entity.getCoefficient().getCoefficient())
+                        .build())
                 .name(entity.getName())
                 .tests(
                         entity.getTests().stream().map(mapper::toResponse).collect(Collectors.toList())
@@ -60,8 +64,10 @@ public class SubjectMapper implements Mapper<Subject, Integer, SubjectRequest, S
     }
 
 
-    public Subject toEntity(SubjectStudyPlanRequest request, Module module) {
+    public Subject toEntity(SubjectStudyPlanRequest request, Module module,boolean isUpdate) {
+        Integer id = isUpdate ? request.id() : null;
         return Subject.builder()
+                .id(id)
                 .name(request.name())
                 .coefficient(
                         coeffcientRepo.findById(request.coefficientId()).orElseThrow(() ->
