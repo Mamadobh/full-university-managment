@@ -1,6 +1,7 @@
 <h2 class="text-text_color capitalize font-bold text-[24px] mb-1">
   {{ title }}</h2>
-<div class="p-6 bg-white rounded-md  mt-6">
+
+<div #pdfContent  id="pdfContent"  class="p-6 bg-white rounded-md  mt-6">
 
   <div class="flex  gap-8 items-start justify-between">
     <div class="text-center    capitalize font-14 text-text_color ">
@@ -24,9 +25,9 @@
     </div>
 
   </div>
-  <h2 class="text-text_color capitalize text-center font-bold text-[23px] mb-1">
+  <h2 class="text-text_color capitalize text-center font-bold text-[23px] mb-4">
     study Plan</h2>
-  @for (sem of studyPlanReponse().semesters; track sem.id) {
+  @for (sem of studyPlanReponse().semesters; track sem.id; let index = $index) {
 
     <div class="flex   mt-8 justify-between  ">
 
@@ -52,7 +53,7 @@
         </div>
         <div class="mt-2">
           <span class="text-gray-500 text-[12px] font-medium ">Semester:</span>
-          <span class="pl-2  text-purple_main text-[12px] font-medium">First semester</span>
+          <span class="pl-2  text-purple_main text-[12px] font-medium">{{ sem.name }}</span>
         </div>
       </div>
       <div class=" ">
@@ -67,91 +68,93 @@
         </div>
       </div>
     </div>
-    @for (semester of data(); track semester.id; let index = $index) {
-      <table [class.mt-24]="index ==1" class=" w-full mt-4 ">
+    <!--    @for (semester of data(); track semester.id; let index = $index) {-->
+    <table [class.mt-24]="index ==1" class=" w-full mt-4 " >
 
-        <thead class="max-h-[30px] h-[30px]">
-        <tr>
-          @for (col of columns(); track col; let first = $first, last = $last) {
-            <th [class.px-[2px]]="!first&&!last" [class.pr-[2px]]="$first" [class.pl-[2px]]="$last">
-              <div
-                class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg
+      <thead class="max-h-[30px] h-[30px]">
+      <tr>
+        @for (col of columns(); track col; let first = $first, last = $last) {
+          <th [class.px-[2px]]="!first&&!last" [class.pr-[2px]]="$first" [class.pl-[2px]]="$last">
+            <div
+              class=" h-[30px] whitespace-nowrap max-h-[30px] bg-purple_bg
                py-1 border border-purple_main text-[14px] text-gray-600
                font-medium px-4 text-center ">
-                {{ col.column }}
-              </div>
-            </th>
-          }
-        </tr>
+              {{ col.column }}
+            </div>
+          </th>
+        }
+      </tr>
 
-        </thead>
-        <tbody>
-          @for (mod of semester.modules;
-            track mod.module;
+      </thead>
+      <tbody>
+        @for (mod of data()[index].modules;
+          track mod.module;
+          let indexM = $index) {
+          @for (sub of mod.subjects;
+            track sub;
+            let firstS = $first, lastS = $last) {
 
-            let indexM = $index) {
-            @for (sub of mod.subjects;
-              track sub;
-              let firstS = $first, lastS = $last) {
+            <tr [class.border-t]="!firstS"
+                [class.border-t-gray_color]="lastS"
+                [class.border-b-2]="lastS"
+                [class.border-b-text_color]="lastS"
 
-              <tr [class.border-t]="!firstS"
-                  [class.border-t-gray_color]="lastS"
-                  [class.border-b-2]="lastS"
-                  [class.border-b-text_color]="lastS"
+            >
+              @for (col of columns(); track col; let indexcol = $index; let f = $first, l = $last) {
+                @if (firstS) {
+                  <td [attr.rowspan]="(firstS&& col.rowspan)? mod.subjects.length:1"
+                      [class.align-top]="(firstS&& col.rowspan)"
+                      [class.font-semibold]="(firstS&&indexcol==1)"
+                      [class.text-center]="((indexcol>3 && indexcol<columns().length-1) || indexcol==0)"
+                      class="pl-[4px] text-[10px]  whitespace-nowrap ">
+                    @if (indexcol == 0 && firstS) {
+                      {{ indexM + 1 }}
+                    } @else {
+                      {{ getValue(col, mod, sub) }}
 
-              >
-                @for (col of columns(); track col; let index = $index; let f = $first, l = $last) {
-                  @if (firstS) {
-                    <td [attr.rowspan]="(firstS&& col.rowspan)? mod.subjects.length:1"
-                        [class.align-top]="(firstS&& col.rowspan)"
-                        [class.font-semibold]="(firstS&&index==1)"
-                        [class.text-center]="((index>3 && index<columns().length-1) || index==0)"
-                        class="pl-[4px] text-[10px]  whitespace-nowrap ">
-                      @if (index == 0 && firstS) {
-                        {{ indexM + 1 }}
-                      } @else {
-                        {{ getValue(col, mod, sub) }}
-
-                      }
-                    </td>
-                  } @else if (!firstS && !col.rowspan) {
-                    <td
-                      [class.text-center]="((index>3 && index<columns().length-1) || index==0)"
-                      class="pl-[4px] text-[10px]  text-center whitespace-nowrap ">
-                      {{ sub[col.accessor] }}
-                    </td>
-                  }
+                    }
+                  </td>
+                } @else if (!firstS && !col.rowspan) {
+                  <td
+                    [class.text-center]="((indexcol>3 && indexcol<columns().length-1) || indexcol==0)"
+                    class="pl-[4px] text-[10px]  text-center whitespace-nowrap  ">
+                    {{ sub[col.accessor] }}
+                  </td>
                 }
-              </tr>
-            }
+              }
+            </tr>
           }
-        <tr>
-          @for (col of columns(); track col; let index = $index; ) {
-            @if (col.withTotal) {
-              <td class="font-semibold text-center">
-                {{ getTotal(0, col.accessor) }}
-              </td>
-            } @else if (col.accessor == "subject") {
-              <td class="font-semibold text-right">Total=</td>
-            } @else {
-              <td></td>
-            }
+        }
+      <tr>
+        @for (col of columns(); track col; let indexcol = $index; ) {
+          @if (col.withTotal) {
+            <td class="font-semibold text-center">
+              {{ getTotal(index, col.accessor) }}
+            </td>
+          } @else if (col.accessor == "subject") {
+            <td class="font-semibold text-right">Total=</td>
+          } @else {
+            <td></td>
           }
-        </tr>
-        <tr>
-          @for (col of columns(); track col; let index = $index; ) {
-            @if (col.accessor == "subject") {
-              <td class="font-semibold text-right">The total hourly time=</td>
-            } @else if (index == 4) {
-              <td class="font-semibold text-center">{{ getTotalHour(0) }}</td>
-            } @else {
-              <td></td>
-            }
+        }
+      </tr>
+      <tr>
+        @for (col of columns(); track col; let indexcol = $index; ) {
+          @if (col.accessor == "subject") {
+            <td class="font-semibold text-right">The total hourly time=</td>
+          } @else if (indexcol == 4) {
+            <td class="font-semibold text-center">{{ getTotalHour(index) }}</td>
+          } @else {
+            <td></td>
           }
-        </tr>
+        }
+      </tr>
 
-        </tbody>
-      </table>
+      </tbody>
+    </table>
+    @if (index ==0 && studyPlanReponse().semesters.length>1 ) {
+      <div class="h-1 border border-purple_main bg-purple_bg  my-16"></div>
+
     }
   }
 
@@ -172,6 +175,7 @@
 <div class="mt-8 flex ml-auto gap-4 w-fit">
 
   <button
+    (click)="edit()"
     [style.border]="' solid 1.8px  !important'"
     class="bg-transparent border-2 border-red-500
            text-purple_main  text-[15px]  shadow-none
@@ -184,10 +188,11 @@
     Editer
   </button>
   <button
+    (click)="exportToPDF()"
     class="bg-purple_main text-[15px] font-light h-[40px] px-[22px] "
     extended
     mat-fab
-    type="submit"
+
   >
     <mat-icon class=" font-light text-[19px] leading-[23px] mr-2 ">
       save
@@ -195,3 +200,5 @@
     Save as PDF
   </button>
 </div>
+
+

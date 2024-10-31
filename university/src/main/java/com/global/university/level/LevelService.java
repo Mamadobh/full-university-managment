@@ -1,9 +1,8 @@
 package com.global.university.level;
 
 import com.global.university.base.BaseService;
+import com.global.university.exception.OperationNotPermittedException;
 import com.global.university.response.PageResponse;
-import com.global.university.semester.SemesterMapper;
-import com.global.university.semester.SemesterService;
 import com.global.university.speciality.SpecialityService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +32,6 @@ public class LevelService extends BaseService<Level, Integer, LevelRequest, Leve
     private LevelMapper mapper;
 
 
-
-
-
     @Override
     public Integer update(LevelRequest request, Integer id) {
         exist(id);
@@ -40,6 +39,18 @@ public class LevelService extends BaseService<Level, Integer, LevelRequest, Leve
         return levelRepo.save(mapper.toEntity(request, true)).getId();
     }
 
+    public ResponseEntity<byte[]> findStudyPlanPdf(Integer levelId) {
+        LevelResponse level = this.findById(levelId);
+        if (level.getStudyPlan() == null) {
+            throw new OperationNotPermittedException("can not fetch not exist study plan for level with id " + levelId);
+        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + level.getName() + "\"")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(
+                        level.getStudyPlan()
+                );
+    }
 
     public PageResponse<LevelDetailsReponse> findAllWithDetails(int pageNumber,
                                                                 int size,

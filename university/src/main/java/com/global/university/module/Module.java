@@ -1,5 +1,6 @@
 package com.global.university.module;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.global.university.base.BaseEntity;
 import com.global.university.moduleType.ModuleType;
 import com.global.university.semester.Semester;
@@ -26,13 +27,12 @@ public class Module extends BaseEntity<Integer> {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "semester_id", nullable = false)
     private Semester semester;
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "module",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<Subject> subjects;
-
     @ManyToOne
     @JoinColumn(name = "module_type_id", nullable = false)
     private ModuleType moduleType;

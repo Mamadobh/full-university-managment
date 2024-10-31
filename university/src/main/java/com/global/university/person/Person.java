@@ -1,10 +1,14 @@
-package com.global.university.user;
+package com.global.university.person;
 
 import com.global.university.base.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -17,15 +21,18 @@ import java.time.LocalDate;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Person extends BaseEntity<Integer>{
-    private String firstname;
-    private String lastname;
-    private String cin;
-    private String passport_Number;
-    private String Nationality;
-    private String num_tel;
-    private LocalDate dateOfBirth;
-    private String place_of_birth;
-    private String email;
+    protected String firstname;
+    protected String lastname;
+
+    protected String cin;
+    protected String passport_number;
+    protected String nationality;
+    @Column(unique = true)
+    protected String num_tel;
+    protected LocalDate dateOfBirth;
+    protected String place_of_birth;
+    @Column(unique = true)
+    protected String email;
 
     public String getfullName() {
         return firstname + " " + lastname;

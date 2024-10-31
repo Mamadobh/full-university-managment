@@ -15,3 +15,29 @@ export class FilterLevelParamModel {
   }
 }
 
+
+export class LevelRequest {
+
+  constructor(
+    name: string,
+    description: string,
+    specialityId: number,
+    id?: number,
+  ) {
+  }
+
+
+}
+
+export class LevelResponse {
+
+  constructor( public id?: number,
+               public name?: string,
+               public description?: string,
+               public specialityId?: number,
+               public studyPlan?: Uint8Array) {
+  }
+
+
+}
+

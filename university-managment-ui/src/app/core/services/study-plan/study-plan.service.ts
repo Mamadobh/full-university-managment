@@ -3,7 +3,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as _moment from 'moment';
 import {default as _rollupMoment} from 'moment';
 import {ValidateDate, validateDuplication} from "../../../valildators/validators";
-import {StudyPlanRequest, StudyPlanResponse} from "./model/study-plan.model";
+import {StudyPlanRequest, StudyPlanResponse, UploadStudyPlanRequest} from "./model/study-plan.model";
 import {HttpClient} from "@angular/common/http";
 import {BASE_PATH} from "../../Constants";
 import {ResponseModel} from "../../model/Response.model";
@@ -29,7 +29,16 @@ export class StudyPlanService {
   }
 
   findStudyPlan(id: number): Observable<ResponseModel<StudyPlanResponse>> {
-    return this._http.get<ResponseModel<StudyPlanResponse>>(this._path+"/"+id);
+    return this._http.get<ResponseModel<StudyPlanResponse>>(this._path + "/" + id);
+  }
+
+  updateStudyPlan(studyPlanRequest: StudyPlanRequest) {
+    return this._http.put<number>(this._path, studyPlanRequest)
+  }
+
+  uploadStudyPlan(uploadStudyPlanRequest: UploadStudyPlanRequest, levelId: number) {
+    return this._http.post<number>(this._path + "/upload/" + levelId, uploadStudyPlanRequest)
+
   }
 
   createForm(itemType: string): FormGroup {

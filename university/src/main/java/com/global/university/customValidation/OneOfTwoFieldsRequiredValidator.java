@@ -31,7 +31,13 @@ public class OneOfTwoFieldsRequiredValidator implements ConstraintValidator<OneO
 
             boolean isFirstFieldValid = firstFieldValue != null && !firstFieldValue.toString().isEmpty();
 
-            boolean isSecondFieldValid = secondFieldValue instanceof List && !((List<?>) secondFieldValue).isEmpty();
+
+            boolean isSecondFieldValid;
+            if (secondFieldValue instanceof List) {
+                isSecondFieldValid = !((List<?>) secondFieldValue).isEmpty();
+            } else {
+                isSecondFieldValid = secondFieldValue != null && !secondFieldValue.toString().isEmpty();
+            }
             boolean isValid = isFirstFieldValid || isSecondFieldValid;
             if (!isValid) {
                 context.buildConstraintViolationWithTemplate(message)

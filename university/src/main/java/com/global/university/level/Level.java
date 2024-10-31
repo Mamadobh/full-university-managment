@@ -24,15 +24,16 @@ public class Level extends BaseEntity<Integer> {
     @Column(unique = true)
     private String name;
     private String description;
+    private String studyPlan;
 
     @ManyToOne()
     @JoinColumn(name = "Speciality_id")
     private Speciality speciality;
 
-    @OneToMany(mappedBy = "level", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "level", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.REMOVE)
     private Set<Semester> semesters;
 
     String getLevelSpecialityWithTrack() {
-        return this.speciality.getName() + "-"+ this.speciality.getTrack().getName();
+        return this.speciality.getName() + "-" + this.speciality.getTrack().getName();
     }
 }

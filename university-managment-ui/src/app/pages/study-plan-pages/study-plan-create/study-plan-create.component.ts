@@ -7,9 +7,9 @@ import {MatIcon} from "@angular/material/icon";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {StudyPlanService} from "../../../core/services/study-plan/study-plan.service";
 import {SubjectFormComponent} from "../../../components/study-plan/subject-form/subject-form.component";
-import {StudyPlanRequest} from "../../../core/services/study-plan/model/study-plan.model";
-import {data} from "autoprefixer";
+import {StudyPlanRequest, StudyPlanResponse} from "../../../core/services/study-plan/model/study-plan.model";
 import {JsonPipe} from "@angular/common";
+import {StudyPlanMapper} from "../../../core/services/study-plan/study-plan-mapper.service";
 
 
 @Component({
@@ -39,16 +39,15 @@ export class StudyPlanCreateComponent implements OnInit {
   studyPlanService = inject(StudyPlanService)
   form = computed(() => this.studyPlanService.studyPlanFrom)
   errorsMessage: string[] = []
+  status: string = "create"
+  mapper: StudyPlanMapper = inject(StudyPlanMapper)
+  studyPlanReponse = signal<StudyPlanResponse>(new StudyPlanResponse([]));
 
   constructor() {
-    this.studyPlanService.studyPlanFrom = this.studyPlanService.createForm("init")
-    this.studyPlanService.studyPlanFrom?.valueChanges.subscribe((data) => {
-      console.log(data)
-    })
+
   }
 
   ngOnInit() {
-
     this.activeRoute.paramMap.subscribe((data) => {
 
       this.levelId = data.get("levelId") as string
@@ -59,55 +58,109 @@ export class StudyPlanCreateComponent implements OnInit {
         {label: "Create", navLink: "/study-plan/" + data.get("levelId") + "/create"},
       ])
     })
+
+
+    this.activeRoute.queryParams.subscribe((data) => {
+      this.status = data['status'];
+    })
+
+    this.studyPlanService.studyPlanFrom = this.studyPlanService.createForm("init")
+
+    if (this.status == "edit") {
+      console.log("level id ==", this.levelId)
+      this.findStudyplan(+this.levelId)
+      console.log("studyPlan response111 ", this.studyPlanReponse())
+    }
+
+    this.studyPlanService.studyPlanFrom?.valueChanges.subscribe((data) => {
+      console.log(data)
+    })
+
+  }
+
+  findStudyplan(id: number) {
+    this.studyPlanService.findStudyPlan(id).subscribe({
+      next: (res) => {
+        this.studyPlanReponse.set(res.data)
+        this.mapper.toStudyPlanForm(this.studyPlanReponse());
+        console.log("studyPlan response22 ", this.studyPlanReponse())
+
+      }
+    })
   }
 
   saveStudyPlan(request: StudyPlanRequest) {
 
     this.studyPlanService.saveStudyPlan(request).subscribe(({
       next: (res) => {
-        this.router.navigate(["study-plan",this.levelId,"recap"])
-        this.studyPlanService.studyPlanFrom.reset()
+        this.success()
 
-        console.log("res = ", res)
         this.errorsMessage = []
       },
       error: (err) => {
-        console.log("err = ",err)
-        setTimeout(() => {
-          window.scrollBy(0, 100);
-
-        }, 100)
-        if (err.error.error?.errors) {
-          this.errorsMessage = [...this.errorsMessage, ...Object.values(err.error.error?.errors) as string []]
-        }
-        if (err.error.error?.error) {
-          this.errorsMessage.push(err.error.error?.error)
-        }
+        this.error(err)
       }
     }))
   }
 
-  onSubmit(event:Event) {
+  private success() {
+    this.router.navigate(["study-plan", this.levelId, "recap"])
+    this.studyPlanService.studyPlanFrom.reset()
+    this.errorsMessage = []
+  }
+
+  private error(err: any) {
+    setTimeout(() => {
+      window.scrollBy(0, 100);
+
+    }, 100)
+    if (err.error.error?.errors) {
+      this.errorsMessage = [...this.errorsMessage, ...Object.values(err.error.error?.errors) as string []]
+    }
+    if (err.error.error?.error) {
+      this.errorsMessage.push(err.error.error?.error)
+    }
+
+  }
+
+  updateStudtPlan(request: StudyPlanRequest) {
+    this.studyPlanService.updateStudyPlan(request).subscribe(({
+      next: (res) => {
+        this.success()
+
+        console.log("res = ", res)
+      },
+      error: (err) => {
+        this.error(err)
+        console.log("err = ", err)
+      }
+    }))
+  }
+
+  onSubmit(event: Event) {
     event.preventDefault()
     this.studyPlanService.isFormSubmited.set(true)
     this.studyPlanService.studyPlanFrom.markAllAsTouched()
-    let my_form = this.form().value as StudyPlanRequest;
-    my_form.semesters = my_form.semesters?.map((el: any) => {
+    let studyPlanRequest = this.form().value as StudyPlanRequest;
+    studyPlanRequest.semesters = studyPlanRequest.semesters?.map((el: any) => {
       return {
         startDate: el?.startDate?.toISOString().split('T')[0],
         endDate: el?.endDate?.toISOString().split('T')[0],
         levelId: +this.levelId,
         name: el?.name,
-        description:el?.description,
+        description: el?.description,
         modules: el?.modules
       };
     }) ?? [];
-    console.log("my f ", my_form)
-    console.log("this form is ", my_form)
 
     if (!this.form().invalid) {
-      console.log("this form is ", my_form)
-      this.saveStudyPlan(my_form)
+      if (this.status == "create") {
+        console.log('create')
+        this.saveStudyPlan(studyPlanRequest)
+      } else {
+        console.log("ediiiit")
+        this.updateStudtPlan(studyPlanRequest)
+      }
     }
   }
 

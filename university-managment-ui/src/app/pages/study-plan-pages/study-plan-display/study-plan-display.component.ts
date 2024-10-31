@@ -3,6 +3,11 @@ import {MatButton, MatFabButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {PageHeaderComponent} from "../../../components/shared/page-header/page-header.component";
 import {ActivatedRoute, RouterLink} from "@angular/router";
+import {SafeUrlPipe} from "../../../pipes/safe-url.pipe";
+import {JsonPipe, NgComponentOutlet} from "@angular/common";
+import {LevelService} from "../../../core/services/level/level.service";
+import {LevelResponse} from "../../../core/services/level/model/LevelDetailsResponse.model";
+
 
 @Component({
   selector: 'app-study-plan-display',
@@ -12,7 +17,12 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
     MatIcon,
     MatFabButton,
     PageHeaderComponent,
-    RouterLink
+    RouterLink,
+    SafeUrlPipe,
+    NgComponentOutlet,
+    JsonPipe,
+
+
   ],
   templateUrl: './study-plan-display.component.html',
   styleUrl: './study-plan-display.component.scss'
@@ -20,16 +30,42 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 export class StudyPlanDisplayComponent implements OnInit {
   linkHistory = signal<{ label: string, navLink: string }[]>([])
   private activeRoute = inject(ActivatedRoute)
+  private levelService = inject(LevelService)
   levelId: string = "";
+  pdfUrl: string = '';
+  errorMessage = ""
+  currentLevel = signal<LevelResponse>(new LevelResponse())
+
 
   ngOnInit() {
 
-      this.activeRoute.paramMap.subscribe((data) => {
+    this.activeRoute.paramMap.subscribe((data) => {
       this.levelId = data.get("levelId") as string
       this.linkHistory.set([{label: "Study plan", navLink: "/study-plan"}, {
         label: "Overview",
         navLink: "/study-plan/" + data.get("levelId")
       },])
+    })
+    this.findLevel(+this.levelId)
+  }
+
+  loadPdf(studyPlan: any): void {
+    if (studyPlan) {
+      const blob = new Blob([studyPlan], {type: 'application/pdf'});
+      this.pdfUrl = URL.createObjectURL(blob);
+    }
+
+  }
+
+  private findLevel(id: number) {
+    this.levelService.get(id).subscribe({
+      next: (res) => {
+        this.currentLevel.set(res.data)
+        this.pdfUrl=this.levelService.getStudyPlanPdf(id)
+      },
+      error: (err) => {
+
+      }
     })
   }
 }

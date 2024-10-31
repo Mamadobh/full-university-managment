@@ -1,4 +1,4 @@
-package com.global.book_network.security;
+package com.global.university.security;
 
 
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+import static com.global.university.role.FixedRoleEnum.STUDENT;
+import static com.global.university.role.FixedRoleEnum.TEACHER;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -21,7 +24,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
-    private final  JwtFilter jwtAuthFilter;
+    private final JwtFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,12 +45,15 @@ public class SecurityConfig {
                                         "/webjars/**",
                                         "/swagger-ui.html"
                                 ).permitAll()
+                                .requestMatchers("/teachers_interfaces/**")
+                                .hasRole(TEACHER.name())
+                                .requestMatchers("/students_interfaces/**")
+                                .hasRole(STUDENT.name())
                                 .anyRequest()
                                 .authenticated()
                 ).sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-     return  http.build();
-
+        return http.build();
     }
 }

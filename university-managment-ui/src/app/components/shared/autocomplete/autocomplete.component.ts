@@ -92,12 +92,14 @@ export class AutocompleteComponent<T> implements OnInit {
     console.log("=================================================================== ", this.filteredOptions().length !== 0 && (fieldValue || this.levelService.filterParam[filterKey]))
     if (fieldValue) {
       console.log("the field value give true ", fieldValue)
+      console.log("filtred option value ", fieldValue)
     }
     if (this.levelService.filterParam[filterKey]) {
       console.log("this.levelService.filterParam[filterKey]) givr true ", this.levelService.filterParam[filterKey])
 
     }
-    if (this.filteredOptions().length !== 0 && (fieldValue || this.levelService.filterParam[filterKey])) {
+    // if (this.filteredOptions().length !== 0 && (fieldValue || this.levelService.filterParam[filterKey])) {
+    if ( (fieldValue || this.levelService.filterParam[filterKey])) {
 
       console.log("emit value")
       this.levelService.paramSubject.next({

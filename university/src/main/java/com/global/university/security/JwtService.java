@@ -1,4 +1,4 @@
-package com.global.book_network.security;
+package com.global.university.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

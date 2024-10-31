@@ -1,7 +1,7 @@
-package com.global.book_network.security;
+package com.global.university.security;
 
 
-import com.global.book_network.user.UserRepository;
+import com.global.university.user.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl  implements UserDetailsService {
-    private final UserRepository userRepository;
+public class UserDetailsServiceImpl implements UserDetailsService {
+    private final UserRepo userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        return userRepository.findByEmail(userEmail).orElseThrow(()->new UsernameNotFoundException("user not found !!!"));
+    return userRepo.findUserByEmail(userEmail).orElseThrow(()->new UsernameNotFoundException("user not found !!!"));
     }
 }
