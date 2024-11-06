@@ -18,7 +18,6 @@ import {StudyPlanMapper} from "../../../core/services/study-plan/study-plan-mapp
   styleUrl: './study-plan-create.component.scss',
   standalone: true,
   imports: [
-
     SemesterFormComponent,
     PageHeaderComponent,
     MatFabButton,

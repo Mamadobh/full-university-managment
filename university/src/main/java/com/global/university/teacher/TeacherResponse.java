@@ -1,6 +1,5 @@
 package com.global.university.teacher;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;

@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,4 +15,5 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class Permission extends BaseEntity<Integer>{
     private String name;
+
 }
