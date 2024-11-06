@@ -1,0 +1,83 @@
+<div class="bg-[#F8FAFC] h-[100vh] flex flex-col justify-center items-center">
+  <h2 class="capitalize text-4xl font-semibold text-[#090914C4]"> Welcome </h2>
+  <p class="text-[#52525B] text-[13px]"> Please enter your account access parameters !</p>
+  <div class="mt-8 bg-white rounded-xl px-6 pt-12  pb-16 w-[430px]
+  shadow-[0px_48px_100px_0px_rgba(17,12,46,0.15)]">
+
+    <div><img alt="a" class="mx-auto" height="100" src="/assets/images/university_logo.jpg" width="100"></div>
+    <form #formLogin="ngForm">
+      <div class="mb-4">
+        <div class="font-medium text-[#363B64] mb-1">
+          Email:
+        </div>
+        <mat-form-field appearance="outline" class="form_element text-center w-full">
+          <input email matInput placeholder="Enter Email" required
+                 [ngModelOptions]="{ updateOn: 'blur' }"
+                 [(ngModel)]="emailf"
+                 #email="ngModel"
+                 name="email"
+          />
+        </mat-form-field>
+        @if (email.invalid && email.touched) {
+          <div *ngIf="email.hasError('required')" class="text-[12px] mt-1 text-[#f44336] pl-1">
+            password is required !!
+          </div>
+          <div *ngIf="email.hasError('email')" class="text-[12px] mt-1 text-[#f44336] pl-1">
+            email must be valid !!
+          </div>
+        }
+      </div>
+
+      <div class="">
+        <div class="font-medium text-[#363B64] mb-1">
+          Password:
+        </div>
+        <mat-form-field appearance="outline" class="form_element text-center w-full">
+          <input #password="ngModel" [(ngModel)]="passwordf"
+                 [ngModelOptions]="{ updateOn: 'blur' }" [type]="hide() ? 'password' : 'text'"
+                 matInput
+                 minlength="8"
+                 name="password" placeholder="Enter password" required/>
+
+
+          <button
+            (click)="togglePassword($event)"
+            class="translate-y-[-6px] font-light"
+            disableRipple="true"
+            mat-icon-button
+            matSuffix
+            style="width: 50px !important;"
+          >
+            <mat-icon
+              [fontSet]="'material-icons-outlined'"
+              class="font-light text-[#363B64] text-[20px] translate-y-0.5"
+            >{{ hide() ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+          </button>
+        </mat-form-field>
+        @if (password.invalid && password.touched) {
+          <div *ngIf="password.hasError('required')" class="text-[12px] mt-1 text-[#f44336] pl-1">
+            password is required !!
+          </div>
+          <div *ngIf="password.hasError('minlength')" class="text-[12px] mt-1 text-[#f44336] pl-1">
+            password must be at least 8 characters !!
+          </div>
+        }
+      </div>
+      <button
+        class="bg-[#2563EB] rounded-md mt-6 text-[15px] w-full font-light h-[40px] px-[22px] "
+        extended
+        mat-fab
+        type="submit"
+      >
+        Sing in
+      </button>
+    </form>
+
+<!--    <p class="text-[#71717A] mt-4  text-center w-full font-light">-->
+<!--      Don't have an account yet ? <span class="text-[#2563EB] font-medium cursor-pointer">Register</span>-->
+<!--    </p>-->
+  </div>
+
+
+</div>

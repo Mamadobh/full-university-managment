@@ -1,11 +1,12 @@
-package com.global.university.permission;
+package com.global.university.resource;
 
 import com.global.university.base.BaseEntity;
 import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.util.Set;
 
 @Getter
 @Setter
@@ -13,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
-public class Permission extends BaseEntity<Integer>{
+public class Resource  extends BaseEntity<Integer> {
     private String name;
-
 }

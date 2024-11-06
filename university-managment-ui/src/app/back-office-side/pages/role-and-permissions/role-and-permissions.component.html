@@ -1,0 +1,53 @@
+<table [dataSource]="dataSource" class="shadow-[0px_48px_100px_0px_rgba(17,12,46,0.15)]" mat-table>
+  @for (col of columns(); track col.columnDef; let isfirst = $first) {
+    <ng-container [matColumnDef]="col.columnDef">
+      <th *matHeaderCellDef mat-header-cell>{{ col.header }}</th>
+      @if (isfirst) {
+        <td *matCellDef="let node" mat-cell>
+          <div
+            [style.padding-left]="node.level * 80 + 'px'"
+            class="cell-with-toggle"
+          >
+            <button
+              (click)="toggle(node)"
+              *ngIf="hasChild(node)"
+              class="toggle-button"
+              mat-icon-button
+            >
+              <mat-icon>
+                {{ isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+              </mat-icon>
+            </button>
+            {{ col.cell(node) }}
+          </div>
+        </td>
+      } @else {
+        <td *matCellDef="let node" mat-cell>
+        @if(node.level==0){
+          <mat-checkbox
+            [checked]="node[col.columnDef]?.completed"
+            [indeterminate]="partiallyComplete(node,col.columnDef)"
+            (change)="update(node,$event.checked,col.columnDef)"
+          >
+
+          </mat-checkbox>
+        }@else{
+          <mat-checkbox [checked]="col.cell(node)?.['completed']"
+                        (change)="update(node,$event.checked, col.columnDef)">{{ col.cell(node)?.['completed'] }}
+          </mat-checkbox>
+        }
+        </td>
+      }
+    </ng-container>
+  }
+
+
+  <tr *matHeaderRowDef="displayedColumns()" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns()" mat-row></tr>
+</table>
+
+@for (node of dataSource.data; track node.Resources) {
+  {{ node |json }}
+}
+<br>
+<br>

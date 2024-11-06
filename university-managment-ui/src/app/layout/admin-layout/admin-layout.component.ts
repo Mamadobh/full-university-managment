@@ -48,8 +48,8 @@ export class AdminLayoutComponent {
       },
       {
         icon: "dashboard",
-        label: "Event",
-        route: "dashboard1"
+        label: "Roles & Permissions",
+        route: "Roles&&Permissions"
       }
     ]
   )
