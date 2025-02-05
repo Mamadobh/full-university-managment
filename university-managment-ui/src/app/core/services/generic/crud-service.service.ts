@@ -30,6 +30,10 @@ export class CrudServiceService<Request, Response> {
     })
   }
 
+  update(req: Request) {
+    return this._http.post<number>(this._path+"/update", req)
+  }
+
   create(req: Request) {
     return this._http.post<number>(this._path, req)
   }
@@ -38,5 +42,8 @@ export class CrudServiceService<Request, Response> {
     return this._http.get<ResponseModel<Response>>(this._path + "/" + id)
   }
 
+  delete(id: number) {
+    return this._http.delete<ResponseModel<Response>>(this._path + "/" + id)
+  }
 
 }

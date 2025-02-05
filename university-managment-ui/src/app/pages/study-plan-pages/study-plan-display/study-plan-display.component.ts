@@ -7,6 +7,7 @@ import {SafeUrlPipe} from "../../../pipes/safe-url.pipe";
 import {JsonPipe, NgComponentOutlet} from "@angular/common";
 import {LevelService} from "../../../core/services/level/level.service";
 import {LevelResponse} from "../../../core/services/level/model/LevelDetailsResponse.model";
+import {BASE_ADMIN_ROUTE} from "../../../core/Constants";
 
 
 @Component({
@@ -35,15 +36,15 @@ export class StudyPlanDisplayComponent implements OnInit {
   pdfUrl: string = '';
   errorMessage = ""
   currentLevel = signal<LevelResponse>(new LevelResponse())
-
+  baseUrl=BASE_ADMIN_ROUTE
 
   ngOnInit() {
 
     this.activeRoute.paramMap.subscribe((data) => {
       this.levelId = data.get("levelId") as string
-      this.linkHistory.set([{label: "Study plan", navLink: "/study-plan"}, {
+      this.linkHistory.set([{label: "Study plan", navLink: BASE_ADMIN_ROUTE+"/study-plan"}, {
         label: "Overview",
-        navLink: "/study-plan/" + data.get("levelId")
+        navLink: BASE_ADMIN_ROUTE+"/study-plan/" + data.get("levelId")
       },])
     })
     this.findLevel(+this.levelId)

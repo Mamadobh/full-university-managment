@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         loginBg: "#F8FAFC",
-        purple_main: "#4D44B5",
+          purple_main: "#4D44B5",
         purple_bg: "#F3F4FF",
         grey_3: "#A098AE",
         text_color: "#303972",

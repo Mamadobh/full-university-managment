@@ -1,4 +1,4 @@
-package com.global.university.role;
+package com.global.university.permission;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoleReponse {
+public class PermissionResponse {
     private Integer id;
-    private  String name;
+    private String name;
 }

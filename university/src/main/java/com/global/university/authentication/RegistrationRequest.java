@@ -22,7 +22,7 @@ public record RegistrationRequest(
         @Size(min = 8, message = "Password must be at least 8 characters long")
         String password,
         String passwordConfirmation,
-        @NotNull(message = "type of registred user is required", groups = com.global.university.validationGroup.Default.class)
+        @NotNull(message = "type of registred user is required", groups = Default.class)
         Integer type
 ) {
 }

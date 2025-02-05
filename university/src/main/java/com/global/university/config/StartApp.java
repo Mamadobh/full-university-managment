@@ -1,8 +1,12 @@
 package com.global.university.config;
 
-import com.global.university.authentication.AuthenticationRequest;
-import com.global.university.authentication.AuthenticationService;
-import com.global.university.authentication.RegistrationRequest;
+import com.global.university.authentication.*;
+import com.global.university.permission.PermissionRequest;
+import com.global.university.person.Person;
+import com.global.university.person.PersonRequest;
+import com.global.university.resource.ResourcesEnum;
+import com.global.university.resource.ResourcesRequest;
+import com.global.university.resource.ResourcesService;
 import com.global.university.role.RoleRequest;
 import com.global.university.role.RoleServices;
 import com.global.university.student.Student;
@@ -16,25 +20,31 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import static com.global.university.role.FixedRoleEnum.STUDENT;
-import static com.global.university.role.FixedRoleEnum.TEACHER;
+import static com.global.university.role.FixedRoleEnum.*;
 
 
 @Component
 @RequiredArgsConstructor
 @Log4j2
-
 public class StartApp implements CommandLineRunner {
     private final RoleServices roleServices;
     private final TeacherRepo teacherRepo;
     private final StudentRepo studentRepo;
     private final AuthenticationService authenticationService;
+    private final ResourcesService resourcesService;
+    private final AuthenticationSeriveBackOffice authenticationSeriveBackOffice;
 
     @Override
     public void run(String... args) throws Exception {
-        roleServices.save(new RoleRequest(null, STUDENT.name(), new HashSet<>()));
-        roleServices.save(new RoleRequest(null, TEACHER.name(), new HashSet<>()));
+        roleServices.save(new RoleRequest(null, STUDENT.name()));
+        roleServices.save(new RoleRequest(null, TEACHER.name()));
+        roleServices.save(new RoleRequest(null, ADMIN.name()));
+        roleServices.save(new RoleRequest(null, SUPER_ADMIN.name()));
+        roleServices.save(new RoleRequest(null, MODERATOR.name()));
+
         teacherRepo.save(Teacher.builder()
                 .firstname("Med")
                 .lastname("bh")
@@ -74,9 +84,42 @@ public class StartApp implements CommandLineRunner {
                 .email("student@gmail.com")
                 .password("med123456")
                 .build();
+        AdminRegistraionRequest adminRej = AdminRegistraionRequest.builder()
+                .person(PersonRequest.builder()
+                        .num_tel("53120040")
+                        .firstname("mohamedAdmin")
+                        .lastname("ben Hafsia")
+                        .cin("13504479")
+                        .place_of_birth("Djerba tunisie")
+                        .dateOfBirth(LocalDate.of(2001, 5, 19))
+                        .nationality("Tunisian")
+                        .email("admin@gmail.com")
+                        .build())
+                .password("med123456")
+                .passwordConfirmation("med123456")
+                .roles(Set.of(3))
+                .build();
+        AuthenticationRequest adminAuth = AuthenticationRequest.builder()
+                .email("admin@gmail.com")
+                .password("med123456")
+                .build();
+
 
         authenticationService.register(rq);
-        log.info(authenticationService.authenticate(ra).getToken());
+        log.error(authenticationService.authenticate(ra).getToken());
+        authenticationSeriveBackOffice.register(adminRej);
+        log.error("Admin auth "+authenticationSeriveBackOffice.authenticate(adminAuth).getToken());
+
+
+//================================================================================
+        for (ResourcesEnum res : ResourcesEnum.values()) {
+            ResourcesRequest request = ResourcesRequest.builder()
+                    .name(res.name())
+                    .permissions(res.getPermissions().stream().map(per -> PermissionRequest.builder().name(per.name())
+                            .build()).collect(Collectors.toSet()))
+                    .build();
+            resourcesService.save(request);
+        }
 
     }
 }

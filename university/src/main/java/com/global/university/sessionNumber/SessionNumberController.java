@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("session-numbers")
+@RequestMapping("back-office/session-numbers")
 @RequiredArgsConstructor
 public class SessionNumberController {
 

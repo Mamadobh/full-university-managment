@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("semesters")
+@RequestMapping("back-office/semesters")
 @RequiredArgsConstructor
 public class SemesterController {
 

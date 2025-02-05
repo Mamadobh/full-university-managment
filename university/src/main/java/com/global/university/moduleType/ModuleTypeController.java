@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("module-types")
+@RequestMapping("back-office/module-types")
 @RequiredArgsConstructor
 public class ModuleTypeController {
 

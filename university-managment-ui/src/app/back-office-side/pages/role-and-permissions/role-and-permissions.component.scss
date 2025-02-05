@@ -7,8 +7,9 @@ table {
   width: 100%;
   border-collapse: collapse;
   border-radius: 10px;
-  overflow: hidden !important;
 
+  th {
+  }
 }
 
 .cell-with-toggle {
@@ -24,10 +25,10 @@ table {
 //tr.mat-mdc-row:hover {
 //  background: rgba(0, 0, 0, 0.04);
 //}
-.mat-table
-{
-  background-color:transparent!important;
+.mat-table {
+  background-color: transparent !important;
 }
+
 table {
   --mat-table-row-item-outline-color: #c1bbeb;
 }
@@ -46,6 +47,44 @@ table {
 
 .mat-mdc-header-cell {
   color: #303972 !important;
-  font-size: 15px !important;
-  font-weight: 500 !important;
+  font-size: 12px !important;
 }
+
+.head-role {
+  .mat-mdc-mini-fab {
+    box-shadow: none !important;
+    border: #ccc9d5 solid 0.5px !important;
+  }
+}
+
+.panel::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.panel::-webkit-scrollbar-track {
+  border-radius: 999px;
+}
+
+.panel::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #4D44B5;
+  min-height: 10px !important;
+  min-width: 10px !important;
+}
+
+.panel::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 10px;
+}
+
+.panel::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+  margin-top: 10px;
+}
+.panel{
+  overflow: auto;
+  max-height: 250px;
+}
+
+
+

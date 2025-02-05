@@ -16,6 +16,7 @@ import {CrudServiceService} from "../generic/crud-service.service";
   providedIn: 'root'
 })
 export class LevelService extends CrudServiceService<LevelRequest, LevelResponse> {
+  resources:string[]=["level"]
   __path: string = BASE_PATH + "levels/details";
   filterParam: FilterLevelParamModel = {};
   paramSubject = new Subject<FilterLevelParamModel>();

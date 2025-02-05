@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("test-durations")
+@RequestMapping("back-office/test-durations")
 @RequiredArgsConstructor
 public class TestDurationController {
 

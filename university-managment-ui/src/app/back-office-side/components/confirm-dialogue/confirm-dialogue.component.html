@@ -1,0 +1,19 @@
+<div class=" dialogueConfirmation text-center gap-8 p-4 flex justify-center flex-col">
+  <div class="header_dialog text-center">
+    <mat-icon [fontSet]="'material-icons-outlined'" class="text-red-600 h-[90px]
+                     w-[90px] text-[90px]
+                     font-light ">cancel
+    </mat-icon>
+    <h2 class="text-[22px] text-[#636363] mt-4 mb-0">Are you Sure? </h2>
+  </div>
+  @if (data.content) {
+    <ng-container *ngTemplateOutlet="data.content;context:data.context">
+
+    </ng-container>
+  }
+  <div class="footer flex justify-center gap-2">
+    <button mat-raised-button class="  min-w-[110px] rounded-[4px] bg-gray_color mat-elevation-z0 text-white" (click)="onCancel()">{{ data?.cancelText || 'Cancel' }}</button>
+    <button   mat-raised-button class="min-w-[110px] rounded-[4px] bg-red-600 text-white mat-elevation-z0 " (click)="onConfirm()">{{ data?.okText || 'apply' }}</button>
+  </div>
+</div>
+

@@ -5,7 +5,7 @@
 ></app-page-header>
 
 <button [queryParams]="{ status: 'create' }"
-        [routerLink]="'/study-plan/'+levelId+'/create'"
+        [routerLink]="baseUrl+'/study-plan/'+levelId+'/create'"
         class="bg-purple_main text-[15px] font-light h-[40px] px-[22px]  flex ml-auto"
         extended mat-fab>
   <mat-icon class=" font-semibold text-[22px] leading-[22px] mr-2 ">add</mat-icon>
@@ -21,3 +21,5 @@
 
   }
 </div>
+
+{{pdfUrl}}

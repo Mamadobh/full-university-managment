@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("levels")
+@RequestMapping("back-office/levels")
 @RequiredArgsConstructor
 public class LevelController {
 
