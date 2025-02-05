@@ -10,6 +10,7 @@ import {SubjectFormComponent} from "../../../components/study-plan/subject-form/
 import {StudyPlanRequest, StudyPlanResponse} from "../../../core/services/study-plan/model/study-plan.model";
 import {JsonPipe} from "@angular/common";
 import {StudyPlanMapper} from "../../../core/services/study-plan/study-plan-mapper.service";
+import {BASE_ADMIN_ROUTE} from "../../../core/Constants";
 
 
 @Component({
@@ -52,9 +53,9 @@ export class StudyPlanCreateComponent implements OnInit {
       this.levelId = data.get("levelId") as string
 
       this.linkHistory.set([
-        {label: "Study plan", navLink: "/study-plan"},
-        {label: "Overview", navLink: "/study-plan/" + data.get("levelId")},
-        {label: "Create", navLink: "/study-plan/" + data.get("levelId") + "/create"},
+        {label: "Study plan", navLink: BASE_ADMIN_ROUTE+"/study-plan"},
+        {label: "Overview", navLink:BASE_ADMIN_ROUTE+ "/study-plan/" + data.get("levelId")},
+        {label: "Create", navLink: BASE_ADMIN_ROUTE+"/study-plan/" + data.get("levelId") + "/create"},
       ])
     })
 
@@ -103,7 +104,7 @@ export class StudyPlanCreateComponent implements OnInit {
   }
 
   private success() {
-    this.router.navigate(["study-plan", this.levelId, "recap"])
+    this.router.navigate(["back-office","views","study-plan", this.levelId, "recap"])
     this.studyPlanService.studyPlanFrom.reset()
     this.errorsMessage = []
   }

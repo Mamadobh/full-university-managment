@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("students")
+@RequestMapping("back-office/students")
 @RequiredArgsConstructor
 public class StudentController {
 

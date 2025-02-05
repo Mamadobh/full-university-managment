@@ -1,12 +1,84 @@
-<table [dataSource]="dataSource" class="shadow-[0px_48px_100px_0px_rgba(17,12,46,0.15)]" mat-table>
+<app-page-header
+  [linkHistory]="linkHistory()"
+  icon="receipt"
+  title="Manage role and Permissions"
+></app-page-header>
+<div class="flex justify-end items-center gap-8 head-role">
+  <button (click)="openPopupAddRole('Add Role')"
+          class="bg-purple_main text-[15px] font-light h-[40px] px-[22px]   flex "
+          extended mat-fab
+  >
+    <mat-icon class=" font-semibold text-[22px] leading-[22px] mr-2 ">add</mat-icon>
+    Add Role
+
+  </button>
+  <div class="relative ">
+    <button (click)="isColumnPanelOpen.set(!isColumnPanelOpen())"
+            [disableRipple]="true"
+            aria-label="Example icon button with a menu icon"
+            class="flex justify-center items-center h-8 w-8
+            rounded-md bg-white border-purple_main
+            border-2"
+            mat-mini-fab>
+      <mat-icon [fontSet]="'material-icons-outlined'" class="text-gray_color scale-125 ">
+        dataset
+      </mat-icon>
+
+    </button>
+    @if (isColumnPanelOpen()) {
+      <div class="panel  absolute right-0 top-10 z-[999999999]
+             bg-white rounded-md mat-elevation-z2 border
+             border-gray_color ">
+        <mat-selection-list>
+          @for (col of columns(); track col.header) {
+            @if (col.header != 'Resources') {
+              <mat-list-option [selected]="checkedcolumn().has(col.header)" class="checkbox"
+                               (click)="updateDisplayedColumn(col.header)">{{ col.header }}
+              </mat-list-option>
+            }
+          }
+        </mat-selection-list>
+      </div>
+    }
+  </div>
+
+</div>
+<table [dataSource]="flatNodes()" class="mt-8  relative shadow-[0px_48px_100px_0px_rgba(17,12,46,0.15)]" mat-table>
   @for (col of columns(); track col.columnDef; let isfirst = $first) {
     <ng-container [matColumnDef]="col.columnDef">
-      <th *matHeaderCellDef mat-header-cell>{{ col.header }}</th>
+
+      <th *matHeaderCellDef mat-header-cell class="capitalize   overflow-visible">
+        <span class="">
+          {{ col.header }}
+        </span>
+        <button mat-icon-button [matMenuTriggerFor]="menu" [disableRipple]="true" *ngIf="!isfirst"
+                class="inline-flex p-0 translate-y-1 items-center w-8 h-8 leading-8   text-center">
+          <mat-icon inline class="leading-8 w-8 h-8 text-[15px] text-text_color ">
+            more_horiz
+          </mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item class="  min-h-8 text-[12px] hover:bg-[#f0eff9]"
+                  (click)="openPopupAddRole('Update Role',col.header,col.id)">
+            <mat-icon inline class="mr-0 text-grey_3">edit</mat-icon>
+            <span class="text-[12px]   text-text_color">Edit</span>
+          </button>
+          <button (click)="openPopupDeleteRole(deleteRoleDialogContent,col.header,col.id)"
+                  mat-menu-item
+                  class=" min-h-8 text-[12px] text-text_color hover:bg-[#f0eff9]">
+            <mat-icon inline class="mr-0 text-grey_3">delete</mat-icon>
+            <span class="text-[12px] text-text_color">Delete</span>
+          </button>
+        </mat-menu>
+
+
+      </th>
       @if (isfirst) {
-        <td *matCellDef="let node" mat-cell>
+        <td *matCellDef="let node" mat-cell class="capitalize">
           <div
             [style.padding-left]="node.level * 80 + 'px'"
-            class="cell-with-toggle"
+            class="cell-with-toggle "
+
           >
             <button
               (click)="toggle(node)"
@@ -18,24 +90,28 @@
                 {{ isExpanded(node) ? 'expand_more' : 'chevron_right' }}
               </mat-icon>
             </button>
-            {{ col.cell(node) }}
+            <span class="text-[#303972] " [class.font-semibold]="hasChild(node)"
+                  [class.text-[12px]="!hasChild(node)">{{ col.cell(node) }}</span>
           </div>
         </td>
       } @else {
         <td *matCellDef="let node" mat-cell>
-        @if(node.level==0){
-          <mat-checkbox
-            [checked]="node[col.columnDef]?.completed"
-            [indeterminate]="partiallyComplete(node,col.columnDef)"
-            (change)="update(node,$event.checked,col.columnDef)"
-          >
+          @if (node.level == 0) {
+            <mat-checkbox color="#4D44B5"
+                          [checked]="node[col.columnDef]"
+                          [indeterminate]="partiallyComplete(node,col.columnDef)"
+                          (change)="confirmAddPermission($event,node,$event.checked,col.columnDef,confirmationDialogContent,col.id)"
+                          class="checkbox "
+            >
 
-          </mat-checkbox>
-        }@else{
-          <mat-checkbox [checked]="col.cell(node)?.['completed']"
-                        (change)="update(node,$event.checked, col.columnDef)">{{ col.cell(node)?.['completed'] }}
-          </mat-checkbox>
-        }
+            </mat-checkbox>
+          } @else {
+            <mat-checkbox color="#4D44B5" [checked]="col.cell(node)"
+                          (change)="confirmAddPermission($event,node,$event.checked,col.columnDef,confirmationDialogContent,col.id)"
+                          class="checkbox"
+            >
+            </mat-checkbox>
+          }
         </td>
       }
     </ng-container>
@@ -46,8 +122,49 @@
   <tr *matRowDef="let row; columns: displayedColumns()" mat-row></tr>
 </table>
 
-@for (node of dataSource.data; track node.Resources) {
-  {{ node |json }}
-}
+
+<!--@for (el of checkedcolumn(); track el) {-->
+<!--  <span>{{ el |json }}</span>-->
+<!--}-->
+<!--aa-->
+<!--@for (el of displayedColumns(); track el) {-->
+<!--  <span>{{ el |json }}</span>-->
+<!--}-->
 <br>
-<br>
+<!--Dialog logic template  -->
+
+<ng-template #confirmationDialogContent let-permissions="permissions" let-role="role" let-title="title">
+  <p class="text-[#999] leading-7">Do you really want to
+    @if (title == 'add') {
+      give
+
+    } @else {
+      remove
+    }
+    @for (permission of permissions; track permission; let last = $last; let first = $first) {
+
+      @if (last && permissions.length > 1) {
+        {{ "And" }}
+      }
+
+      <span class="capitalize text-text_color font-semibold text-[16px]">&nbsp;{{ permission }},</span>
+
+    }
+
+    @if (title == 'add') {
+      to
+
+    } @else {
+      from
+    } the role <span class="text-text_color font-semibold text-[16px]">{{ role }}</span>&nbsp;? This process can be
+    undone. </p>
+</ng-template>
+
+<ng-template #deleteRoleDialogContent let-role="role">
+  <p class="text-[#999] leading-7">Do you really want to delete the role
+    <span class="capitalize text-text_color font-semibold text-[16px]">&nbsp;{{ role }}</span>
+    ? This process can not be
+    undone.
+  </p>
+</ng-template>
+

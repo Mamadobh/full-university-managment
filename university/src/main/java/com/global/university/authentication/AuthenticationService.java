@@ -8,6 +8,9 @@ import com.global.university.student.Student;
 import com.global.university.student.StudentRepo;
 import com.global.university.teacher.Teacher;
 import com.global.university.teacher.TeacherRepo;
+import com.global.university.token.Token;
+import com.global.university.token.TokenRepo;
+import com.global.university.token.TokenType;
 import com.global.university.user.User;
 import com.global.university.user.UserRepo;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,6 +39,7 @@ public class AuthenticationService {
     private final TeacherRepo teacherRepo;
     private final StudentRepo studentRepo;
     private final PasswordEncoder passwordEncoder;
+    private final TokenRepo tokenRepo;
 
     public Integer register(RegistrationRequest request) {
         String role_name = request.type() == 0 ? TEACHER.name() : STUDENT.name();
@@ -56,6 +61,7 @@ public class AuthenticationService {
                 .enabled(true)
                 .person(person)
                 .build();
+
         return userRepo.save(user).getId();
     }
 
@@ -98,9 +104,35 @@ public class AuthenticationService {
         var user = ((User) auth.getPrincipal());
         claims.put("fullName", user.getPerson().getfullName());
         var jwtToken = jwtService.generateToken(claims, user);
+        revokedAllUserTokens(user);
+        savedUserToken(user, jwtToken);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .id(user.getId())
                 .build();
     }
+
+    private void savedUserToken(User user, String jwtToken) {
+        var token = Token.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .revoked(false)
+                .expired(false)
+                .build();
+        tokenRepo.save(token);
+    }
+
+    private void revokedAllUserTokens(User user) {
+        var validUserTokens = tokenRepo.findAllValidToken(user.getId());
+        if (validUserTokens.isEmpty())
+            return;
+        validUserTokens.forEach(token -> {
+            token.setRevoked(true);
+            token.setExpired(true);
+        });
+        tokenRepo.saveAll(validUserTokens);
+    }
+
 }

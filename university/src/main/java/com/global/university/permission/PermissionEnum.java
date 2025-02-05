@@ -5,11 +5,21 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum PermissionEnum {
-    READ_USER("user::read"),
-    WRITE_USER("user::write"),
-    DELETE_USER("user::delete"),
-    UPDATE_USER("user:update");
-    @Getter
-    private final String permision;
+    VIEW_TRACK,
+
+    ADD_TRACK,
+    DELETE_TRACK,
+    UPDATE_TRACK,
+    //=====================================//
+    VIEW_LEVEL,
+    ADD_LEVEL,
+    DELETE_LEVEL,
+    UPDATE_LEVEL,
+    //=====================================//
+
+    VIEW_DEPARTMENT,
+    ADD_DEPARTMENT,
+    DELETE_DEPARTMENT,
+    UPDATE_DEPARTMENT;
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("departments")
+@RequestMapping("back-office/departments")
 @RequiredArgsConstructor
 public class DepartmentControlller {
 

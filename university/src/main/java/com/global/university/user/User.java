@@ -3,6 +3,7 @@ package com.global.university.user;
 import com.global.university.base.BaseEntity;
 import com.global.university.person.Person;
 import com.global.university.role.Role;
+import com.global.university.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -47,17 +49,20 @@ public class User extends BaseEntity<Integer> implements Principal, UserDetails 
     )
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         var rol = roles.stream()
                 .flatMap(role -> {
                     Stream<SimpleGrantedAuthority> rolePermissions = role.getPermissions().stream()
                             .map(permission -> new SimpleGrantedAuthority(permission.getName()));
-                    Stream<SimpleGrantedAuthority> roleName = Stream.of(new SimpleGrantedAuthority("ROLE_"+role.getName()));
+                    Stream<SimpleGrantedAuthority> roleName = Stream.of(new SimpleGrantedAuthority("ROLE_" + role.getName()));
                     return Stream.concat(rolePermissions, roleName);
                 })
                 .collect(Collectors.toSet());
-log.error("roles "+rol.toString());
+        log.error("roles " + rol.toString());
         return rol;
     }
 

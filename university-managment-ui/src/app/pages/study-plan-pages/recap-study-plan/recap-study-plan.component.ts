@@ -153,7 +153,7 @@ export class RecapStudyPlanComponent implements OnInit {
     this.studyPlanService.uploadStudyPlan(file, levelId).subscribe({
       next: (res) => {
 
-        this.router.navigate(["study-plan",levelId])
+        this.router.navigate(["back-office","views","study-plan",levelId])
         console.log("sucess upload ")
       },
       error: (err) => {
@@ -284,7 +284,7 @@ export class RecapStudyPlanComponent implements OnInit {
 
   edit() {
 
-    this.router.navigate(["study-plan", this.levelId.toString(), "create"], {
+    this.router.navigate(["back-office","views","study-plan", this.levelId.toString(), "create"], {
       queryParams: {status: "edit"},
     })
   }

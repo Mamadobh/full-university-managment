@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("test-types")
+@RequestMapping("back-office/test-types")
 @RequiredArgsConstructor
 public class TestTypeController {
 

@@ -1,5 +1,7 @@
 package com.global.university.security;
 
+import com.global.university.role.Role;
+import com.global.university.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -52,9 +54,10 @@ public class JwtService {
             HashMap<String, Object> extraClaims,
             UserDetails userDetails, long jwtExpiration
     ) {
-        var authorities = userDetails.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
+        var authorities =((User) userDetails).getRoles()
+                .stream().
+                map(Role::getName)
+              //  .map(GrantedAuthority::getAuthority)
                 .toList();
 
         return Jwts.builder()

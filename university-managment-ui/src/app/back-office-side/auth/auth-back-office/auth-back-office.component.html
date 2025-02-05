@@ -10,7 +10,7 @@
         <div class="font-medium text-[#363B64] mb-1">
           Email:
         </div>
-        <mat-form-field appearance="outline" class="form_element text-center w-full">
+        <mat-form-field appearance="outline" class="form_element remove_input_bottom_margin text-center w-full">
           <input email matInput placeholder="Enter Email" required
                  [ngModelOptions]="{ updateOn: 'blur' }"
                  [(ngModel)]="emailf"
@@ -32,7 +32,7 @@
         <div class="font-medium text-[#363B64] mb-1">
           Password:
         </div>
-        <mat-form-field appearance="outline" class="form_element text-center w-full">
+        <mat-form-field appearance="outline" class="form_element remove_input_bottom_margin text-center w-full">
           <input #password="ngModel" [(ngModel)]="passwordf"
                  [ngModelOptions]="{ updateOn: 'blur' }" [type]="hide() ? 'password' : 'text'"
                  matInput

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("subject-types")
+@RequestMapping("back-office/subject-types")
 @RequiredArgsConstructor
 public class SubjectTypeController {
 

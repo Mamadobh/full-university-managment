@@ -3,8 +3,9 @@ package com.global.university.customValidation;
 import com.global.university.authentication.RegistrationRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.BeanWrapperImpl;
 
-public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, RegistrationRequest> {
+public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, Object> {
     String message;
 
     @Override
@@ -14,8 +15,11 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
     }
 
     @Override
-    public boolean isValid(RegistrationRequest request, ConstraintValidatorContext context) {
-        boolean isValid = request.password() != null && request.password().equals(request.passwordConfirmation());
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+        String password =  (String) new BeanWrapperImpl(value).getPropertyValue("password");
+        String passwordConfirmation =  (String) new BeanWrapperImpl(value).getPropertyValue("passwordConfirmation");
+
+        boolean isValid = password != null && password.equals(passwordConfirmation);
         if (!isValid) {
             context.buildConstraintViolationWithTemplate(message)
                     .addPropertyNode("password")
