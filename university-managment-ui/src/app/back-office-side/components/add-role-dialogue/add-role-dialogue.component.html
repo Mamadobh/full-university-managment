@@ -1,0 +1,69 @@
+<div class="add-role-modal   ">
+  <div class="h-[80px]  bg-[#4D44B5]   relative  overflow-hidden flex items-center px-4">
+    <h4 class="text-white m-0">{{data.title}}</h4>
+    <div
+      class="big-cercle absolute right-4 h-40
+             w-40 rounded-full bg-transparent
+             border-[#FCC43E] border-t-8 border-l-8
+              border-r-8 top-[30%]">
+
+    </div>
+    <div
+      class="little-cercle absolute right-28 h-32
+             w-32 rounded-full bg-transparent  border-[#FB7D5B]
+              border-t-[7.5px] border-l-[7.5px]  border-r-[7.5px]
+               top-[65%] ">
+    </div>
+  </div>
+  <form #addRoleForm="ngForm" (ngSubmit)="submit(addRoleForm)">
+
+    <div class="content  px-6 pt-4 mb-0">
+
+      <div class="flex flex-col">
+        <div class="mb-[12px] text-text_color font-semibold capitalize pl-1">Role name
+          *
+        </div>
+        <mat-form-field appearance="outline" class="form_element w-full remove_input_bottom_margin">
+          <input #role="ngModel" [(ngModel)]="fieldRole"
+                 [ngModelOptions]="{ updateOn: 'blur' }"
+                 matInput name="fieldRole"
+                 placeholder="role name"
+                 required
+          >
+        </mat-form-field>
+        @if ((role.invalid && role.touched)) {
+          <div *ngIf="role.hasError('required')" class="text-[12px] mt-1 text-[#f44336] pl-1">
+            Role name is required !!
+          </div>
+        }
+        @if (msgError) {
+          <div class="text-[12px] mt-1 text-[#f44336] pl-1">
+            {{
+              msgError
+            }}
+          </div>
+        }
+      </div>
+    </div>
+    <div class="footer flex justify-end gap-2 px-8 py-4">
+      <button
+        (click)="onCancel()"
+        class="bg-white mat-elevation-z0 text-[15px]  border-purple_main border
+             rounded-full text-purple_main font-light h-[40px] px-[22px]
+              flex  items-center "
+        type="button"
+      >
+        {{ data.cancel?.text || "Cancel" }}
+
+      </button>
+      <button
+        class="bg-purple_main text-[15px] font-light h-[40px] px-[22px]   flex "
+        extended
+        mat-fab type="submit"
+      >
+        {{ data?.okText || 'apply' }}
+      </button>
+    </div>
+  </form>
+
+</div>
