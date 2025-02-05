@@ -108,7 +108,7 @@ public class StartApp implements CommandLineRunner {
         authenticationService.register(rq);
         log.error(authenticationService.authenticate(ra).getToken());
         authenticationSeriveBackOffice.register(adminRej);
-        log.error(authenticationSeriveBackOffice.authenticate(adminAuth).getToken());
+        log.error("Admin auth "+authenticationSeriveBackOffice.authenticate(adminAuth).getToken());
 
 
 //================================================================================
