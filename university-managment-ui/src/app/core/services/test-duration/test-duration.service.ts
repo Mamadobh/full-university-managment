@@ -4,7 +4,7 @@ import {PageResponseModel} from "../../model/PageResponse.model";
 import {CrudServiceService} from "../generic/crud-service.service";
 import {TestDurationRequest, TestDurationResponse} from "./model/test-duration.model";
 import {HttpClient} from "@angular/common/http";
-import {BASE_PATH} from "../../Constants";
+import {BASE_ADMIN_PATH, BASE_PATH} from "../../Constants";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class TestDurationService extends CrudServiceService<TestDurationRequest,
   allTestDurationReponse = new Subject<PageResponseModel<TestDurationResponse>>()
 
   constructor(http: HttpClient) {
-    super(http, BASE_PATH + "test-durations")
+    super(http, BASE_ADMIN_PATH + "test-durations")
   }
 
   findAllTestDuration(page?: number | undefined, size?: number | undefined) {

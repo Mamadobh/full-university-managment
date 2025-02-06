@@ -17,7 +17,6 @@ import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
 import {RolesService} from "../../../core/services/roles/roles.service";
 import {ResourcesService} from "../../../core/services/resources/resources.service";
 import {ConfirmDialogContext, ResourceRow} from "../../../core/services/resources/model/resource.model";
-import {PageHeaderComponent} from "../../../components/shared/page-header/page-header.component";
 import {Link} from "../../../core/model/utils";
 import {BASE_ADMIN_ROUTE} from "../../../core/Constants";
 import {
@@ -29,11 +28,16 @@ import {
   MatSelectionList
 } from "@angular/material/list";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmDialogueComponent} from "../../components/confirm-dialogue/confirm-dialogue.component";
 import {ManagePermissionRequest, RoleRequest} from "../../../core/services/roles/model/roles.model";
-import {AddRoleDialogueComponent} from "../../components/add-role-dialogue/add-role-dialogue.component";
 import {MatPrefix, MatSuffix} from "@angular/material/form-field";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {PageHeaderComponent} from "../../components/shared/page-header/page-header.component";
+import {
+  ConfirmDialogueComponent
+} from "../../components/role-and-permission/confirm-dialogue/confirm-dialogue.component";
+import {
+  AddRoleDialogueComponent
+} from "../../components/role-and-permission/add-role-dialogue/add-role-dialogue.component";
 
 
 @Component({

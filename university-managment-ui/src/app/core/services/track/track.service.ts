@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {BASE_PATH} from "../../Constants";
+import {BASE_ADMIN_PATH, BASE_PATH} from "../../Constants";
 import {Observable} from "rxjs";
 import {ResponseModel} from "../../model/Response.model";
 import {PageResponseModel} from "../../model/PageResponse.model";
@@ -12,7 +12,7 @@ import {TrackResponseModel} from "./model/TrackResponse.model";
 })
 export class TrackService {
   _http: HttpClient = inject(HttpClient)
-  _path: string = BASE_PATH + "tracks"
+  _path: string = BASE_ADMIN_PATH + "tracks"
 
   getAllTracks(page?: number | undefined, size?: number | undefined)
     : Observable<ResponseModel<PageResponseModel<TrackResponseModel>>> {

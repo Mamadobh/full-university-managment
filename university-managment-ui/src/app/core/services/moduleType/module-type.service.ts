@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {BASE_PATH} from "../../Constants";
+import {BASE_ADMIN_PATH, BASE_PATH} from "../../Constants";
 import {Observable, Subject} from "rxjs";
 import {PageResponseModel} from "../../model/PageResponse.model";
 import {ResponseModel} from "../../model/Response.model";
@@ -11,7 +11,7 @@ import {ModuleTypeRequest, ModuleTypeResponse} from "./model/module-type.model";
 })
 export class ModuleTypeService {
   _http: HttpClient = inject(HttpClient)
-  _path: string = BASE_PATH + "module-types"
+  _path: string = BASE_ADMIN_PATH + "module-types"
   allModuleTypeReponse = new Subject<PageResponseModel<ModuleTypeResponse>>()
 
   findAllModuleTypes(page?: number | undefined, size?: number | undefined) {

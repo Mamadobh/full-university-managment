@@ -5,22 +5,22 @@
   shadow-[0px_48px_100px_0px_rgba(17,12,46,0.15)]">
 
     <div><img alt="a" class="mx-auto" height="100" src="/assets/images/university_logo.jpg" width="100"></div>
-    <form #formLogin="ngForm">
+    <form #formLogin="ngForm" (ngSubmit)="onSubmit(formLogin)" >
       <div class="mb-4">
         <div class="font-medium text-[#363B64] mb-1">
           Email:
         </div>
         <mat-form-field appearance="outline" class="form_element remove_input_bottom_margin text-center w-full">
-          <input email matInput placeholder="Enter Email" required
-                 [ngModelOptions]="{ updateOn: 'blur' }"
-                 [(ngModel)]="emailf"
-                 #email="ngModel"
+          <input #email="ngModel" [(ngModel)]="emailValue" [ngModelOptions]="{ updateOn: 'blur' }" email
+                 matInput
                  name="email"
+                 placeholder="Enter Email"
+                 required
           />
         </mat-form-field>
-        @if (email.invalid && email.touched) {
+        @if ((email.invalid && email.touched)||(email.invalid && formLogin.submitted)) {
           <div *ngIf="email.hasError('required')" class="text-[12px] mt-1 text-[#f44336] pl-1">
-            password is required !!
+          {{getEmailError()}}
           </div>
           <div *ngIf="email.hasError('email')" class="text-[12px] mt-1 text-[#f44336] pl-1">
             email must be valid !!
@@ -33,7 +33,7 @@
           Password:
         </div>
         <mat-form-field appearance="outline" class="form_element remove_input_bottom_margin text-center w-full">
-          <input #password="ngModel" [(ngModel)]="passwordf"
+          <input #password="ngModel" [(ngModel)]="passwordValue"
                  [ngModelOptions]="{ updateOn: 'blur' }" [type]="hide() ? 'password' : 'text'"
                  matInput
                  minlength="8"
@@ -45,22 +45,27 @@
             class="translate-y-[-6px] font-light"
             disableRipple="true"
             mat-icon-button
-            matSuffix
+            matIconSuffix
             style="width: 50px !important;"
           >
             <mat-icon
               [fontSet]="'material-icons-outlined'"
-              class="font-light text-[#363B64] text-[20px] translate-y-0.5"
-            >{{ hide() ? 'visibility_off' : 'visibility' }}
+              class="font-light text-[#363B64] text-[20px] "
+            >
+              {{ hide() ? 'visibility_off' : 'visibility' }}
             </mat-icon>
           </button>
         </mat-form-field>
-        @if (password.invalid && password.touched) {
-          <div *ngIf="password.hasError('required')" class="text-[12px] mt-1 text-[#f44336] pl-1">
-            password is required !!
+        @if ((password.invalid && password.touched ) || (password.invalid && formLogin.submitted)) {
+          <div *ngIf="password.hasError('required') " class="text-[12px] mt-1 text-[#f44336] pl-1">
+            {{ getPasswordError() }}
           </div>
+
           <div *ngIf="password.hasError('minlength')" class="text-[12px] mt-1 text-[#f44336] pl-1">
             password must be at least 8 characters !!
+          </div>
+          <div *ngIf="errorMessage.length!=0" class="text-[12px] mt-1 text-[#f44336] pl-1">
+            {{errorMessage}}
           </div>
         }
       </div>
@@ -74,10 +79,9 @@
       </button>
     </form>
 
-<!--    <p class="text-[#71717A] mt-4  text-center w-full font-light">-->
-<!--      Don't have an account yet ? <span class="text-[#2563EB] font-medium cursor-pointer">Register</span>-->
-<!--    </p>-->
+    <!--    <p class="text-[#71717A] mt-4  text-center w-full font-light">-->
+    <!--      Don't have an account yet ? <span class="text-[#2563EB] font-medium cursor-pointer">Register</span>-->
+    <!--    </p>-->
   </div>
-
 
 </div>

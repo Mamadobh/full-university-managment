@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {BASE_PATH} from "../../Constants";
+import {BASE_ADMIN_PATH, BASE_PATH} from "../../Constants";
 import {Observable} from "rxjs";
 import {ResponseModel} from "../../model/Response.model";
 import {PageResponseModel} from "../../model/PageResponse.model";
@@ -12,7 +12,7 @@ import {SpecialityResponseModel} from "./model/SpecialityResponse.model";
 })
 export class SpeciallityService {
   _http: HttpClient = inject(HttpClient)
-  _path: string = BASE_PATH + "specialities"
+  _path: string = BASE_ADMIN_PATH + "specialities"
 
   getAllSpeciality(page?: number | undefined, size?: number | undefined)
     : Observable<ResponseModel<PageResponseModel<SpecialityResponseModel>>> {

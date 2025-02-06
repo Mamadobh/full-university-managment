@@ -4,7 +4,7 @@ import {NumberOfSessionRequest, NumberOfSessionResponse} from "./model/number-of
 import {Subject} from "rxjs";
 import {PageResponseModel} from "../../model/PageResponse.model";
 import {HttpClient} from "@angular/common/http";
-import {BASE_PATH} from "../../Constants";
+import {BASE_ADMIN_PATH, BASE_PATH} from "../../Constants";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class NumberOfSessionService extends CrudServiceService<NumberOfSessionRe
   allNumberOfSessionReponse = new Subject<PageResponseModel<NumberOfSessionResponse>>()
 
   constructor(http: HttpClient) {
-    super(http, BASE_PATH + "session-numbers ")
+    super(http, BASE_ADMIN_PATH + "session-numbers ")
   }
 
   findAllNumberOfSession(page?: number | undefined, size?: number | undefined) {
