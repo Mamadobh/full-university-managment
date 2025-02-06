@@ -4,9 +4,10 @@ import {MatIconButton} from "@angular/material/button";
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from "@angular/material/sidenav";
 import {MatToolbar} from "@angular/material/toolbar";
 import {RouterOutlet} from "@angular/router";
-import {SidebarComponent} from "../../components/layout/sidebar/sidebar.component";
+
 import {MenuItems} from "../admin-layout/admin-layout.component";
-import {HeaderComponent} from "../../components/layout/header/header.component";
+import {SidebarComponent} from "../../back-office-side/components/layout/sidebar/sidebar.component";
+import {HeaderComponent} from "../../back-office-side/components/layout/header/header.component";
 
 @Component({
   selector: 'app-shared-layout',

@@ -4,8 +4,8 @@ import {MatIconButton} from "@angular/material/button";
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from "@angular/material/sidenav";
 import {MatToolbar} from "@angular/material/toolbar";
 import {RouterOutlet} from "@angular/router";
-import { SidebarComponent} from "../../components/layout/sidebar/sidebar.component";
 import {SharedLayoutComponent} from "../shared-layout/shared-layout.component";
+import {SidebarComponent} from "../../back-office-side/components/layout/sidebar/sidebar.component";
 export type MenuItems = {
   icon: string,
   label: string,

@@ -5,7 +5,7 @@ import {default as _rollupMoment} from 'moment';
 import {ValidateDate, validateDuplication} from "../../../valildators/validators";
 import {StudyPlanRequest, StudyPlanResponse, UploadStudyPlanRequest} from "./model/study-plan.model";
 import {HttpClient} from "@angular/common/http";
-import {BASE_PATH} from "../../Constants";
+import {BASE_ADMIN_PATH, BASE_PATH} from "../../Constants";
 import {ResponseModel} from "../../model/Response.model";
 import {Observable} from "rxjs";
 
@@ -18,7 +18,7 @@ export class StudyPlanService {
 
   studyPlanFrom!: FormGroup;
   isFormSubmited = signal(false)
-  _path: string = BASE_PATH + "levels" + "/study-plan"
+  _path: string = BASE_ADMIN_PATH + "levels" + "/study-plan"
 
   constructor(private fb: FormBuilder, private _http: HttpClient) {
 

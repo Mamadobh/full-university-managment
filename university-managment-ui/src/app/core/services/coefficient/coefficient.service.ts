@@ -4,7 +4,7 @@ import {PageResponseModel} from "../../model/PageResponse.model";
 import {CoefficientRequest, CoefficientResponse} from "./model/coefficient.model";
 import {CrudServiceService} from "../generic/crud-service.service";
 import {HttpClient} from "@angular/common/http";
-import {BASE_PATH} from "../../Constants";
+import {BASE_ADMIN_PATH, BASE_PATH} from "../../Constants";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class CoefficientService extends CrudServiceService<CoefficientRequest, C
   allCoefficientReponse = new Subject<PageResponseModel<CoefficientResponse>>()
 
   constructor(http: HttpClient) {
-    super(http, BASE_PATH + "coefficients")
+    super(http, BASE_ADMIN_PATH + "coefficients")
   }
 
   findAllCoefficient(page?: number | undefined, size?: number | undefined) {

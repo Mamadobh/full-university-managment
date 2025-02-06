@@ -1,10 +1,11 @@
-import {NumberOfSessionResponse} from "../../numberOfSession/model/number-of-session.model";
+
 import {TestTypeResponse} from "../../test-type/model/test-type.model";
 import {CoefficientResponse} from "../../coefficient/model/coefficient.model";
 import {TestDurationResponse} from "../../test-duration/model/test-duration.model";
 import {ModuleTypeResponse} from "../../moduleType/model/module-type.model";
 import {LevelDetailsResponseModel} from "../../level/model/LevelDetailsResponse.model";
 import {TypeOfSubjectResponse} from "../../typeOfSubject/model/type-of-subject.model";
+import {NumberOfSessionResponse} from "../../numberOfSession/model/number-of-session.model";
 
 export class SubjectTypesStudyPlanRequest {
   constructor(
