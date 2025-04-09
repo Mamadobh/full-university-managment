@@ -2,7 +2,6 @@ package com.global.university.config;
 
 import com.global.university.authentication.*;
 import com.global.university.permission.PermissionRequest;
-import com.global.university.person.Person;
 import com.global.university.person.PersonRequest;
 import com.global.university.resource.ResourcesEnum;
 import com.global.university.resource.ResourcesRequest;
@@ -19,7 +18,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,7 +27,13 @@ import static com.global.university.role.FixedRoleEnum.*;
 @Component
 @RequiredArgsConstructor
 @Log4j2
-public class StartApp implements CommandLineRunner {
+public class
+
+
+
+
+
+StartApp implements CommandLineRunner {
     private final RoleServices roleServices;
     private final TeacherRepo teacherRepo;
     private final StudentRepo studentRepo;
@@ -121,5 +125,5 @@ public class StartApp implements CommandLineRunner {
             resourcesService.save(request);
         }
 
-    }
+}
 }

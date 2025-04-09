@@ -1,10 +1,12 @@
 package com.global.university.authentication;
 
 
+import com.global.university.common.SideMenuEnum;
+import com.global.university.common.SideMenuItem;
 import com.global.university.permission.Permission;
 import com.global.university.person.Person;
 import com.global.university.person.PersonRepo;
-import com.global.university.person.PersonRequest;
+import com.global.university.resource.ResourcesEnum;
 import com.global.university.role.Role;
 import com.global.university.role.RoleServices;
 import com.global.university.security.JwtService;
@@ -17,14 +19,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +57,6 @@ public class AuthenticationSeriveBackOffice {
 
     public AdminAuthenticationResponse authenticate(AuthenticationRequest request) {
 
-
         var auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
@@ -73,11 +70,15 @@ public class AuthenticationSeriveBackOffice {
         revokedAllUserTokens(user);
         savedUserToken(user, jwtToken);
         Set<Role> roles = user.getRoles();
+        Map<String, Set<String>> resources = rolesPermissionByResources(roles);
+        Set<SideMenuItem> sideMenu = prepareSideMenu(resources);
+
 
         return AdminAuthenticationResponse.builder()
                 .token(jwtToken)
                 .id(user.getId())
-                .resources(rolesPermissionByResources(roles))
+                .resources(resources)
+                .sideMenu(sideMenu)
                 .roles(roles.stream().map(Role::getName).collect(Collectors.toSet()))
                 .build();
     }
@@ -122,4 +123,23 @@ public class AuthenticationSeriveBackOffice {
         tokenRepo.saveAll(validUserTokens);
     }
 
+    private Set<SideMenuItem> prepareSideMenu(Map<String, Set<String>> resources) {
+        Set<SideMenuItem> sideMenu = new HashSet<>();
+
+        Set<String> validResources = Arrays.stream(ResourcesEnum.values())
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+
+        for (String res : resources.keySet()) {
+            if (validResources.contains(res)) {
+                SideMenuEnum enumMenu = SideMenuEnum.valueOf(res);
+                sideMenu.add(SideMenuItem.builder()
+                        .label(enumMenu.getLabel())
+                        .icon(enumMenu.getIcon())
+                        .route(enumMenu.getRoute())
+                        .build());
+            }
+        }
+        return sideMenu;
+    }
 }

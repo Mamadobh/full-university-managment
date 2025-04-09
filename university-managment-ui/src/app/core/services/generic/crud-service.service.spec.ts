@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CrudServiceService } from './crud-service.service';
 
 describe('CrudServiceService', () => {
-  let service: CrudServiceService;
+  let service: CrudServiceService<Request, Response>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

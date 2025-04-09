@@ -36,6 +36,7 @@ public class LevelMapper implements Mapper<Level, Integer, LevelRequest, LevelRe
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .studyPlan(FileUtils.readFileFromLocation(entity.getStudyPlan()))
+                .isExistStudyPlan(entity.isExistStudyPlan())
                 .specialityId(entity.getSpeciality().getId())
                 .build();
     }

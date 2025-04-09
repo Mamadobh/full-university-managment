@@ -1,7 +1,7 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {MatButton, MatFabButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {SafeUrlPipe} from "../../../../pipes/safe-url.pipe";
 import {JsonPipe, NgComponentOutlet} from "@angular/common";
 import {LevelService} from "../../../../core/services/level/level.service";
@@ -22,8 +22,6 @@ import {PageHeaderComponent} from "../../../components/shared/page-header/page-h
     SafeUrlPipe,
     NgComponentOutlet,
     JsonPipe,
-
-
   ],
   templateUrl: './study-plan-display.component.html',
   styleUrl: './study-plan-display.component.scss'
@@ -31,23 +29,24 @@ import {PageHeaderComponent} from "../../../components/shared/page-header/page-h
 export class StudyPlanDisplayComponent implements OnInit {
   linkHistory = signal<{ label: string, navLink: string }[]>([])
   private activeRoute = inject(ActivatedRoute)
+  private route: Router = inject(Router)
   private levelService = inject(LevelService)
   levelId: string = "";
   pdfUrl: string = '';
   errorMessage = ""
   currentLevel = signal<LevelResponse>(new LevelResponse())
-  baseUrl=BASE_ADMIN_ROUTE
+  baseUrl = BASE_ADMIN_ROUTE
 
   ngOnInit() {
-
     this.activeRoute.paramMap.subscribe((data) => {
       this.levelId = data.get("levelId") as string
-      this.linkHistory.set([{label: "Study plan", navLink: BASE_ADMIN_ROUTE+"/study-plan"}, {
+      this.linkHistory.set([{label: "Study plan", navLink: BASE_ADMIN_ROUTE + "/study-plan"}, {
         label: "Overview",
-        navLink: BASE_ADMIN_ROUTE+"/study-plan/" + data.get("levelId")
+        navLink: BASE_ADMIN_ROUTE + "/study-plan/" + data.get("levelId")
       },])
     })
     this.findLevel(+this.levelId)
+    this.findStudyPlanPdf(+this.levelId)
   }
 
   loadPdf(studyPlan: any): void {
@@ -62,11 +61,21 @@ export class StudyPlanDisplayComponent implements OnInit {
     this.levelService.get(id).subscribe({
       next: (res) => {
         this.currentLevel.set(res.data)
-        this.pdfUrl=this.levelService.getStudyPlanPdf(id)
+        // this.pdfUrl=this.levelService.getStudyPlanPdf(id)
       },
       error: (err) => {
-
       }
     })
+  }
+
+  private findStudyPlanPdf(levelId: number) {
+    this.levelService.getStudyPlanPdf(levelId).subscribe((pdfBlob) => {
+      this.pdfUrl = URL.createObjectURL(pdfBlob);
+    }, error => {
+      if (error.businessErrorCode == 404) {
+        this.route.navigate([BASE_ADMIN_ROUTE+"/study-plan/1/recap"])
+      }
+      console.log('Erreur lors du téléchargement du PDF', error);
+    });
   }
 }

@@ -24,7 +24,7 @@ export type ResourceRow = {
   resource: string;
   id:number,
   level: number;
-  permissions: ResourceRow[];
+  permissions?: ResourceRow[];
 } & {
   [key: string]: boolean | number | string | ResourceRow[];
 };

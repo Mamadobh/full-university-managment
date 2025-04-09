@@ -221,7 +221,7 @@ export class RoleAndPermissionsComponent {
     }
     return (
       node.permissions.some(item => item[column] === true &&
-        !node.permissions.every(item => item[column] === true)
+        !node.permissions?.every(item => item[column] === true)
       ))
   }
 
@@ -276,7 +276,7 @@ export class RoleAndPermissionsComponent {
 // dialog logic
   dialog: MatDialog = inject(MatDialog)
 
-  openPopupAddRole(title: string, roleField?: string, idRole?: number) {
+  openPopupAddRole(title: string, roleField: string, idRole?: number) {
 
     const dialogueRef = this.dialog.open(AddRoleDialogueComponent, {
       data: {
@@ -350,9 +350,9 @@ export class RoleAndPermissionsComponent {
   ) {
     event.source.checked = !checked;
     console.log("hello from dialog")
-    const listPermissions = node.level ? [node?.resource] : node.permissions.map(el => el?.resource)
+    const listPermissions = node.level ? [node?.resource] : node?.permissions?.map(el => el?.resource)
     const title: string = checked ? "add" : "remove"
-    this.openPopup(contentConfirmDialog, {permissions: listPermissions, role: columnDef, title: title},
+    this.openPopup(contentConfirmDialog, {permissions: listPermissions as string[], role: columnDef, title: title},
       node, checked, columnDef, event, roleId
     )
 

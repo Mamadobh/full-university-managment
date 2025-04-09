@@ -12,7 +12,7 @@
       <app-simple-cart
         [department]="'department:&nbsp;'+lev.department"
         [level]="''+lev.name"
-        [link]="'/study-plan/'+lev.id"
+        [link]="baseUrl+'/study-plan/'+lev.id"
         [track_speciality]="'track&speciality:&nbsp;&nbsp;'+lev.specialityWithTrack"
       ></app-simple-cart>
     }

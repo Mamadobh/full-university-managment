@@ -56,13 +56,6 @@ public class SemesterMapper implements Mapper<Semester, Integer, SemesterRequest
                 .endDate(request.endDate())
                 .startDate(request.startDate())
                 .description(request.description())
-                .level(
-                        levelRepo.findById(request.levelId()).orElseThrow(() ->
-                                new EntityNotFoundException(
-                                        "Data not Found with id " +
-                                                request.levelId() +
-                                                " Please verify !!"))
-                )
                 .build();
     }
 

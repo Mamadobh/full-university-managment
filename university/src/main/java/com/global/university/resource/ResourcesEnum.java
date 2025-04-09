@@ -8,9 +8,10 @@ import java.util.Set;
 
 import static com.global.university.permission.PermissionEnum.*;
 
+@Getter
 @RequiredArgsConstructor
 public enum ResourcesEnum {
-    Department(
+    DEPARTMENT(
             Set.of(
                     VIEW_DEPARTMENT,
                     DELETE_DEPARTMENT,
@@ -18,7 +19,7 @@ public enum ResourcesEnum {
                     ADD_DEPARTMENT
             )
     ),
-    Track(
+    TRACK(
             Set.of(
                     VIEW_TRACK,
                     DELETE_TRACK,
@@ -26,14 +27,24 @@ public enum ResourcesEnum {
                     ADD_TRACK
             )
     ),
-    Level(
+    LEVEL(
             Set.of(
                     VIEW_LEVEL,
                     DELETE_LEVEL,
                     UPDATE_LEVEL,
                     ADD_LEVEL
             )
+    ),
+
+    ROLE_AND_PERMISSION(
+            Set.of(
+                    ADD_ROLE,
+                    UPDATE_ROLE,
+                    DELETE_ROLE,
+                    VIEW_ROLE_AND_PERMISSION,
+                    ADD_PERMISSION_TO_ROLE,
+                    REMOVE_PERMISSION_FROM_ROLE
+            )
     );
-    @Getter
     private final Set<PermissionEnum> permissions;
 }

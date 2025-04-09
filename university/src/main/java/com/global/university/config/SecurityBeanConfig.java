@@ -69,7 +69,6 @@ public class SecurityBeanConfig {
         ));
         sourse.registerCorsConfiguration("/**", config);
         return new CorsFilter(sourse);
-
     }
 
 }

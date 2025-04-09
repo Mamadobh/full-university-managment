@@ -83,33 +83,55 @@ public class StudyPlanService {
         if (Semester.checkDuplicationSemester(request.semesters())) {
             throw new DataDuplicationException("Can not have duplication of semester !!");
         }
+        Integer levelId = request.semesters().get(0).levelId();
+        Level level = levelRepo.findById(levelId).orElseThrow(() ->
+                new EntityNotFoundException(
+                        "Data not Found with id " +
+                                levelId +
+                                " Please verify !!"));
+        Set<Semester>semestersList =new HashSet<>();
         request.semesters().forEach((semesterReq) -> {
             Semester semester = semesterMapper.toEntity(semesterReq, isUpdate);
+            semester.setLevel(level);
             List<Module> modules = this.getModule(semesterReq.modules(), semester, testCache, isUpdate);
             semester.setModules(new HashSet<>(modules));
+            log.info("the semester not saved " +semester.getId());
             semesterRepo.save(semester);
+            semestersList.add(semester);
+
+            log.info("the semester after saved " +semester.getId());
+
         });
+        level.setExistStudyPlan(true);
+        level.setSemesters(semestersList);
+        for(var sem:level.getSemesters()){
+            log.info("the level log after saved " +sem.getId());
+        }
+        levelRepo.save(level);
         return 1;
     }
+
     @Transactional
     public Integer updateStudyPlan(StudyPlanRequest request, boolean isUpdate) {
         Integer id = request.semesters().get(0).levelId();
 
+        log.info("teh problem is here  test ets 000 ");
 
         Level level = levelRepo.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Level not found with id " + id)
         );
+        log.info("teh problem is here  test ets 111 ");
 
         for (Semester sem : level.getSemesters()) {
             deleteStudyPlan(sem.getId());
         }
 
+        log.info("teh problem is here  test ets 222 ");
         addFullStudyPlan(request, false);
 
 
         return 0;
     }
-
 
 
     public Integer saveStudyPlan(MultipartFile studyPlanFile, Integer levelId) {
@@ -134,8 +156,6 @@ public class StudyPlanService {
         }
         return id;
     }
-
-
 
 
     private void checkSemesterExist(StudyPlanRequest request) {

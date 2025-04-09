@@ -10,6 +10,7 @@ public enum BusinessErrorCodes {
     INCORRECT_CURRENT_PASSWORD(300, BAD_REQUEST, "current password is incorrect "),
     NEW_PASSWORD_DOES_NOT_MATCH(301, BAD_REQUEST, "the new password does not match"),
     ACCOUNT_LOCKED(302, FORBIDDEN, "User account is locked"),
+    OPEARATION_NOT_PERMITTED(403, FORBIDDEN, "Operatiobn not permitted "),
 
     ACCOUNT_DISABLED(303, FORBIDDEN, "User account is disabled"),
 

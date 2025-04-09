@@ -1,7 +1,6 @@
 package com.global.university.level;
 
 import com.global.university.base.BaseEntity;
-import com.global.university.module.Module;
 import com.global.university.semester.Semester;
 import com.global.university.speciality.Speciality;
 import jakarta.persistence.*;
@@ -25,6 +24,7 @@ public class Level extends BaseEntity<Integer> {
     private String name;
     private String description;
     private String studyPlan;
+    private boolean isExistStudyPlan=false;
 
     @ManyToOne()
     @JoinColumn(name = "Speciality_id")

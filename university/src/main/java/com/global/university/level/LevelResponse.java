@@ -7,10 +7,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-    public class LevelResponse {
-        private Integer id;
-        private String name;
-        private String description;
-        private Integer specialityId;
-        private byte[] studyPlan;
-    }
+public class LevelResponse {
+    private Integer id;
+    private String name;
+    private String description;
+    private Integer specialityId;
+    private byte[] studyPlan;
+    private boolean isExistStudyPlan = false;
+
+}

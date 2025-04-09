@@ -1,5 +1,6 @@
 package com.global.university.authentication;
 
+import com.global.university.common.SideMenuItem;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +16,5 @@ public class AdminAuthenticationResponse {
     private String token;
     private Map<String, Set<String>> resources;
     private Set<String> roles;
-
+    private Set<SideMenuItem> sideMenu;
 }

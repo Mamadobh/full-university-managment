@@ -1,11 +1,13 @@
 package com.global.university.handler;
 
+import com.global.university.exception.OperationNotPermittedException;
 import com.global.university.response.BusinessErrorCodes;
 import com.global.university.response.ExceptionResponse;
 import com.global.university.response.Response;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,8 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.global.university.response.BusinessErrorCodes.DATA_NOT_FOUND;
-import static com.global.university.response.BusinessErrorCodes.INVALID_INPUT_DATA;
+import static com.global.university.response.BusinessErrorCodes.*;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -75,6 +76,38 @@ public class GlobalExceptionHandler {
                         .error(ExceptionResponse.builder()
                                 .businessErrorCode(DATA_NOT_FOUND.getCode())
                                 .businessExceptionDescription(DATA_NOT_FOUND.getDescription())
+                                .error(exp.getMessage())
+                                .build())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(OperationNotPermittedException.class)
+    public ResponseEntity<Response> handelException(OperationNotPermittedException exp) {
+
+        return ResponseEntity.status(OPEARATION_NOT_PERMITTED.getHttpStatus()).body(
+                Response.builder()
+                        .success(false)
+                        .status(OPEARATION_NOT_PERMITTED.getHttpStatus().toString())
+                        .error(ExceptionResponse.builder()
+                                .businessErrorCode(OPEARATION_NOT_PERMITTED.getCode())
+                                .businessExceptionDescription(OPEARATION_NOT_PERMITTED.getDescription())
+                                .error(exp.getMessage())
+                                .build())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Response> handelException(BadCredentialsException exp) {
+
+        return ResponseEntity.status(INCORRECT_CURRENT_PASSWORD.getHttpStatus()).body(
+                Response.builder()
+                        .success(false)
+                        .status(INCORRECT_CURRENT_PASSWORD.getHttpStatus().toString())
+                        .error(ExceptionResponse.builder()
+                                .businessErrorCode(INCORRECT_CURRENT_PASSWORD.getCode())
+                                .businessExceptionDescription(INCORRECT_CURRENT_PASSWORD.getDescription())
                                 .error(exp.getMessage())
                                 .build())
                         .build()

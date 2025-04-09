@@ -4,6 +4,7 @@ import com.global.university.base.BaseService;
 import com.global.university.exception.OperationNotPermittedException;
 import com.global.university.response.PageResponse;
 import com.global.university.speciality.SpecialityService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,11 @@ public class LevelService extends BaseService<Level, Integer, LevelRequest, Leve
 
     public ResponseEntity<byte[]> findStudyPlanPdf(Integer levelId) {
         LevelResponse level = this.findById(levelId);
+        if(!level.isExistStudyPlan()){
+            throw new OperationNotPermittedException("Can not get Study Plan not Already Created for level" + levelId);
+        }
         if (level.getStudyPlan() == null) {
-            throw new OperationNotPermittedException("can not fetch not exist study plan for level with id " + levelId);
+            throw new EntityNotFoundException("can not fetch get Study Plan not Already Saved for level " + levelId);
         }
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + level.getName() + "\"")

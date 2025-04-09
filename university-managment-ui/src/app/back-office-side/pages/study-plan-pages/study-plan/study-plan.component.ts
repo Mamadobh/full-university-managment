@@ -8,6 +8,7 @@ import {StudyPlanHeaderComponent} from "../../../components/study-plan/study-pla
 import {SimpleCartComponent} from "../../../components/shared/simple-cart/simple-cart.component";
 import {PaginationComponent} from "../../../components/shared/pagination/pagination.component";
 import {PageHeaderComponent} from "../../../components/shared/page-header/page-header.component";
+import {BASE_ADMIN_ROUTE} from "../../../../core/Constants";
 
 
 @Component({
@@ -19,13 +20,14 @@ import {PageHeaderComponent} from "../../../components/shared/page-header/page-h
     PaginationComponent,
     MatIcon,
     PageHeaderComponent,
-
   ],
   templateUrl: './study-plan.component.html',
   styleUrl: './study-plan.component.scss',
 })
 export class StudyPlanComponent implements OnInit {
-  linkHistory: { label: string, navLink: string }[] = [{label: "study plan", navLink: "/study-plan"}]
+  baseUrl=BASE_ADMIN_ROUTE
+
+  linkHistory: { label: string, navLink: string }[] = [{label: "study plan", navLink: this.baseUrl+"/study-plan"}]
   allLevelResponse = signal<PageResponseModel<LevelDetailsResponseModel>>(new PageResponseModel())
   currentPage: number = 0;
   currentSize: number = 1
@@ -85,7 +87,8 @@ export class StudyPlanComponent implements OnInit {
         this.searchfieldControl.setValue("")
         console.log("data=      ", this.allLevelResponse());
       },
-      error: () => { /* Handle error */
+      error: (err) => { /* Handle error */
+        console.log("error ",err)
       }
     });
   }

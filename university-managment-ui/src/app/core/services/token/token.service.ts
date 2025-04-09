@@ -23,18 +23,18 @@ export class TokenService {
   private isTokenExpired(): boolean {
 
     if (!this.token) {
-      return true; // No token found, considered expired
+      return true;
     }
 
-    const parts = this.token.split('.'); // JWT has 3 parts (header, payload, signature)
+    const parts = this.token.split('.');
     if (parts.length !== 3) {
       return true; // Invalid token format
     }
 
     try {
-      const payload = JSON.parse(atob(parts[1])); // Decode the payload
-      const currentTime = Date.now() / 1000; // Current time in seconds
-      return payload.exp < currentTime; // Check if the token is expired
+      const payload = JSON.parse(atob(parts[1]));
+      const currentTime = Date.now() / 1000;
+      return payload.exp < currentTime;
     } catch (error) {
       console.error('Error decoding token', error);
       return true;

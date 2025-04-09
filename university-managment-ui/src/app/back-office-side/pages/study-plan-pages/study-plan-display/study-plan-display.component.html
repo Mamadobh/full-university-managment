@@ -15,11 +15,21 @@
 <!--plan = {{currentLevel()?.studyPlan}}-->
 
 
-<div class="bg-white p-4 mt-8 rounded-md mx-auto w-[80%]">
-  @if (pdfUrl) {
+@if (pdfUrl) {
+  <div class="bg-white p-4 mt-8 rounded-md mx-auto w-[80%]">
     <object [data]="pdfUrl | safeUrl" class=" pdf rounded-md h-[90vh] w-full" type="application/pdf"></object>
+  </div>
 
-  }
-</div>
+} @else {
+  <div class=" h-[250px] flex justify-end items-center flex-col">
+    <mat-icon class="text-[80px] w-[80px] h-[80px] leading-[80px] text-grey_3
+                      text-center  opacity-60l"
+              fontSet="material-icons-outlined"
+    >outlet
+    </mat-icon>
+    <p class="text-[25px] mt-2 pt-1 font-light  text-grey_3 opacity-70"> No Data </p>
+  </div>
 
-{{pdfUrl}}
+}
+
+{{ pdfUrl }}
